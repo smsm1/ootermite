@@ -1,4 +1,4 @@
-class ResultControllerController < ApplicationController
+class ResultController < ApplicationController
 
   # only create is valid
   # FIXME: we need to catch ActiveRecord::SerializationTypeMismatch
