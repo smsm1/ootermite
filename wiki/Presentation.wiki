@@ -1,0 +1,14 @@
+#OOoCon 2007 buildbot presentation
+
+This space is to be used for outline/collaboration.  What follows is the outline.
+
+== Outline ==
+ # Speaker Introduction Fluff
+ # Introduction Fluff
+ # Historical Overview
+   # tinderbox (sucky)
+   # old buildbot (sucky)
+ # This New Thing
+   # buildbot + tinderbox + "reporter"
+
+
