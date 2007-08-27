@@ -1,0 +1,1686 @@
+  [4;36;1mResult Load (0.004889)[0m   [0;1mSELECT * FROM results [0m
+  [4;36;1mResult Load (0.004785)[0m   [0;1mSELECT * FROM results [0m
+  [4;36;1mResult Load (0.004946)[0m   [0;1mSELECT * FROM results [0m
+  [4;36;1mResult Load (0.004909)[0m   [0;1mSELECT * FROM results [0m
+  [4;36;1mResult Load (0.004983)[0m   [0;1mSELECT * FROM results [0m
+  [4;36;1mResult Load (0.004781)[0m   [0;1mSELECT * FROM results [0m
+  [4;36;1mResult Load (0.004696)[0m   [0;1mSELECT * FROM results [0m
+  [4;36;1mResult Load (0.006077)[0m   [0;1mSELECT * FROM results [0m
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-23 20:08:00) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-23 20:08:21) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00088 (1136 reqs/sec) | Rendering: 0.00005 (5%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-23 20:08:21) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00012 (8004 reqs/sec) | Rendering: 0.00004 (29%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-23 20:08:21) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00011 (9341 reqs/sec) | Rendering: 0.00003 (29%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-23 20:08:21) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00011 (9078 reqs/sec) | Rendering: 0.00003 (29%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-23 20:08:21) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00011 (9425 reqs/sec) | Rendering: 0.00003 (31%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-23 20:17:47) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00106 (941 reqs/sec) | Rendering: 0.00005 (4%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-23 20:17:47) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00013 (7884 reqs/sec) | Rendering: 0.00004 (29%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-23 20:17:47) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00013 (7989 reqs/sec) | Rendering: 0.00003 (26%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-23 20:17:47) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00011 (9177 reqs/sec) | Rendering: 0.00003 (29%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-23 20:17:47) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00011 (9258 reqs/sec) | Rendering: 0.00003 (29%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-23 20:17:47) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-23 20:18:15) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00096 (1045 reqs/sec) | Rendering: 0.00005 (5%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-23 20:18:15) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00013 (7695 reqs/sec) | Rendering: 0.00004 (33%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-23 20:18:15) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00011 (9000 reqs/sec) | Rendering: 0.00004 (33%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-23 20:18:15) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00011 (9258 reqs/sec) | Rendering: 0.00004 (33%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-23 20:18:15) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00011 (9000 reqs/sec) | Rendering: 0.00004 (32%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-23 20:18:15) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+Completed in 0.00726 (137 reqs/sec) | Rendering: 0.00010 (1%) | DB: 0.00000 (0%) | 200 OK [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_sizedata---+%0Amegabytes%3A+300%0A]
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-23 20:19:24) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00087 (1142 reqs/sec) | Rendering: 0.00005 (5%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-23 20:19:24) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00012 (8128 reqs/sec) | Rendering: 0.00004 (30%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-23 20:19:24) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00012 (8004 reqs/sec) | Rendering: 0.00004 (30%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-23 20:19:24) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00011 (9425 reqs/sec) | Rendering: 0.00003 (31%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-23 20:19:24) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00011 (9157 reqs/sec) | Rendering: 0.00003 (31%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-23 20:19:24) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+Completed in 47.57397 (0 reqs/sec) | Rendering: 0.00011 (0%) | DB: 0.00000 (0%) | 200 OK [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_sizedata---+%0Amegabytes%3A+300%0A]
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-23 20:20:39) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00091 (1104 reqs/sec) | Rendering: 0.00005 (5%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-23 20:20:39) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00013 (7463 reqs/sec) | Rendering: 0.00004 (29%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-23 20:20:39) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00012 (8128 reqs/sec) | Rendering: 0.00004 (30%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-23 20:20:39) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00012 (8542 reqs/sec) | Rendering: 0.00004 (29%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-23 20:20:39) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00012 (8542 reqs/sec) | Rendering: 0.00004 (29%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-23 20:20:39) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+  [4;36;1mSQL (0.000709)[0m   [0;1mINSERT INTO results ("pws", "build_number", "data_type", "host", "builder", "cws", "created_at", "data") VALUES(NULL, 99, 'tree_size', 'breon1', 'edgy-jdk', 'dbbe', '2007-08-23 20:20:39', '--- 
+megabytes: 300
+')[0m
+Completed in 0.00706 (141 reqs/sec) | Rendering: 0.00006 (0%) | DB: 0.00071 (10%) | 201 Created [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_sizedata---+%0Amegabytes%3A+300%0A]
+  [4;35;1mResult Load (0.005904)[0m   [0mSELECT * FROM results [0m
+ApplicationController: missing default helper path application_helper
+  [4;36;1mResult Load (0.006020)[0m   [0;1mSELECT * FROM results [0m
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-23 20:20:59) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00091 (1093 reqs/sec) | Rendering: 0.00005 (5%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-23 20:20:59) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00013 (7989 reqs/sec) | Rendering: 0.00004 (29%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-23 20:20:59) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00012 (8322 reqs/sec) | Rendering: 0.00003 (28%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-23 20:20:59) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00011 (8848 reqs/sec) | Rendering: 0.00003 (29%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-23 20:20:59) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00011 (9020 reqs/sec) | Rendering: 0.00003 (29%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-23 20:20:59) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+  [4;36;1mSQL (0.000710)[0m   [0;1mINSERT INTO results ("pws", "build_number", "data_type", "host", "builder", "cws", "created_at", "data") VALUES(NULL, 99, 'tree_size', 'breon1', 'edgy-jdk', 'dbbe', '2007-08-23 20:20:59', '--- 
+megabytes: 300
+')[0m
+Completed in 0.00894 (111 reqs/sec) | Rendering: 0.00006 (0%) | DB: 0.00071 (7%) | 201 Created [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_sizedata---+%0Amegabytes%3A+300%0A]
+ApplicationController: missing default helper path application_helper
+  [4;36;1mResult Load (0.006246)[0m   [0;1mSELECT * FROM results [0m
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-23 20:22:29) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00091 (1098 reqs/sec) | Rendering: 0.00005 (5%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-23 20:22:29) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00012 (8473 reqs/sec) | Rendering: 0.00004 (30%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-23 20:22:29) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00011 (9510 reqs/sec) | Rendering: 0.00003 (28%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-23 20:22:29) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00011 (9425 reqs/sec) | Rendering: 0.00003 (29%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-23 20:22:29) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00010 (9532 reqs/sec) | Rendering: 0.00003 (29%) | DB: 0.00000 (0%) | 404 Not Found [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#created (for 0.0.0.0 at 2007-08-23 20:22:29) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe"}, "action"=>"created", "controller"=>"result_controller"}
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-23 20:22:29) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+  [4;36;1mSQL (0.000721)[0m   [0;1mINSERT INTO results ("pws", "build_number", "data_type", "host", "builder", "cws", "created_at", "data") VALUES(NULL, 99, 'tree_size', 'breon1', 'edgy-jdk', 'dbbe', '2007-08-23 20:22:29', '--- 
+megabytes: 300
+')[0m
+Completed in 0.00922 (108 reqs/sec) | Rendering: 0.00006 (0%) | DB: 0.00072 (7%) | 201 Created [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_sizedata---+%0Amegabytes%3A+300%0A]
+ApplicationController: missing default helper path application_helper
+  [4;36;1mResult Load (0.006048)[0m   [0;1mSELECT * FROM results [0m
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-23 20:26:23) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00101 (991 reqs/sec) | Rendering: 0.00005 (5%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-23 20:26:23) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+
+
+Processing ResultControllerController#created (for 0.0.0.0 at 2007-08-23 20:26:23) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe"}, "action"=>"created", "controller"=>"result_controller"}
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-23 20:26:23) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+  [4;36;1mSQL (0.000719)[0m   [0;1mINSERT INTO results ("pws", "build_number", "data_type", "host", "builder", "cws", "created_at", "data") VALUES(NULL, 99, 'tree_size', 'breon1', 'edgy-jdk', 'dbbe', '2007-08-23 20:26:23', '--- 
+megabytes: 300
+')[0m
+Completed in 0.00893 (111 reqs/sec) | Rendering: 0.00006 (0%) | DB: 0.00072 (8%) | 201 Created [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_sizedata---+%0Amegabytes%3A+300%0A]
+ApplicationController: missing default helper path application_helper
+  [4;36;1mResult Load (0.006093)[0m   [0;1mSELECT * FROM results [0m
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-23 20:26:47) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00090 (1108 reqs/sec) | Rendering: 0.00005 (5%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-23 20:26:47) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00012 (8256 reqs/sec) | Rendering: 0.00004 (29%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-23 20:26:47) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00011 (9258 reqs/sec) | Rendering: 0.00003 (30%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-23 20:26:47) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00011 (9510 reqs/sec) | Rendering: 0.00003 (30%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-23 20:26:47) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00011 (9425 reqs/sec) | Rendering: 0.00003 (30%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#created (for 0.0.0.0 at 2007-08-23 20:26:47) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe"}, "action"=>"created", "controller"=>"result_controller"}
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-23 20:26:47) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+  [4;36;1mSQL (0.000717)[0m   [0;1mINSERT INTO results ("pws", "build_number", "data_type", "host", "builder", "cws", "created_at", "data") VALUES(NULL, 99, 'tree_size', 'breon1', 'edgy-jdk', 'dbbe', '2007-08-23 20:26:47', '--- 
+megabytes: 300
+')[0m
+Completed in 0.00895 (111 reqs/sec) | Rendering: 0.00006 (0%) | DB: 0.00072 (8%) | 201 Created [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_sizedata---+%0Amegabytes%3A+300%0A]
+ApplicationController: missing default helper path application_helper
+  [4;36;1mResult Load (0.006150)[0m   [0;1mSELECT * FROM results [0m
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-23 20:27:18) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00092 (1092 reqs/sec) | Rendering: 0.00005 (5%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-23 20:27:18) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00012 (8128 reqs/sec) | Rendering: 0.00004 (29%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-23 20:27:18) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00011 (8848 reqs/sec) | Rendering: 0.00004 (31%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-23 20:27:18) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00011 (8924 reqs/sec) | Rendering: 0.00003 (29%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-23 20:27:18) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00011 (9098 reqs/sec) | Rendering: 0.00003 (29%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-23 20:27:18) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe"}, "action"=>"create", "controller"=>"result_controller"}
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-23 20:27:18) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+  [4;36;1mSQL (0.000727)[0m   [0;1mINSERT INTO results ("pws", "build_number", "data_type", "host", "builder", "cws", "created_at", "data") VALUES(NULL, 99, 'tree_size', 'breon1', 'edgy-jdk', 'dbbe', '2007-08-23 20:27:18', '--- 
+megabytes: 300
+')[0m
+Completed in 0.00321 (311 reqs/sec) | Rendering: 0.00006 (1%) | DB: 0.00073 (22%) | 201 Created [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_sizedata---+%0Amegabytes%3A+300%0A]
+ApplicationController: missing default helper path application_helper
+  [4;36;1mResult Load (0.006080)[0m   [0;1mSELECT * FROM results [0m
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-23 20:27:54) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00088 (1137 reqs/sec) | Rendering: 0.00005 (5%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-23 20:27:54) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00013 (7752 reqs/sec) | Rendering: 0.00004 (29%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-23 20:27:54) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00011 (8701 reqs/sec) | Rendering: 0.00003 (30%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-23 20:27:54) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00011 (8924 reqs/sec) | Rendering: 0.00004 (32%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-23 20:27:54) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00011 (8924 reqs/sec) | Rendering: 0.00003 (29%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-23 20:27:54) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe"}, "action"=>"create", "controller"=>"result_controller"}
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-23 20:27:54) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+  [4;36;1mSQL (0.000713)[0m   [0;1mINSERT INTO results ("pws", "build_number", "data_type", "host", "builder", "cws", "created_at", "data") VALUES(NULL, 99, 'tree_size', 'breon1', 'edgy-jdk', 'dbbe', '2007-08-23 20:27:54', '--- 
+megabytes: 300
+')[0m
+Completed in 0.00319 (313 reqs/sec) | Rendering: 0.00006 (1%) | DB: 0.00071 (22%) | 201 Created [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_sizedata---+%0Amegabytes%3A+300%0A]
+ApplicationController: missing default helper path application_helper
+  [4;36;1mResult Load (0.006180)[0m   [0;1mSELECT * FROM results [0m
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-23 20:29:10) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00089 (1129 reqs/sec) | Rendering: 0.00005 (5%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-23 20:29:10) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00012 (8612 reqs/sec) | Rendering: 0.00004 (30%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-23 20:29:10) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00010 (9799 reqs/sec) | Rendering: 0.00003 (30%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-23 20:29:10) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00011 (9341 reqs/sec) | Rendering: 0.00003 (30%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-23 20:29:10) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00010 (9532 reqs/sec) | Rendering: 0.00003 (29%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-23 20:29:10) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe"}, "action"=>"create", "controller"=>"result_controller"}
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-23 20:29:10) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+  [4;36;1mSQL (0.000728)[0m   [0;1mINSERT INTO results ("pws", "build_number", "data_type", "host", "builder", "cws", "created_at", "data") VALUES(NULL, 99, 'tree_size', 'breon1', 'edgy-jdk', 'dbbe', '2007-08-23 20:29:10', '--- 
+megabytes: 300
+')[0m
+Completed in 0.00328 (304 reqs/sec) | Rendering: 0.00006 (1%) | DB: 0.00073 (22%) | 201 Created [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_sizedata---+%0Amegabytes%3A+300%0A]
+ApplicationController: missing default helper path application_helper
+  [4;36;1mResult Load (0.005953)[0m   [0;1mSELECT * FROM results [0m
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-26 01:12:23) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00091 (1102 reqs/sec) | Rendering: 0.00005 (5%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-26 01:12:23) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00013 (7570 reqs/sec) | Rendering: 0.00004 (30%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-26 01:12:23) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00012 (8405 reqs/sec) | Rendering: 0.00004 (31%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-26 01:12:23) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00012 (8322 reqs/sec) | Rendering: 0.00004 (30%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-26 01:12:23) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00013 (7516 reqs/sec) | Rendering: 0.00004 (30%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-26 01:12:23) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe"}, "action"=>"create", "controller"=>"result_controller"}
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-26 01:12:23) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+  [4;36;1mSQL (0.000789)[0m   [0;1mINSERT INTO results ("pws", "build_number", "data_type", "host", "builder", "cws", "created_at", "data") VALUES(NULL, 99, 'tree_size', 'breon1', 'edgy-jdk', 'dbbe', '2007-08-26 01:12:23', '--- 
+megabytes: 300
+')[0m
+Completed in 0.00329 (303 reqs/sec) | Rendering: 0.00006 (1%) | DB: 0.00079 (23%) | 201 Created [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_sizedata---+%0Amegabytes%3A+300%0A]
+ApplicationController: missing default helper path application_helper
+  [4;36;1mResult Load (0.006018)[0m   [0;1mSELECT * FROM results [0m
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-26 15:56:02) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00088 (1136 reqs/sec) | Rendering: 0.00005 (5%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-26 15:56:02) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00012 (8473 reqs/sec) | Rendering: 0.00004 (30%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-26 15:56:02) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00010 (9915 reqs/sec) | Rendering: 0.00003 (31%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-26 15:56:02) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00010 (9915 reqs/sec) | Rendering: 0.00003 (31%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-26 15:56:02) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00010 (9709 reqs/sec) | Rendering: 0.00003 (31%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-26 15:56:02) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe"}, "action"=>"create", "controller"=>"result_controller"}
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-26 15:56:02) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+  [4;36;1mSQL (0.000719)[0m   [0;1mINSERT INTO results ("pws", "build_number", "data_type", "host", "builder", "cws", "created_at", "data") VALUES(NULL, 99, 'tree_size', 'breon1', 'edgy-jdk', 'dbbe', '2007-08-26 15:56:02', '--- 
+megabytes: 300
+')[0m
+Completed in 0.00335 (298 reqs/sec) | Rendering: 0.00006 (1%) | DB: 0.00072 (21%) | 201 Created [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_sizedata---+%0Amegabytes%3A+300%0A]
+ApplicationController: missing default helper path application_helper
+  [4;36;1mResult Load (0.059141)[0m   [0;1mSELECT * FROM results [0m
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-26 18:43:23) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00091 (1104 reqs/sec) | Rendering: 0.00005 (5%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-26 18:43:23) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00013 (7626 reqs/sec) | Rendering: 0.00004 (28%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-26 18:43:23) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00011 (8848 reqs/sec) | Rendering: 0.00003 (28%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-26 18:43:23) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00011 (9258 reqs/sec) | Rendering: 0.00003 (27%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-26 18:43:23) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00014 (7345 reqs/sec) | Rendering: 0.00004 (27%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-26 18:43:23) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe"}, "action"=>"create", "controller"=>"result_controller"}
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-26 18:43:23) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+  [4;36;1mSQL (0.000791)[0m   [0;1mINSERT INTO results ("pws", "build_number", "data_type", "host", "builder", "cws", "created_at", "data") VALUES(NULL, 99, 'tree_size', 'breon1', 'edgy-jdk', 'dbbe', '2007-08-26 18:43:23', '--- 
+megabytes: 300
+')[0m
+Completed in 0.00332 (300 reqs/sec) | Rendering: 0.00006 (1%) | DB: 0.00079 (23%) | 201 Created [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_sizedata---+%0Amegabytes%3A+300%0A]
+ApplicationController: missing default helper path application_helper
+  [4;36;1mResult Load (0.015527)[0m   [0;1mSELECT * FROM results WHERE (results."data_type" = 'tree_size' AND results."cws" = 'dbbe') [0m
+  [4;35;1mResult Load (0.015216)[0m   [0mSELECT * FROM results WHERE (results."data_type" = 'tree_size' AND results."cws" = 'dbbe') [0m
+ApplicationController: missing default helper path application_helper
+  [4;36;1mResult Load (0.000000)[0m   [0;1mSQLite3::SQLException: no such column: results.group: SELECT * FROM results WHERE (results."group" = '--- :builder
+') [0m
+  [4;35;1mResult Load (0.000000)[0m   [0mSQLite3::SQLException: no such column: results.group: SELECT * FROM results WHERE (results."group" = 'builder') [0m
+  [4;36;1mResult Load (0.007431)[0m   [0;1mSELECT * FROM results GROUP BY builder [0m
+  [4;35;1mResult Load (0.007264)[0m   [0mSELECT * FROM results GROUP BY builder [0m
+  [4;36;1mResult Load (0.006963)[0m   [0;1mSELECT * FROM results GROUP BY builder [0m
+  [4;35;1mResult Load (0.015592)[0m   [0mSELECT * FROM results WHERE (results."data_type" = 'tree_size' AND results."cws" = 'dbbe') [0m
+  [4;36;1mResult Load (0.000000)[0m   [0;1mSQLite3::SQLException: no such column: builderhost: SELECT * FROM results WHERE (results."data_type" = 'tree_size' AND results."cws" = 'dbbe') GROUP BY builderhost [0m
+  [4;35;1mResult Load (0.006070)[0m   [0mSELECT * FROM results WHERE (results."data_type" = 'tree_size' AND results."cws" = 'dbbe') GROUP BY builder, host [0m
+ApplicationController: missing default helper path application_helper
+ApplicationController: missing default helper path application_helper
+  [4;36;1mResult Load (0.057766)[0m   [0;1mSELECT * FROM results [0m
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-27 01:00:29) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00090 (1112 reqs/sec) | Rendering: 0.00005 (5%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-27 01:00:29) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00012 (8490 reqs/sec) | Rendering: 0.00004 (31%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-27 01:00:29) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00010 (9597 reqs/sec) | Rendering: 0.00003 (30%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-27 01:00:29) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00010 (9619 reqs/sec) | Rendering: 0.00003 (30%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-27 01:00:29) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00011 (9425 reqs/sec) | Rendering: 0.00003 (30%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 01:00:29) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe"}, "action"=>"create", "controller"=>"result_controller"}
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 01:00:29) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+  [4;36;1mSQL (0.000773)[0m   [0;1mINSERT INTO results ("pws", "build_number", "data_type", "host", "builder", "cws", "created_at", "data") VALUES(NULL, 99, 'tree_size', 'breon1', 'edgy-jdk', 'dbbe', '2007-08-27 01:00:29', '--- 
+megabytes: 300
+')[0m
+Completed in 0.00331 (302 reqs/sec) | Rendering: 0.00006 (1%) | DB: 0.00077 (23%) | 201 Created [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_sizedata---+%0Amegabytes%3A+300%0A]
+ApplicationController: missing default helper path application_helper
+  [4;36;1mSQL (0.000775)[0m   [0;1mINSERT INTO selectors ("column_values", "dynamic_columns", "filter", "group", "limit") VALUES('--- 
+- - :data_type
+ - tree_size
+', '--- 
+- :cws
+', NULL, '--- 
+- host
+- builder
+', 3)[0m
+ApplicationController: missing default helper path application_helper
+  [4;36;1mSelector Load (0.001530)[0m   [0;1mSELECT * FROM selectors LIMIT 1[0m
+  [4;35;1mSelector Load (0.000651)[0m   [0mSELECT * FROM selectors LIMIT 1[0m
+  [4;36;1mSelector Update (0.000767)[0m   [0;1mUPDATE selectors SET "dynamic_columns" = '--- 
+- :cws
+', "limit" = ':all', "column_values" = NULL, "group" = NULL, "filter" = NULL WHERE "id" = 1[0m
+  [4;35;1mSelector Update (0.000659)[0m   [0mUPDATE selectors SET "dynamic_columns" = '--- 
+- :cws
+', "limit" = ':all', "column_values" = '--- 
+- - data_type
+ - tree_size
+', "group" = NULL, "filter" = NULL WHERE "id" = 1[0m
+  [4;36;1mSelector Update (0.000350)[0m   [0;1mUPDATE selectors SET "dynamic_columns" = '--- 
+- :cws
+', "limit" = ':all', "column_values" = '--- 
+- - data_type
+ - tree_size
+', "group" = '--- []
+
+', "filter" = NULL WHERE "id" = 1[0m
+  [4;35;1mResult Load (0.017031)[0m   [0mSELECT * FROM results WHERE (results."data_type" = 'tree_size' AND results."cws" = 'dbbe') GROUP BY [0m
+ApplicationController: missing default helper path application_helper
+  [4;36;1mSelector Load (0.001574)[0m   [0;1mSELECT * FROM selectors LIMIT 1[0m
+  [4;35;1mResult Load (0.016968)[0m   [0mSELECT * FROM results WHERE (results."data_type" = 'tree_size' AND results."cws" = 'dbbe') GROUP BY [0m
+ApplicationController: missing default helper path application_helper
+  [4;36;1mResult Load (0.058382)[0m   [0;1mSELECT * FROM results [0m
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-27 05:47:47) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00088 (1132 reqs/sec) | Rendering: 0.00005 (5%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-27 05:47:47) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00012 (8128 reqs/sec) | Rendering: 0.00004 (31%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-27 05:47:47) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00011 (9258 reqs/sec) | Rendering: 0.00004 (32%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-27 05:47:47) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00011 (9341 reqs/sec) | Rendering: 0.00004 (33%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-27 05:47:47) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00011 (9000 reqs/sec) | Rendering: 0.00004 (33%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 05:47:47) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe"}, "action"=>"create", "controller"=>"result_controller"}
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 05:47:47) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+  [4;36;1mSQL (0.000725)[0m   [0;1mINSERT INTO results ("pws", "build_number", "data_type", "host", "builder", "cws", "created_at", "data") VALUES(NULL, 99, 'tree_size', 'breon1', 'edgy-jdk', 'dbbe', '2007-08-27 05:47:47', '--- 
+megabytes: 300
+')[0m
+Completed in 0.00325 (307 reqs/sec) | Rendering: 0.00006 (1%) | DB: 0.00072 (22%) | 201 Created [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_sizedata---+%0Amegabytes%3A+300%0A]
+ApplicationController: missing default helper path application_helper
+  [4;36;1mResult Load (0.056763)[0m   [0;1mSELECT * FROM results [0m
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-27 05:51:14) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00090 (1109 reqs/sec) | Rendering: 0.00005 (5%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-27 05:51:14) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00013 (7869 reqs/sec) | Rendering: 0.00004 (29%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-27 05:51:14) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00011 (8774 reqs/sec) | Rendering: 0.00003 (29%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-27 05:51:14) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00011 (9258 reqs/sec) | Rendering: 0.00003 (29%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-27 05:51:14) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00013 (7928 reqs/sec) | Rendering: 0.00003 (26%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 05:51:14) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe"}, "action"=>"create", "controller"=>"result_controller"}
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 05:51:14) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+  [4;36;1mSQL (0.000725)[0m   [0;1mINSERT INTO results ("pws", "build_number", "data_type", "host", "builder", "cws", "created_at", "data") VALUES(NULL, 99, 'tree_size', 'breon1', 'edgy-jdk', 'dbbe', '2007-08-27 05:51:14', '--- 
+megabytes: 300
+')[0m
+Completed in 0.00321 (311 reqs/sec) | Rendering: 0.00006 (1%) | DB: 0.00073 (22%) | 201 Created [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_sizedata---+%0Amegabytes%3A+300%0A]
+ApplicationController: missing default helper path application_helper
+  [4;36;1mResult Load (0.060309)[0m   [0;1mSELECT * FROM results [0m
+  [4;35;1mSelector Load (0.000504)[0m   [0mSELECT * FROM selectors [0m
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-27 05:52:42) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00091 (1100 reqs/sec) | Rendering: 0.00005 (5%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-27 05:52:42) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00013 (7943 reqs/sec) | Rendering: 0.00004 (30%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-27 05:52:42) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00011 (9020 reqs/sec) | Rendering: 0.00003 (28%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-27 05:52:42) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00011 (9258 reqs/sec) | Rendering: 0.00003 (29%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-27 05:52:42) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00011 (9177 reqs/sec) | Rendering: 0.00003 (29%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 05:52:42) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe"}, "action"=>"create", "controller"=>"result_controller"}
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 05:52:42) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+  [4;36;1mSQL (0.000728)[0m   [0;1mINSERT INTO results ("pws", "build_number", "data_type", "host", "builder", "cws", "created_at", "data") VALUES(NULL, 99, 'tree_size', 'breon1', 'edgy-jdk', 'dbbe', '2007-08-27 05:52:42', '--- 
+megabytes: 300
+')[0m
+Completed in 0.00318 (314 reqs/sec) | Rendering: 0.00006 (1%) | DB: 0.00073 (22%) | 201 Created [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_sizedata---+%0Amegabytes%3A+300%0A]
+ApplicationController: missing default helper path application_helper
+  [4;36;1mResult Load (0.056958)[0m   [0;1mSELECT * FROM results [0m
+  [4;35;1mSelector Load (0.000767)[0m   [0mSELECT * FROM selectors [0m
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-27 05:52:55) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00089 (1122 reqs/sec) | Rendering: 0.00005 (5%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-27 05:52:55) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00013 (7516 reqs/sec) | Rendering: 0.00004 (30%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-27 05:52:55) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00012 (8630 reqs/sec) | Rendering: 0.00004 (31%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-27 05:52:55) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00012 (8559 reqs/sec) | Rendering: 0.00004 (30%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-27 05:52:55) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00012 (8473 reqs/sec) | Rendering: 0.00004 (31%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 05:52:55) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe"}, "action"=>"create", "controller"=>"result_controller"}
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 05:52:55) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+  [4;36;1mSQL (0.000714)[0m   [0;1mINSERT INTO results ("pws", "build_number", "data_type", "host", "builder", "cws", "created_at", "data") VALUES(NULL, 99, 'tree_size', 'breon1', 'edgy-jdk', 'dbbe', '2007-08-27 05:52:55', '--- 
+megabytes: 300
+')[0m
+Completed in 0.00341 (293 reqs/sec) | Rendering: 0.00006 (1%) | DB: 0.00071 (20%) | 201 Created [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_sizedata---+%0Amegabytes%3A+300%0A]
+ApplicationController: missing default helper path application_helper
+  [4;36;1mResult Load (0.059181)[0m   [0;1mSELECT * FROM results [0m
+  [4;35;1mSelector Load (0.000396)[0m   [0mSELECT * FROM selectors [0m
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-27 05:53:15) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00090 (1107 reqs/sec) | Rendering: 0.00005 (5%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-27 05:53:15) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00013 (7810 reqs/sec) | Rendering: 0.00004 (28%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-27 05:53:15) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00011 (9020 reqs/sec) | Rendering: 0.00003 (29%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-27 05:53:15) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00013 (7884 reqs/sec) | Rendering: 0.00004 (29%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-27 05:53:15) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00011 (8924 reqs/sec) | Rendering: 0.00003 (28%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 05:53:15) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe"}, "action"=>"create", "controller"=>"result_controller"}
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 05:53:15) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+  [4;36;1mSQL (0.000718)[0m   [0;1mINSERT INTO results ("pws", "build_number", "data_type", "host", "builder", "cws", "created_at", "data") VALUES(NULL, 99, 'tree_size', 'breon1', 'edgy-jdk', 'dbbe', '2007-08-27 05:53:15', '--- 
+megabytes: 300
+')[0m
+Completed in 0.00317 (315 reqs/sec) | Rendering: 0.00006 (1%) | DB: 0.00072 (22%) | 201 Created [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_sizedata---+%0Amegabytes%3A+300%0A]
+ApplicationController: missing default helper path application_helper
+  [4;36;1mSelector Load (0.000513)[0m   [0;1mSELECT * FROM selectors [0m
+ApplicationController: missing default helper path application_helper
+  [4;36;1mSelector Load (0.000506)[0m   [0;1mSELECT * FROM selectors [0m
+ApplicationController: missing default helper path application_helper
+  [4;36;1mSelector Load (0.000507)[0m   [0;1mSELECT * FROM selectors [0m
+ApplicationController: missing default helper path application_helper
+  [4;36;1mResult Load (0.056858)[0m   [0;1mSELECT * FROM results [0m
+  [4;35;1mSelector Load (0.000421)[0m   [0mSELECT * FROM selectors [0m
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-27 05:57:13) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00088 (1140 reqs/sec) | Rendering: 0.00005 (5%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-27 05:57:13) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00013 (7928 reqs/sec) | Rendering: 0.00004 (31%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-27 05:57:13) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00010 (9709 reqs/sec) | Rendering: 0.00003 (31%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-27 05:57:13) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00011 (9446 reqs/sec) | Rendering: 0.00003 (31%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-27 05:57:13) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00010 (9532 reqs/sec) | Rendering: 0.00003 (31%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 05:57:13) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe"}, "action"=>"create", "controller"=>"result_controller"}
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 05:57:13) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+  [4;36;1mSQL (0.000715)[0m   [0;1mINSERT INTO results ("pws", "build_number", "data_type", "host", "builder", "cws", "created_at", "data") VALUES(NULL, 99, 'tree_size', 'breon1', 'edgy-jdk', 'dbbe', '2007-08-27 05:57:13', '--- 
+megabytes: 300
+')[0m
+Completed in 0.00320 (312 reqs/sec) | Rendering: 0.00006 (1%) | DB: 0.00072 (22%) | 201 Created [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_sizedata---+%0Amegabytes%3A+300%0A]
+ApplicationController: missing default helper path application_helper
+  [4;36;1mResult Load (0.059319)[0m   [0;1mSELECT * FROM results [0m
+  [4;35;1mSelector Load (0.000428)[0m   [0mSELECT * FROM selectors [0m
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-27 06:02:31) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00089 (1119 reqs/sec) | Rendering: 0.00005 (5%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-27 06:02:31) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00013 (7639 reqs/sec) | Rendering: 0.00004 (29%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-27 06:02:31) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00011 (8701 reqs/sec) | Rendering: 0.00004 (31%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-27 06:02:31) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00011 (8924 reqs/sec) | Rendering: 0.00003 (31%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-27 06:02:31) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00011 (8848 reqs/sec) | Rendering: 0.00003 (30%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 06:02:31) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe"}, "action"=>"create", "controller"=>"result_controller"}
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 06:02:31) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+ApplicationController: missing default helper path application_helper
+  [4;36;1mResult Load (0.059149)[0m   [0;1mSELECT * FROM results [0m
+  [4;35;1mSelector Load (0.000401)[0m   [0mSELECT * FROM selectors [0m
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-27 06:02:46) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00097 (1028 reqs/sec) | Rendering: 0.00006 (5%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-27 06:02:46) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00013 (7410 reqs/sec) | Rendering: 0.00004 (29%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-27 06:02:46) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00012 (8630 reqs/sec) | Rendering: 0.00004 (31%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-27 06:02:46) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00012 (8612 reqs/sec) | Rendering: 0.00003 (29%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-27 06:02:46) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00011 (8774 reqs/sec) | Rendering: 0.00003 (29%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 06:02:46) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe"}, "action"=>"create", "controller"=>"result_controller"}
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 06:02:46) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+Completed in 0.00124 (804 reqs/sec) | Rendering: 0.00009 (7%) | DB: 0.00000 (0%) | 200 OK [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_sizedata---+%0Amegabytes%3A+300%0A]
+ApplicationController: missing default helper path application_helper
+  [4;36;1mResult Load (0.057390)[0m   [0;1mSELECT * FROM results [0m
+  [4;35;1mSelector Load (0.000407)[0m   [0mSELECT * FROM selectors [0m
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-27 06:03:02) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00091 (1101 reqs/sec) | Rendering: 0.00005 (5%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-27 06:03:02) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00013 (7410 reqs/sec) | Rendering: 0.00004 (30%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-27 06:03:02) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00012 (8405 reqs/sec) | Rendering: 0.00004 (30%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-27 06:03:02) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00012 (8542 reqs/sec) | Rendering: 0.00004 (30%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-27 06:03:02) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00012 (8405 reqs/sec) | Rendering: 0.00004 (31%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 06:03:02) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe"}, "action"=>"create", "controller"=>"result_controller"}
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 06:03:02) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+Completed in 0.00120 (832 reqs/sec) | Rendering: 0.00009 (7%) | DB: 0.00000 (0%) | 200 OK [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_sizedata---+%0Amegabytes%3A+300%0A]
+ApplicationController: missing default helper path application_helper
+  [4;36;1mResult Load (0.057943)[0m   [0;1mSELECT * FROM results [0m
+  [4;35;1mSelector Load (0.000451)[0m   [0mSELECT * FROM selectors [0m
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-27 06:04:51) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00089 (1122 reqs/sec) | Rendering: 0.00005 (5%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-27 06:04:51) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00013 (7463 reqs/sec) | Rendering: 0.00004 (29%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-27 06:04:51) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00011 (9078 reqs/sec) | Rendering: 0.00003 (29%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-27 06:04:51) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00011 (9341 reqs/sec) | Rendering: 0.00003 (29%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-27 06:04:51) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00011 (9425 reqs/sec) | Rendering: 0.00003 (29%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 06:04:51) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe"}, "action"=>"create", "controller"=>"result_controller"}
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 06:04:51) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+Completed in 0.00121 (828 reqs/sec) | Rendering: 0.00009 (7%) | DB: 0.00000 (0%) | 200 OK [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_sizedata---+%0Amegabytes%3A+300%0A]
+ApplicationController: missing default helper path application_helper
+  [4;36;1mResult Load (0.056960)[0m   [0;1mSELECT * FROM results [0m
+  [4;35;1mSelector Load (0.000404)[0m   [0mSELECT * FROM selectors [0m
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-27 06:06:02) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00089 (1121 reqs/sec) | Rendering: 0.00005 (5%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-27 06:06:02) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00013 (7869 reqs/sec) | Rendering: 0.00004 (28%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-27 06:06:02) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00011 (8924 reqs/sec) | Rendering: 0.00003 (28%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-27 06:06:02) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00011 (9020 reqs/sec) | Rendering: 0.00003 (28%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-27 06:06:02) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00011 (8943 reqs/sec) | Rendering: 0.00003 (28%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 06:06:02) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe"}, "action"=>"create", "controller"=>"result_controller"}
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 06:06:04) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+Completed in 3.91040 (0 reqs/sec) | Rendering: 0.00010 (0%) | DB: 0.00000 (0%) | 200 OK [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_sizedata---+%0Amegabytes%3A+300%0A]
+ApplicationController: missing default helper path application_helper
+  [4;36;1mResult Load (0.059625)[0m   [0;1mSELECT * FROM results [0m
+  [4;35;1mSelector Load (0.000405)[0m   [0mSELECT * FROM selectors [0m
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-27 06:06:43) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00089 (1128 reqs/sec) | Rendering: 0.00005 (5%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-27 06:06:43) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00014 (7145 reqs/sec) | Rendering: 0.00004 (27%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-27 06:06:43) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00015 (6808 reqs/sec) | Rendering: 0.00004 (25%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-27 06:06:43) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00013 (7752 reqs/sec) | Rendering: 0.00004 (28%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-27 06:06:43) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00012 (8128 reqs/sec) | Rendering: 0.00004 (28%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 06:06:43) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe"}, "action"=>"create", "controller"=>"result_controller"}
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 06:06:43) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+Completed in 0.00167 (597 reqs/sec) | Rendering: 0.00010 (5%) | DB: 0.00000 (0%) | 200 OK [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_sizedata---+%0Amegabytes%3A+300%0A]
+ApplicationController: missing default helper path application_helper
+  [4;36;1mResult Load (0.057193)[0m   [0;1mSELECT * FROM results [0m
+  [4;35;1mSelector Load (0.000400)[0m   [0mSELECT * FROM selectors [0m
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-27 06:24:08) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00089 (1118 reqs/sec) | Rendering: 0.00005 (5%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-27 06:24:08) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00012 (8128 reqs/sec) | Rendering: 0.00004 (30%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-27 06:24:08) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00014 (7244 reqs/sec) | Rendering: 0.00004 (28%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-27 06:24:08) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00011 (8848 reqs/sec) | Rendering: 0.00003 (30%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-27 06:24:08) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00011 (9258 reqs/sec) | Rendering: 0.00003 (29%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 06:24:08) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe"}, "action"=>"create", "controller"=>"result_controller"}
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 06:24:08) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+Completed in 0.00172 (581 reqs/sec) | Rendering: 0.00010 (5%) | DB: 0.00000 (0%) | 200 OK [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_sizedata---+%0Amegabytes%3A+300%0A]
+ApplicationController: missing default helper path application_helper
+  [4;36;1mResult Load (0.059292)[0m   [0;1mSELECT * FROM results [0m
+  [4;35;1mSelector Load (0.000426)[0m   [0mSELECT * FROM selectors [0m
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-27 06:24:34) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00089 (1118 reqs/sec) | Rendering: 0.00005 (5%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-27 06:24:34) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00014 (7345 reqs/sec) | Rendering: 0.00004 (27%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-27 06:24:34) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00011 (8774 reqs/sec) | Rendering: 0.00003 (27%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-27 06:24:34) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00011 (9098 reqs/sec) | Rendering: 0.00003 (28%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-27 06:24:34) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00011 (9258 reqs/sec) | Rendering: 0.00003 (28%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 06:24:34) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe"}, "action"=>"create", "controller"=>"result_controller"}
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 06:24:34) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+  [4;36;1mSQL (0.000725)[0m   [0;1mINSERT INTO results ("pws", "build_number", "data_type", "host", "builder", "cws", "created_at", "data") VALUES(NULL, 99, 'tree_size', 'breon1', 'edgy-jdk', 'dbbe', '2007-08-27 06:24:34', '--- 
+megabytes: 300
+')[0m
+Completed in 0.00329 (303 reqs/sec) | Rendering: 0.00006 (1%) | DB: 0.00073 (22%) | 201 Created [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_sizedata---+%0Amegabytes%3A+300%0A]
+ApplicationController: missing default helper path application_helper
+  [4;36;1mResult Load (0.057660)[0m   [0;1mSELECT * FROM results [0m
+  [4;35;1mSelector Load (0.000408)[0m   [0mSELECT * FROM selectors [0m
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-27 06:24:55) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00088 (1140 reqs/sec) | Rendering: 0.00005 (5%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-27 06:24:55) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00016 (6364 reqs/sec) | Rendering: 0.00004 (27%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-27 06:24:55) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00012 (8612 reqs/sec) | Rendering: 0.00003 (29%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-27 06:24:55) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00013 (7516 reqs/sec) | Rendering: 0.00004 (28%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-27 06:24:55) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00012 (8128 reqs/sec) | Rendering: 0.00004 (30%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 06:24:55) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe"}, "action"=>"create", "controller"=>"result_controller"}
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 06:24:56) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+  [4;36;1mSQL (0.000717)[0m   [0;1mINSERT INTO results ("pws", "build_number", "data_type", "host", "builder", "cws", "created_at", "data") VALUES(NULL, 99, 'tree_size', 'breon1', 'edgy-jdk', 'dbbe', '2007-08-27 06:24:56', '--- 
+megabytes: 300
+')[0m
+Completed in 0.00338 (295 reqs/sec) | Rendering: 0.00006 (1%) | DB: 0.00072 (21%) | 201 Created [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_sizedata---+%0Amegabytes%3A+300%0A]
+ApplicationController: missing default helper path application_helper
+ApplicationController: missing default helper path application_helper
+  [4;36;1mResult Load (0.059929)[0m   [0;1mSELECT * FROM results [0m
+  [4;35;1mSelector Load (0.000402)[0m   [0mSELECT * FROM selectors [0m
+ApplicationController: missing default helper path application_helper
+  [4;36;1mResult Load (0.063332)[0m   [0;1mSELECT * FROM results [0m
+  [4;35;1mSelector Load (0.000409)[0m   [0mSELECT * FROM selectors [0m
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-27 06:29:30) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00096 (1040 reqs/sec) | Rendering: 0.00005 (5%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-27 06:29:30) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00012 (8208 reqs/sec) | Rendering: 0.00004 (28%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-27 06:29:30) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00016 (6177 reqs/sec) | Rendering: 0.00004 (26%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-27 06:29:30) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00011 (8701 reqs/sec) | Rendering: 0.00003 (29%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-27 06:29:30) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00011 (9177 reqs/sec) | Rendering: 0.00003 (30%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 06:29:30) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe"}, "action"=>"create", "controller"=>"result_controller"}
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 06:29:30) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+  [4;36;1mSQL (0.000769)[0m   [0;1mINSERT INTO results ("pws", "build_number", "data_type", "host", "builder", "cws", "created_at", "data") VALUES(NULL, 99, 'tree_size', 'breon1', 'edgy-jdk', 'dbbe', '2007-08-27 06:29:30', '--- 
+megabytes: 300
+')[0m
+Completed in 0.00326 (306 reqs/sec) | Rendering: 0.00006 (1%) | DB: 0.00077 (23%) | 201 Created [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_sizedata---+%0Amegabytes%3A+300%0A]
+ApplicationController: missing default helper path application_helper
+  [4;36;1mResult Load (0.059998)[0m   [0;1mSELECT * FROM results [0m
+  [4;35;1mSelector Load (0.000413)[0m   [0mSELECT * FROM selectors [0m
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-27 06:30:16) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00092 (1089 reqs/sec) | Rendering: 0.00005 (5%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-27 06:30:16) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00012 (8065 reqs/sec) | Rendering: 0.00004 (31%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-27 06:30:16) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00011 (9425 reqs/sec) | Rendering: 0.00004 (33%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-27 06:30:16) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00010 (9532 reqs/sec) | Rendering: 0.00003 (31%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-27 06:30:16) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00011 (9425 reqs/sec) | Rendering: 0.00003 (31%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 06:30:16) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe"}, "action"=>"create", "controller"=>"result_controller"}
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 06:30:16) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+  [4;36;1mSQL (0.000761)[0m   [0;1mINSERT INTO results ("pws", "build_number", "data_type", "host", "builder", "cws", "created_at", "data") VALUES(NULL, 99, 'tree_size', 'breon1', 'edgy-jdk', 'dbbe', '2007-08-27 06:30:16', '--- 
+megabytes: 300
+')[0m
+Completed in 0.00331 (302 reqs/sec) | Rendering: 0.00007 (2%) | DB: 0.00076 (23%) | 201 Created [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_sizedata---+%0Amegabytes%3A+300%0A]
+ApplicationController: missing default helper path application_helper
+  [4;36;1mResult Load (0.059208)[0m   [0;1mSELECT * FROM results [0m
+  [4;35;1mSelector Load (0.000407)[0m   [0mSELECT * FROM selectors [0m
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-27 06:35:48) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00094 (1069 reqs/sec) | Rendering: 0.00005 (5%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-27 06:35:48) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00013 (7410 reqs/sec) | Rendering: 0.00004 (29%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-27 06:35:48) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00025 (4017 reqs/sec) | Rendering: 0.00004 (14%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-27 06:35:48) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00015 (6754 reqs/sec) | Rendering: 0.00005 (30%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-27 06:35:48) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00012 (8473 reqs/sec) | Rendering: 0.00004 (31%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 06:35:48) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe"}, "action"=>"create", "controller"=>"result_controller"}
+Completed in 0.03246 (30 reqs/sec) | Rendering: 0.00011 (0%) | DB: 0.00000 (0%) | 200 OK [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_size]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 06:35:48) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+  [4;36;1mSQL (0.000795)[0m   [0;1mINSERT INTO results ("pws", "build_number", "data_type", "host", "builder", "cws", "created_at", "data") VALUES(NULL, 99, 'tree_size', 'breon1', 'edgy-jdk', 'dbbe', '2007-08-27 06:35:48', '--- 
+megabytes: 300
+')[0m
+Completed in 0.00332 (301 reqs/sec) | Rendering: 0.00005 (1%) | DB: 0.00079 (23%) | 201 Created [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_sizedata---+%0Amegabytes%3A+300%0A]
+ApplicationController: missing default helper path application_helper
+  [4;36;1mResult Load (0.058385)[0m   [0;1mSELECT * FROM results [0m
+  [4;35;1mSelector Load (0.000409)[0m   [0mSELECT * FROM selectors [0m
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-27 06:38:37) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00090 (1112 reqs/sec) | Rendering: 0.00005 (5%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-27 06:38:37) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00013 (7516 reqs/sec) | Rendering: 0.00004 (30%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-27 06:38:37) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00011 (9510 reqs/sec) | Rendering: 0.00003 (30%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-27 06:38:37) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00010 (9799 reqs/sec) | Rendering: 0.00003 (30%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-27 06:38:37) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00013 (7584 reqs/sec) | Rendering: 0.00004 (31%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 06:38:37) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe"}, "action"=>"create", "controller"=>"result_controller"}
+Completed in 0.00754 (132 reqs/sec) | Rendering: 0.00010 (1%) | DB: 0.00000 (0%) | 200 OK [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_size]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 06:38:37) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+  [4;36;1mSQL (0.014832)[0m   [0;1mINSERT INTO results ("pws", "build_number", "data_type", "host", "builder", "cws", "created_at", "data") VALUES(NULL, 99, 'tree_size', 'breon1', 'edgy-jdk', 'dbbe', '2007-08-27 06:38:37', '--- 
+megabytes: 300
+')[0m
+Completed in 0.01744 (57 reqs/sec) | Rendering: 0.00004 (0%) | DB: 0.01483 (85%) | 201 Created [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_sizedata---+%0Amegabytes%3A+300%0A]
+ApplicationController: missing default helper path application_helper
+  [4;36;1mResult Load (0.058949)[0m   [0;1mSELECT * FROM results [0m
+  [4;35;1mSelector Load (0.000405)[0m   [0mSELECT * FROM selectors [0m
+ApplicationController: missing default helper path application_helper
+
+
+Processing ResultControllerController#new (for 0.0.0.0 at 2007-08-27 19:04:06) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"result_controller"}
+Completed in 0.00089 (1118 reqs/sec) | Rendering: 0.00005 (5%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#show (for 0.0.0.0 at 2007-08-27 19:04:06) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "controller"=>"result_controller"}
+Completed in 0.00013 (7810 reqs/sec) | Rendering: 0.00004 (30%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#edit (for 0.0.0.0 at 2007-08-27 19:04:06) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"edit", "controller"=>"result_controller"}
+Completed in 0.00011 (9341 reqs/sec) | Rendering: 0.00003 (30%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#update (for 0.0.0.0 at 2007-08-27 19:04:06) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "controller"=>"result_controller"}
+Completed in 0.00010 (9686 reqs/sec) | Rendering: 0.00003 (30%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#destroy (for 0.0.0.0 at 2007-08-27 19:04:06) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "controller"=>"result_controller"}
+Completed in 0.00011 (8924 reqs/sec) | Rendering: 0.00004 (31%) | DB: 0.00000 (0%) | 405 Method Not Allowed [http://test.host/result_controller/new]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 19:04:06) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe"}, "action"=>"create", "controller"=>"result_controller"}
+Completed in 0.00701 (142 reqs/sec) | Rendering: 0.00010 (1%) | DB: 0.00000 (0%) | 200 OK [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_size]
+
+
+Processing ResultControllerController#create (for 0.0.0.0 at 2007-08-27 19:04:06) [POST]
+  Session ID: 
+  Parameters: {"result"=>{"data_type"=>"tree_size", "build_number"=>"99", "host"=>"breon1", "builder"=>"edgy-jdk", "cws"=>"dbbe", "data"=>"--- \nmegabytes: 300\n"}, "action"=>"create", "controller"=>"result_controller"}
+  [4;36;1mSQL (0.000755)[0m   [0;1mINSERT INTO results ("pws", "build_number", "data_type", "host", "builder", "cws", "created_at", "data") VALUES(NULL, 99, 'tree_size', 'breon1', 'edgy-jdk', 'dbbe', '2007-08-27 19:04:06', '--- 
+megabytes: 300
+')[0m
+Completed in 0.00323 (309 reqs/sec) | Rendering: 0.00005 (1%) | DB: 0.00075 (23%) | 201 Created [http://test.host/result_controller/create?result=cwsdbbebuilderedgy-jdkhostbreon1build_number99data_typetree_sizedata---+%0Amegabytes%3A+300%0A]
