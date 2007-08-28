@@ -1,3 +1,5 @@
-buildmaster			buildmaster related config files/code
-scripts				scripts needed for a build slave
-OO-changes.diff			hacks to buildbot for slave-side CWS
+buildmaster			buildmaster related config files/code.
+buildslave/scripts		scripts needed for a build slave, 
+				these may need to be customised to the 
+				specific buildslave environment.
+buildslave/OO-changes.diff	hacks to buildbot for slave-side CWS.
