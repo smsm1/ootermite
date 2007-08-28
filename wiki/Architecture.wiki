@@ -1,3 +1,4 @@
 #summary One-sentence summary of this page.
 
 http://ootermite.googlecode.com/svn/wiki/simple_block_diagram.png
+http://ootermite.googlecode.com/svn/wiki/interfaces_block_diagram.png
