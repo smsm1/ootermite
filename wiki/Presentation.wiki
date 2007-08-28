@@ -1,5 +1,4 @@
-#OOoCon 2007 buildbot presentation
-
+#labels Featured
 This space is to be used for outline/collaboration.  What follows is the outline.
 
 == Outline ==
@@ -14,5 +13,39 @@ This space is to be used for outline/collaboration.  What follows is the outline
      # EIS/tinderbox integration
      # report generation
      # "try"
- # Capabilities In Depth
- 
+   # enhancements
+     # autobuild
+     # readyforqa
+
+ # Features In Depth
+   # EIS/tinderbox integration
+     # buildmaster sends results to tinderbox
+     # EIS knows tinderbox status
+     # Reports/Install sets are linked
+   # report generation
+     # arbitrary data can be gathered
+     # reports can be generated
+       # cws vs milestone
+       # milestones over time
+   # try
+     # one can "try" a patch before committing to a cws
+   # general enhancements
+     # builds triggered by changes
+     # ready for qa builds get special treatment
+     # client side config 
+     # faster update mechanism sucks less
+ # How it All works
+   # Buildbot
+     # buildmaster/buildslave topology
+     # buildbot functional description
+     # caveats
+     # customization done for oo.o
+   # Report Generator
+     # functional description
+     # implementation description
+ # It's just that Easy
+   # how to set up a builder
+   # how to send data/create reports
+   # how to get started with development
+ # Next Steps
+   # what we didn't get done
