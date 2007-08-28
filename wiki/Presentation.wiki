@@ -8,7 +8,11 @@ This space is to be used for outline/collaboration.  What follows is the outline
  # Historical Overview
    # tinderbox (sucky)
    # old buildbot (sucky)
- # This New Thing
+ # This New Thing (Termite)
    # buildbot + tinderbox + "reporter"
-
-
+   # new capabilities
+     # EIS/tinderbox integration
+     # report generation
+     # "try"
+ # Capabilities In Depth
+ 
