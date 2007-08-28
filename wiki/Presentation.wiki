@@ -16,7 +16,6 @@ This space is to be used for outline/collaboration.  What follows is the outline
    # enhancements
      # autobuild
      # readyforqa
-
  # Features In Depth
    # EIS/tinderbox integration
      # buildmaster sends results to tinderbox
