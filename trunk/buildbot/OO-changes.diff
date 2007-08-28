@@ -1,0 +1,260 @@
+Only in buildbot-0.7.5/: build
+Binary files buildbot-0.7.5-orig/buildbot/__init__.pyc and buildbot-0.7.5/buildbot/__init__.pyc differ
+diff -ru buildbot-0.7.5-orig/buildbot/master.py buildbot-0.7.5/buildbot/master.py
+--- buildbot-0.7.5-orig/buildbot/master.py	2006-12-10 21:40:11.000000000 -0800
++++ buildbot-0.7.5/buildbot/master.py	2007-08-27 22:01:40.000000000 -0700
+@@ -500,6 +500,7 @@
+     projectURL = None
+     buildbotURL = None
+     change_svc = None
++    customBuildProperties = None
+ 
+     def __init__(self, basedir, configFileName="master.cfg"):
+         service.MultiService.__init__(self)
+@@ -653,7 +654,8 @@
+ 
+         known_keys = "bots sources schedulers builders slavePortnum " + \
+                      "debugPassword manhole " + \
+-                     "status projectName projectURL buildbotURL"
++                     "status projectName projectURL buildbotURL " + \
++                     "customBuildProperties"
+         known_keys = known_keys.split()
+         for k in config.keys():
+             if k not in known_keys:
+@@ -674,6 +676,7 @@
+             projectName = config.get('projectName')
+             projectURL = config.get('projectURL')
+             buildbotURL = config.get('buildbotURL')
++            customBuildProperties = config.get('customBuildProperties')
+ 
+         except KeyError, e:
+             log.msg("config dictionary is missing a required parameter")
+@@ -777,6 +780,7 @@
+         self.projectName = projectName
+         self.projectURL = projectURL
+         self.buildbotURL = buildbotURL
++        self.customBuildProperties = customBuildProperties
+ 
+         # self.bots: Disconnect any that were attached and removed from the
+         # list. Update self.checker with the new list of passwords,
+diff -ru buildbot-0.7.5-orig/buildbot/process/base.py buildbot-0.7.5/buildbot/process/base.py
+--- buildbot-0.7.5-orig/buildbot/process/base.py	2006-12-10 21:40:11.000000000 -0800
++++ buildbot-0.7.5/buildbot/process/base.py	2007-08-27 22:01:40.000000000 -0700
+@@ -39,6 +39,9 @@
+                   provide this, but for forced builds the user requesting the
+                   build will provide a string.
+ 
++    @type custom_props: dictionary.
++    @ivar custom_props: custom user properties.
++
+     @ivar status: the IBuildStatus object which tracks our status
+ 
+     @ivar submittedAt: a timestamp (seconds since epoch) when this request
+@@ -49,18 +52,20 @@
+     source = None
+     builder = None
+     startCount = 0 # how many times we have tried to start this build
++    custom_props = {}
+ 
+     if implements:
+         implements(interfaces.IBuildRequestControl)
+     else:
+         __implements__ = interfaces.IBuildRequestControl,
+ 
+-    def __init__(self, reason, source, builderName=None):
++    def __init__(self, reason, source, builderName=None, custom_props=None):
+         # TODO: remove the =None on builderName, it is there so I don't have
+         # to change a lot of tests that create BuildRequest objects
+         assert interfaces.ISourceStamp(source, None)
+         self.reason = reason
+         self.source = source
++        self.custom_props = custom_props
+         self.start_watchers = []
+         self.finish_watchers = []
+         self.status = BuildRequestStatus(source, builderName)
+@@ -87,6 +92,9 @@
+         self.finish_watchers.append(d)
+         return d
+ 
++    def customProps(self):
++        return self.custom_props
++
+     # these are called by the Builder
+ 
+     def requestSubmitted(self, builder):
+@@ -175,6 +183,9 @@
+         self.source = requests[0].mergeWith(requests[1:])
+         self.reason = requests[0].mergeReasons(requests[1:])
+ 
++        # Set custom properties.
++        self.custom_properties = requests[0].customProps()
++
+         #self.abandoned = False
+ 
+         self.progress = None
+@@ -202,8 +213,10 @@
+         self.build_status.setProperty(propname, value)
+ 
+     def getProperty(self, propname):
+-        return self.build_status.properties[propname]
+-
++        if self.build_status.properties.has_key(propname):
++            return self.build_status.properties[propname]
++        else:
++            return None
+ 
+     def allChanges(self):
+         return self.source.changes
+@@ -267,8 +280,13 @@
+         self.build_status = build_status
+         self.setProperty("buildername", self.builder.name)
+         self.setProperty("buildnumber", self.build_status.number)
++        self.setProperty("username", self.source.username)
+         self.setProperty("branch", self.source.branch)
+         self.setProperty("revision", self.source.revision)
++        cp = self.custom_properties
++        if cp:
++            for key,userProp in cp.iteritems():
++                self.setProperty(key,userProp)
+ 
+     def setupSlaveBuilder(self, slavebuilder):
+         self.slavebuilder = slavebuilder
+diff -ru buildbot-0.7.5-orig/buildbot/sourcestamp.py buildbot-0.7.5/buildbot/sourcestamp.py
+--- buildbot-0.7.5-orig/buildbot/sourcestamp.py	2006-12-10 21:40:11.000000000 -0800
++++ buildbot-0.7.5/buildbot/sourcestamp.py	2007-08-27 22:01:40.000000000 -0700
+@@ -32,8 +32,9 @@
+     else:
+         __implements__ = interfaces.ISourceStamp,
+ 
+-    def __init__(self, branch=None, revision=None, patch=None,
+-                 changes=None):
++    def __init__(self, branch=None, revision=None,
++                 patch=None, changes=None, username=None):
++        self.username = username
+         self.branch = branch
+         self.revision = revision
+         self.patch = patch
+@@ -77,7 +78,8 @@
+         for req in others:
+             assert self.canBeMergedWith(req) # should have been checked already
+             changes.extend(req.changes)
+-        newsource = SourceStamp(branch=self.branch,
++        newsource = SourceStamp(username=self.username,
++                                branch=self.branch,
+                                 revision=self.revision,
+                                 patch=self.patch,
+                                 changes=changes)
+diff -ru buildbot-0.7.5-orig/buildbot/status/builder.py buildbot-0.7.5/buildbot/status/builder.py
+--- buildbot-0.7.5-orig/buildbot/status/builder.py	2006-12-10 21:40:11.000000000 -0800
++++ buildbot-0.7.5/buildbot/status/builder.py	2007-08-27 22:01:40.000000000 -0700
+@@ -1786,6 +1786,8 @@
+         return self.botmaster.parent.projectURL
+     def getBuildbotURL(self):
+         return self.botmaster.parent.buildbotURL
++    def getCustomBuildProperties(self):
++        return self.botmaster.parent.customBuildProperties
+ 
+     def getURLForThing(self, thing):
+         prefix = self.getBuildbotURL()
+diff -ru buildbot-0.7.5-orig/buildbot/status/html.py buildbot-0.7.5/buildbot/status/html.py
+--- buildbot-0.7.5-orig/buildbot/status/html.py	2006-12-10 21:40:11.000000000 -0800
++++ buildbot-0.7.5/buildbot/status/html.py	2007-08-27 22:01:40.000000000 -0700
+@@ -3,6 +3,7 @@
+ from __future__ import generators
+ 
+ from twisted.python import log, components
++from twisted.python.util import sibpath
+ import urllib, re
+ 
+ from twisted.internet import defer, reactor
+@@ -538,6 +539,7 @@
+                            "<input type='text' name='branch' />")
+                 + make_row("Revision to build:",
+                            "<input type='text' name='revision' />")
++                + self.make_user_defined_rows()
+                 + """
+                 <input type='submit' value='Force Build' />
+                 </form>
+@@ -560,12 +562,46 @@
+ 
+         return data
+ 
++    # Providing the users custom properties are set in the master.cfg file 
++    # this method will generate custom widgets (text fields, radio buttons and
++    # check boxes) for the slave build page. The method returns a html string 
++    # representing the widgets. This string is added to the body of the slave 
++    # build page.
++    def make_user_defined_rows(self):
++        userDefRows = name = type = label = value = ""
++        customBuildProperties = self.status.getCustomBuildProperties()
++        if customBuildProperties:
++            for property in customBuildProperties:
++                name = property['propertyName']
++                type = property['propertyType']
++                label = property['propertyLabel']
++                if type == 'radio':
++                    value = properties['groupValue']
++                    field = "<input type=" + "\'" + type + "\'" + "name=" + "\'" + \
++                            name + "\'" + "value=" + "\'" + value + "\'" + " />"
++                else:
++                    field = "<input type=" + "\'" + type + "\'" +  \
++                                "name=" + "\'" + name + "\'" + " />"
++
++                userDefRows += make_row(label, field)
++
++        return userDefRows
++
+     def force(self, request):
+         name = request.args.get("username", ["<unknown>"])[0]
+         reason = request.args.get("comments", ["<no reason specified>"])[0]
+         branch = request.args.get("branch", [""])[0]
+         revision = request.args.get("revision", [""])[0]
+ 
++        # Custom properties.
++        custom_props = {}
++        forceBuildProperties = self.status.getCustomBuildProperties()
++        if forceBuildProperties:
++            for dict in forceBuildProperties:
++                for key, value in dict.iteritems():
++                   if key == 'propertyName':
++                       custom_props[value] = request.args.get(value, [""])[0]
++
+         r = "The web-page 'force build' button was pressed by '%s': %s\n" \
+             % (name, reason)
+         log.msg("web forcebuild of builder '%s', branch='%s', revision='%s'"
+@@ -592,8 +628,8 @@
+         # TODO: if we can authenticate that a particular User pushed the
+         # button, use their name instead of None, so they'll be informed of
+         # the results.
+-        s = SourceStamp(branch=branch, revision=revision)
+-        req = BuildRequest(r, s, self.builder.getName())
++        s = SourceStamp(username=name, branch=branch, revision=revision)
++        req = BuildRequest(r, s, self.builder.getName(), custom_props)
+         try:
+             self.control.requestBuildSoon(req)
+         except interfaces.NoSlaveError:
+diff -ru buildbot-0.7.5-orig/buildbot/steps/shell.py buildbot-0.7.5/buildbot/steps/shell.py
+--- buildbot-0.7.5-orig/buildbot/steps/shell.py	2006-12-10 21:40:12.000000000 -0800
++++ buildbot-0.7.5/buildbot/steps/shell.py	2007-08-27 22:01:40.000000000 -0700
+@@ -22,16 +22,19 @@
+ 
+     compare_attrs = ('fmtstring', 'args')
+ 
+-    def __init__(self, fmtstring, *args):
++    def __init__(self, fmtstring, *args, **kwargs):
+         self.fmtstring = fmtstring
+         self.args = args
++        self.kwargs = kwargs
+ 
+     def render(self, build):
+         if self.args:
+             strings = []
+             for name in self.args:
+                 p = build.getProperty(name)
+-                if p is None:
++                if p is None and self.kwargs.has_key(name):
++                    p = self.kwargs[name]
++                elif p is None:
+                     p = ""
+                 strings.append(p)
+             s = self.fmtstring % tuple(strings)
