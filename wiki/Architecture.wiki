@@ -30,4 +30,4 @@ This is interface is used by the slave for command/control as well as status rep
 
 The twistd spread (an object broker) interface is used by buildbot to proxy build commands/status back and forth.  
 
-The reporter application receives XML "results" from the client which it uses as data sources for reports.
+The reporter application receives XML "results" from the slave which it uses as data sources for reports.
