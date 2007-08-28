@@ -1,4 +1,4 @@
-#FIXME: add validations!!
+#FIXME: better validations
 
 class Selector < ActiveRecord::Base
   serialize :column_values, Array
@@ -7,6 +7,10 @@ class Selector < ActiveRecord::Base
   serialize :group, Array
   
   validates_presence_of :limit
+
+  validates_each :column_values, :dynamic_columns, :order, :group do |rec, attr, value|
+    rec.errors.add(attr, "is not an Array") unless value.is_a? Array
+  end
 
   # a discussion of meanings of values of attributes follows
   #
@@ -72,6 +76,8 @@ class Selector < ActiveRecord::Base
     end
     find << ")"
     a= Array.new
+    # could use eval in data indexing to support non-scaler data.  
+    # eg key[subkey] or something
     eval(find).collect{|r| r.data[key]}
   end
 
