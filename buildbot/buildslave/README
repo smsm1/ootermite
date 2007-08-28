@@ -1,0 +1,4 @@
+scripts				scripts needed for a build slave, 
+				these may need to be customised to the 
+				specific buildslave environment.
+OO-changes.diff			hacks to buildbot for slave-side CWS.
