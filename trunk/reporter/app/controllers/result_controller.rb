@@ -1,9 +1,25 @@
 class ResultController < ApplicationController
 
   # only create is valid
-  # FIXME: we need to catch ActiveRecord::SerializationTypeMismatch
-  # and do the right thing
   def create
+    #keys:
+    # pws
+    # cws
+    # builder
+    # host
+    # build_number
+
+    # data_type
+    # data
+#    data_item_hash= {
+#;2#B      :data => params[:result][:data]
+#      :data_type => params[:result][:data_type]
+#    }
+#    params[:result].delete :data
+#    params[:result].delete :data_type
+#    build= Build.find_by_builder_and_build_number(params[:result][:builder], params[:result][
+#    ##
+#
     @result= Result.new(params[:result])
     if @result.save
       head :created
