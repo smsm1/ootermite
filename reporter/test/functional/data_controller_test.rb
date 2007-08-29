@@ -24,11 +24,42 @@ class DataControllerTest < Test::Unit::TestCase
     assert_response :method_not_allowed
   end
 
-  def test_sub_hashes
+  def test_require_sub_hashes
     post :create, :data => {}
     assert_response :ok
     assert_tag :tag => 'error', :content => "build cannot be null"
     assert_tag :tag => 'error', :content => "data_item cannot be null"
+  end
+
+  def test_barf_on_build_problem
+    post :create, :data => {
+      :build => {
+        :pws => 'pws1',
+        :cws => 'cws1',
+        :host => 'host1',
+        :build_number => 1},
+      :data_item => {
+        :data_type => 'type1',
+        :data => { 'value' => 1 }
+      }
+    }
+    assert_response :ok
+    assert_tag :tag => 'error', :content => "Builder can't be blank"
+  end
+
+  def test_barf_on_data_item_problem
+    post :create, :data => {
+      :build => {
+        :pws => 'pws1',
+        :cws => 'cws1',
+        :host => 'host1',
+        :builder => 'builder1',
+        :build_number => 1},
+      :data_item => {
+        :data => { 'value' => 1 }
+      }}
+    assert_response :ok
+    assert_tag :tag => 'error', :content => "Data type can't be blank"
   end
 
   def test_create_correct_parts
