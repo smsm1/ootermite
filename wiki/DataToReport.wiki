@@ -5,7 +5,11 @@
 
 There are a number of metrics about builds that can be stored and used to compare different milestones and child workspaces (CWS). This page is to detail all the metrics that will be stored and shown.
 
+As there is 2 build dirs: source and build. The real build work is done on the build dir, thus the stats can be run on the source dir once the build has started.
+
 = Details =
+
+The different types of metrics are listed below
 
 ==Size of source==
 This metric will show how the size of the source code changes over time.
@@ -17,3 +21,18 @@ du -h
 
 ===Reports this metric is used in===
 This metric is used in the following reports:
+
+
+==Number of files in source==
+
+===How to collect===
+{{{
+find -name *  | wc -l
+}}}
+
+==Number of lines in the source--
+
+===How to collect===
+{{{
+find -name * -exec cat {} \; | wc -l
+}}}
