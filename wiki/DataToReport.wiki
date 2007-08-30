@@ -39,6 +39,9 @@ find -name *  | wc -l
 sloccount * |grep "Total Physical Source Lines of Code (SLOC)" | cut -d= -f2
 }}}
 
+== Cut and Pasted Lines ==
+This measures incidences of cut and pasted lines.  This is collected with pmd (pmd.sf.net).
+
 =Metrics about the completion of each build=
 These metrics can only be sent after each build or module is complete.
 ==Time to complete full build==
