@@ -32,11 +32,11 @@ This metric is used in the following reports:
 find -name *  | wc -l
 }}}
 
-==Number of lines in the source==
+== Number of Source Lines of Code  ==
 
 ===How to collect===
 {{{
-find -name * -exec cat {} \; | wc -l
+sloccount * |grep "Total Physical Source Lines of Code (SLOC)" | cut -d= -f2
 }}}
 
 =Metrics about the completion of each build=
