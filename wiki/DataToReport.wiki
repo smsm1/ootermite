@@ -1,0 +1,19 @@
+#summary This page explains all the types of data to be collected about the builds, how they are to be collected and sent.
+#labels Phase-Design
+
+= Introduction =
+
+There are a number of metrics about builds that can be stored and used to compare different milestones and child workspaces (CWS). This page is to detail all the metrics that will be stored and shown.
+
+= Details =
+
+==Size of source==
+This metric will show how the size of the source code changes over time.
+
+===How to collect===
+{{{
+du -h
+}}}
+
+===Reports this metric is used in===
+This metric is used in the following reports:
