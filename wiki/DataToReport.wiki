@@ -46,3 +46,10 @@ These metrics can only be sent after each build or module is complete.
 ==Time to complete the build of each module==
 
 ==The number of error and/or warnings==
+= Runtime Metrics =
+These are more difficult to do
+== Start Time ==
+== Cold-Start Time ==
+Note, must be repeated and averaged (takes about 24 hours).  Probably takes two machines.
+== Profile ==
+Over some activity, such as loading a set of documents
