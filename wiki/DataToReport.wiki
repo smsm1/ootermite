@@ -11,6 +11,8 @@ As there is 2 build dirs: source and build. The real build work is done on the b
 
 The different types of metrics are listed below
 
+=Source type metrics=
+
 ==Size of source==
 This metric will show how the size of the source code changes over time.
 
@@ -30,9 +32,17 @@ This metric is used in the following reports:
 find -name *  | wc -l
 }}}
 
-==Number of lines in the source--
+==Number of lines in the source==
 
 ===How to collect===
 {{{
 find -name * -exec cat {} \; | wc -l
 }}}
+
+=Metrics about the completion of each build=
+These metrics can only be sent after each build or module is complete.
+==Time to complete full build==
+
+==Time to complete the build of each module==
+
+==The number of error and/or warnings==
