@@ -1,5 +1,12 @@
-#FIXME: better validations
-
+# Achtung!
+#  selector will be remade with query_critera
+#  the new hotness will allow easy serialization
+#  of finders
+#  what remains is only the flag what is dynamic
+#  and encode that
+#
+#  steal serialization tricks from sessionstore activerecord
+#
 class Selector < ActiveRecord::Base
   serialize :column_values, Array
   serialize :dynamic_columns, Array
