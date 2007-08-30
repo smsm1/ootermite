@@ -1,5 +1,5 @@
 #labels Phase-Design
-#a short discussion of the CPD metric
+#summary a short discussion of the CPD metric
 
 CPD stands for copy and paste detector.  It is part of the PMD tools from pmd.sf.net.  I finds instances of copy and pasted code in your codebase.  This is a useful quality metric.
 
