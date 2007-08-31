@@ -1,5 +1,10 @@
 #!/usr/bin/env perl
 
+# FIXME:
+#   this is all half-finished
+#   
+#
+
 use warnings;
 use strict;
 use LWP::Simple;
@@ -10,6 +15,8 @@ use Data::Dumper;
 use DB_File;
 use File::Copy::Recursive qw(rcopy);
 use File::Path;
+use Config::Auto;
+use Log::LogLite;
 
 ############################ Globals
 my $DEBUG= 0;
@@ -25,6 +32,7 @@ sub grab_tag_list();
 sub cache_get($);
 sub is_milestone($);
 sub latest_milestone();
+sub merge_defaults($$);
 
 ############################ Subs			  
 sub run
@@ -176,6 +184,17 @@ sub is_milestone($)
     return 0;
 }
 
+sub merge_defaults($$)
+{
+    my $defaults= shift;
+    my $config= shift;
+    
+    while ((my $key, my $value) = each %$defaults)
+    {
+	$config->{$key} = $value unless exists $config->{$key};
+    }
+}
+
 ##################  Main
 
 my $help_option;
@@ -204,6 +223,21 @@ if ($help_option)
     print STDERR "\"$0\"  get latest SRC680 milestone\n\n\n";
     exit 1;
 }
+
+my %defaults= ( 
+		'cache_size' => 4,
+		'cvs_root' => ':pserver:anoncvs@anoncvs.services.openoffice.org:/cvs',
+		'cvs_options' => "-z6",
+		'log_file' => 'newget.log',
+		'log_level' => 5
+		);
+my $config= Config::Auto::parse("newget.config", format => 'equal');
+print Dumper($config);
+merge_defaults(\%defaults, $config);
+print Dumper($config);
+my $log = new Log::LogLite($config->{'log_file'}, $config->{'log_level'});
+$log->write("blah blah blah", 5);
+die "here";
 
 grab_cws_or_milestone($branch);
 exit 0;
