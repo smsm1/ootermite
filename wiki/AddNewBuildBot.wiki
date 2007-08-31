@@ -1,0 +1,6 @@
+#summary How to add a new bot
+= Introduction =
+
+There is a number of things that you need to do to add a new build slave.
+
+= Details =
