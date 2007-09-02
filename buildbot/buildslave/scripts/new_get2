@@ -12,6 +12,9 @@ use File::Path;
 use Config::Auto;
 use Log::LogLite; #think I want to replace
 
+#FIXME FIXME FIXME
+my $DEBUG= 0;
+
 ############################ Prototypes
 sub merge_defaults($$);     #works
 sub milestone_in_cache($$); #works
@@ -19,6 +22,13 @@ sub ensure_cache_dir($);    #works
 sub cache_full($);          #works
 sub cache_touch($$);        #works
 sub cache_evict($);         #works
+sub cache_add($$);
+sub run;                    #needs improvements
+sub interpret_branch($$);
+sub is_milestone($);        #works (copied)
+sub latest_milestone();     #works (copied)
+sub grab_tag_list();        #works (copied)
+
 
 ############################ Subs			  
 sub merge_defaults($$)
@@ -107,6 +117,103 @@ sub cache_evict($)
     unlink $dir . $evictee;
 }
 
+sub cache_add_from_checkout($$)
+{
+    my $config= shift;
+    my $milestone= shift;
+
+    my $cwd = &Cwd::cwd();
+    my $tempdir = tempdir ( $milestone . "-XXXX", DIR => $cwd, CLEANUP => 1);
+    chdir($tempdir);
+    run('cvs', '-d', $config->{'cvs_root'}, 
+	$config->{'cvs_options'}, 'co', '-r', $milestone, 'OpenOffice2');
+    my @files= glob '*';
+    run('tar', 'cjvf', $config->{'cache_dir'} . "$milestone.tar.bz2", @files);
+    chdir $cwd;
+}
+
+sub run
+{
+    if ($DEBUG)
+    {
+	print "system(\"" . join ('", "', @_) . "\");\n";
+    }
+    else
+    {
+	die "can't run $_[0]!!\n" unless !system(@_);
+    }
+}
+
+sub interpret_branch($$)
+{
+    my $name= shift;
+    my $cws_list= shift;
+    my $milestone;
+    my $cws= "none"; #special case
+
+    if ($name eq 'HEAD' || $name eq '')
+    {
+	$milestone= latest_milestone();
+    }
+    elsif(is_milestone($name))
+    {
+	$milestone= $name;
+    }
+    else
+    {
+	die "cws not found!!\n" unless $cws_list->{$name};
+	$cws= $name;
+	$milestone= $cws_list->{$name}->{'base'};
+    }
+    return ($milestone, $cws);
+}
+
+sub grab_tag_list()
+{
+    my $url= 'http://go-oo.org/tinderbox/tags/tag-list';
+        
+    my $response = get($url) || die "Couldn't get $url\n";
+    my %h;
+    foreach(split /\n/, $response)
+    {
+	unless (/\#.*/)
+	{
+	    (my $name, my $base, my $tag, my $dirs) = split / : /, $_;
+	    
+	    $h{$name}= 
+	    {
+		'base' => $base,
+		'tag'  => $tag,
+		'dirs' => [split / /, $dirs]
+		};
+	}
+    }
+    return \%h;
+}
+
+sub latest_milestone()
+{
+    my $url = 'http://go-oo.org/tinderbox/tags/tag-latest-master-list';
+    
+    my $response = get($url) || die "Couldn't get $url\n";
+    foreach(split /\n/, $response)
+    {
+	unless (/\#.*/)
+	{
+	    (my $name, my $base, my $tag, my $dirs) = split / : /, $_;
+	    return $name;
+	}
+    }
+    die "couldn't find latest milestone!\n";
+}
+
+sub is_milestone($)
+{
+    my $name= shift;
+    return 1 if ($name =~ /\w+680_m\d+/);
+    return 0;
+}
+
 ##################  Main
 
 my $help_option;
@@ -136,17 +243,30 @@ my %defaults= (
 		'cache_dir' => &Cwd::cwd() . '/tarballs/'
 		);
 my $config= Config::Auto::parse("newget.config", format => 'equal');
+my $cws_list= grab_tag_list;
 merge_defaults(\%defaults, $config);
 print Dumper($config);
 ensure_cache_dir($config);
+(my $milestone, my $cws)= interpret_branch($branch, $cws_list);
+print "milestone= $milestone\n";
+print "cws= $cws\n";
 
 
 # more or less pseudocode
 # milestone, cws= interpret_name()
-# unless cache_has(milestone)
+# if cache_has(milestone)
+#   touch(milestone)
+# else
 #   cache_evict if cache_full
-#   more..more..
+#   if download_from_go
+#     download
+#     transform
+#   else
+#   ... find nearest and update if can ...
+#   tar-up
 # end
-# 
-#
+# unpack(milestone)
+# if cws
+#   update_to(cws)
+# end
 #
