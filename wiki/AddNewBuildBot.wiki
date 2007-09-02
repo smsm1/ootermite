@@ -6,30 +6,32 @@ There is a number of things that you need to do to add a new build slave.
 
 You will need the following prerequisites:
 
-* a working build environment for OpenOffice.org. Please make sure that you have already managed to build OpenOffice.org on the machine that you want to put the bot on.
-* python 2.4 or later
-* twisted 2.4 or later
-* perl
-* bash
-* svn (for the buildbot scripts)
-* cvs (for OpenOffice.org source)
+  * a working build environment for OpenOffice.org. Please make sure that you have already managed to build OpenOffice.org on the machine that you want to put the bot on.
+  * python 2.4 or later
+  * twisted 2.4 or later
+  * perl
+  * bash
+  * subversion (for the buildbot scripts)
+  * cvs (for OpenOffice.org source)
 
 = Details =
 
-# Grab a copy of buildbot 0.7.5 [https://sourceforge.net/project/showfiles.php?group_id=73177 source]
-# unpack the source
-# build the buildbot [http://buildbot.net/repos/release/docs/buildbot.html#Installing-the-code the buildbot manual]
-# create the build-slave
+  # Grab a copy of buildbot 0.7.5 [https://sourceforge.net/project/showfiles.php?group_id=73177 source]
+  # unpack the source
+  # build the buildbot [http://buildbot.net/repos/release/docs/buildbot.html#Installing-the-code the buildbot manual]
+  # create the build-slave
 {{{
-buildbot create-slave BASEDIR termite.go-oo.org:9999 SLAVENAME PASSWORD
+./buildbot create-slave BASEDIR termite.go-oo.org:9999 SLAVENAME PASSWORD
 }}}
-# Grab the scripts from svn directly in to the BASEDIR
+  # Grab the scripts from svn directly in to the BASEDIR
 {{{
 svn checkout http://ootermite.googlecode.com/svn/trunk/buildbot/buildslave/scripts/ ootermite
 }}}
-# Customise the scripts for your platform
-# Email mikeleib or shaunmcdonald to add your bot to the master
-# Start your bot
+  # Customise the scripts for your platform
+  # Email mikeleib or shaunmcdonald to add your bot to the master
+  # Start your bot
 {{{
 ./buildbot start BASEDIR
 }}}
+
+
