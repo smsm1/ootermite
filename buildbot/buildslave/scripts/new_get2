@@ -1,0 +1,152 @@
+#!/usr/bin/env perl
+
+use warnings;
+use strict;
+use LWP::Simple;
+use Getopt::Long;
+use File::Temp qw/ tempfile tempdir /;
+use Cwd;
+use Data::Dumper;
+use File::Copy::Recursive qw(rcopy);
+use File::Path;
+use Config::Auto;
+use Log::LogLite; #think I want to replace
+
+############################ Prototypes
+sub merge_defaults($$);     #works
+sub milestone_in_cache($$); #works
+sub ensure_cache_dir($);    #works
+sub cache_full($);          #works
+sub cache_touch($$);        #works
+sub cache_evict($);         #works
+
+############################ Subs			  
+sub merge_defaults($$)
+{
+    my $defaults= shift;
+    my $config= shift;
+    
+    while ((my $key, my $value) = each %$defaults)
+    {
+	$config->{$key} = $value unless exists $config->{$key};
+    }
+}
+
+sub milestone_in_cache($$)
+{
+    my $config= shift;
+    my $milestone= shift;
+    my $dir= $config->{'cache_dir'};
+
+    opendir(DIR, $dir) || die "can't opendir $dir: $!";
+    my @entries= readdir(DIR);
+    closedir(DIR);
+    foreach (@entries)
+    {
+	if (/$milestone\.tar\.bz2/)
+	{
+	    return 1;
+	}
+    }
+    return 0;
+}
+
+sub ensure_cache_dir($)
+{
+    my $config= shift;
+    unless (-d $config->{'cache_dir'})
+    {
+	mkdir $config->{'cache_dir'};
+    }
+}
+
+sub cache_full($)
+{
+    my $config= shift;
+    my $dir= $config->{'cache_dir'};
+    my $max_size= $config->{'cache_size'};
+    my $size= 0;
+    opendir(DIR, $dir) || die "can't opendir $dir: $!";
+    my @entries= readdir(DIR);
+    closedir(DIR);
+    foreach (@entries)
+    {
+	$size++ if (/\.tar\.bz2/);
+    }
+    return 0 if $size < $max_size;
+    return 1;
+}
+
+sub cache_touch($$)
+{
+    my $config= shift;
+    my $milestone= shift;
+    my $filename= $config->{'cache_dir'} . "$milestone.tar.bz2";
+    die "can't write to: $filename!!" unless -w $filename;
+    system("touch", $filename);
+}
+
+sub cache_evict($)
+{
+    my $config= shift;
+    my $dir= $config->{'cache_dir'};
+    opendir(DIR, $dir) || die "can't opendir $dir: $!";
+    my @entries= readdir(DIR);
+    closedir(DIR);
+    my %meta;
+    foreach my $file (@entries)
+    {
+	if ($file =~ /\.tar\.bz2/)
+	{
+	    my @stat_values= stat $dir . $file;
+	    $meta{$file}= $stat_values[9];
+	}
+    }
+    print Dumper(\%meta);
+    my $evictee = (sort { $meta{$a} <=> $meta{$b} } keys %meta)[0];
+    unlink $dir . $evictee;
+}
+
+##################  Main
+
+my $help_option;
+my $branch= '';
+GetOptions('help'        => \$help_option,
+	   'branch:s'    => \$branch);
+
+if ($help_option)
+{
+    print STDERR "Usage:\n";
+    print STDERR "\t$0 [--branch=<branch>]\n";
+    print STDERR "\twhere <branch> is a cws name or milestone name\n";
+    print STDERR "Examples:\n";
+    print STDERR "\"$0 --branch=SRC680_m212\"  get SRC680 milestone 212\n";
+    print STDERR "\"$0 --branch=swwarnings\"  get swwarnings cws\n";
+    print STDERR "\"$0 --branch=HEAD\"  get latest SRC680 milestone\n";
+    print STDERR "\"$0\"  get latest SRC680 milestone\n\n\n";
+    exit 1;
+}
+
+my %defaults= ( 
+		'cache_size' => 4,
+		'cvs_root' => ':pserver:anoncvs@anoncvs.services.openoffice.org:/cvs',
+		'cvs_options' => "-z6",
+		'log_file' => 'newget.log',
+		'log_level' => 5,
+		'cache_dir' => &Cwd::cwd() . '/tarballs/'
+		);
+my $config= Config::Auto::parse("newget.config", format => 'equal');
+merge_defaults(\%defaults, $config);
+print Dumper($config);
+ensure_cache_dir($config);
+
+
+# more or less pseudocode
+# milestone, cws= interpret_name()
+# unless cache_has(milestone)
+#   cache_evict if cache_full
+#   more..more..
+# end
+# 
+#
+#
