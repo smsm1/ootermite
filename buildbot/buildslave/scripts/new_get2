@@ -12,23 +12,30 @@ use File::Path;
 use Config::Auto;
 use Log::LogLite; #think I want to replace
 
+#FIXME:
+# logging
+# change to global usage of config
+# buildable external test
+
 #FIXME FIXME FIXME
 my $DEBUG= 0;
 
 ############################ Prototypes
 sub merge_defaults($$);     #works
-sub milestone_in_cache($$); #works
+sub milestone_in_cache($$); #works <- rename me
 sub ensure_cache_dir($);    #works
-sub cache_full($);          #works
 sub cache_touch($$);        #works
 sub cache_evict($);         #works
-sub cache_add($$);
+sub cache_add_from_checkout($$);
 sub run;                    #needs improvements
 sub interpret_branch($$);
 sub is_milestone($);        #works (copied)
-sub latest_milestone();     #works (copied)
+sub latest_milestone($);    
 sub grab_tag_list();        #works (copied)
-
+sub update_to($$$);
+sub ensure_workdir();        #works
+sub untar_milestone($$);  
+sub download_from_go_oo($$); #works
 
 ############################ Subs			  
 sub merge_defaults($$)
@@ -70,23 +77,6 @@ sub ensure_cache_dir($)
     }
 }
 
-sub cache_full($)
-{
-    my $config= shift;
-    my $dir= $config->{'cache_dir'};
-    my $max_size= $config->{'cache_size'};
-    my $size= 0;
-    opendir(DIR, $dir) || die "can't opendir $dir: $!";
-    my @entries= readdir(DIR);
-    closedir(DIR);
-    foreach (@entries)
-    {
-	$size++ if (/\.tar\.bz2/);
-    }
-    return 0 if $size < $max_size;
-    return 1;
-}
-
 sub cache_touch($$)
 {
     my $config= shift;
@@ -113,8 +103,11 @@ sub cache_evict($)
 	}
     }
     print Dumper(\%meta);
-    my $evictee = (sort { $meta{$a} <=> $meta{$b} } keys %meta)[0];
-    unlink $dir . $evictee;
+    if ((keys %meta) == $config->{'cache_size'})
+    {
+	my $evictee = (sort { $meta{$a} <=> $meta{$b} } keys %meta)[0];
+	unlink $dir . $evictee;
+    }
 }
 
 sub cache_add_from_checkout($$)
@@ -123,8 +116,7 @@ sub cache_add_from_checkout($$)
     my $milestone= shift;
 
     my $cwd = &Cwd::cwd();
-    my $tempdir = tempdir ( $milestone . "-XXXX", DIR => $cwd, CLEANUP => 1);
-    chdir($tempdir);
+    chdir('workdir');
     run('cvs', '-d', $config->{'cvs_root'}, 
 	$config->{'cvs_options'}, 'co', '-r', $milestone, 'OpenOffice2');
     my @files= glob '*';
@@ -153,7 +145,7 @@ sub interpret_branch($$)
 
     if ($name eq 'HEAD' || $name eq '')
     {
-	$milestone= latest_milestone();
+	$milestone= latest_milestone('SRC680');
     }
     elsif(is_milestone($name))
     {
@@ -191,8 +183,9 @@ sub grab_tag_list()
     return \%h;
 }
 
-sub latest_milestone()
+sub latest_milestone($)
 {
+    my $master= shift;
     my $url = 'http://go-oo.org/tinderbox/tags/tag-latest-master-list';
     
     my $response = get($url) || die "Couldn't get $url\n";
@@ -201,7 +194,7 @@ sub latest_milestone()
 	unless (/\#.*/)
 	{
 	    (my $name, my $base, my $tag, my $dirs) = split / : /, $_;
-	    return $name;
+	    return $name if $name =~ /$master/;
 	}
     }
     die "couldn't find latest milestone!\n";
@@ -213,6 +206,81 @@ sub is_milestone($)
     return 1 if ($name =~ /\w+680_m\d+/);
     return 0;
 }
+
+sub update_to($$$)
+{
+    my $config= shift;
+    my $cws_list= shift;
+    my $name= shift;
+    my $cwd = &Cwd::cwd();
+    my $cws_tag= $cws_list->{$name}->{'tag'};
+    chdir 'workdir';
+    foreach (@{$cws_list->{$name}->{'dirs'}})
+    {
+	run('cvs', "-d", $config->{'cvs_root'}, $config->{'cvs_options'}, 'co', "-Pr", "$cws_tag", "$_");
+    }
+    chdir $cwd;
+}
+
+sub ensure_workdir()
+{
+    rmtree 'workdir' if -d 'workdir';
+    mkdir 'workdir';
+}
+
+sub untar_milestone($$)
+{
+    my $config= shift;
+    my $milestone= shift;
+
+    my $filename= $config->{'cache_dir'} . $milestone . ".tar.bz2";
+    
+    my $cwd = &Cwd::cwd();		
+    die "can't find tarball!" unless -f $filename;
+    chdir 'workdir';
+    run('tar', 'xjf', $filename);
+    chdir $cwd;
+}
+
+sub download_from_go_oo($$)
+{
+    my $config= shift;
+    my $milestone= shift;
+    (my $master, my $number)= split /_/, $milestone;
+    my $base_url= "http://go-oo.org/packages/$master/";
+    my $base_file= lc $master . "-$number";
+    my @files=("binfilter.tar.bz2",
+	       "core.tar.bz2",
+	       "lang.tar.bz2",
+	       "sdk_oo.tar.bz2",
+	       "system.tar.bz2");
+    my $cwd = &Cwd::cwd();
+    my $tempdir = tempdir ( $milestone . "-XXXX", DIR => $cwd, CLEANUP => 1);
+    chdir($tempdir);
+    foreach my $file (@files)
+    {
+	print "getting $base_url$base_file-$file\n";
+	unless (is_success(getstore("$base_url$base_file-$file", $file)))
+	{
+	    chdir $cwd;
+	    return 0;
+	}
+    }
+    foreach my $file (@files)
+    {
+	chdir $cwd;
+	chdir 'workdir';
+	run('tar', 'xjf', "$tempdir/$file");
+    }
+    my @dirs= glob "$base_file/*";
+    foreach my $dir (@dirs) { run("mv", $dir, ".") }
+    rmtree "$base_file";
+    @dirs= glob '*';
+    run('tar', 'cjf', $config->{'cache_dir'} . "$milestone.tar.bz2", @dirs);
+    chdir $cwd;
+    return 1;
+}
+
 
 ##################  Main
 
@@ -242,31 +310,30 @@ my %defaults= (
 		'log_level' => 5,
 		'cache_dir' => &Cwd::cwd() . '/tarballs/'
 		);
+
 my $config= Config::Auto::parse("newget.config", format => 'equal');
 my $cws_list= grab_tag_list;
 merge_defaults(\%defaults, $config);
 print Dumper($config);
 ensure_cache_dir($config);
 (my $milestone, my $cws)= interpret_branch($branch, $cws_list);
+
 print "milestone= $milestone\n";
 print "cws= $cws\n";
 
+ensure_workdir();
+if (milestone_in_cache($config, $milestone))
+{
+    cache_touch($config, $milestone);
+    untar($config, $milestone);
+}
+else
+{
+    cache_evict($config);
+    unless (download_from_go_oo($config, $milestone))
+    {
+	cache_add_from_checkout($config, $milestone);
+    } 
+}
+update_to($config, $cws_list, $cws) if $cws ne "none";
 
-# more or less pseudocode
-# milestone, cws= interpret_name()
-# if cache_has(milestone)
-#   touch(milestone)
-# else
-#   cache_evict if cache_full
-#   if download_from_go
-#     download
-#     transform
-#   else
-#   ... find nearest and update if can ...
-#   tar-up
-# end
-# unpack(milestone)
-# if cws
-#   update_to(cws)
-# end
-#
