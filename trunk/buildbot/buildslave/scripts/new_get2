@@ -10,24 +10,28 @@ use Data::Dumper;
 use File::Copy::Recursive qw(rcopy);
 use File::Path;
 use Config::Auto;
-use Log::LogLite; #think I want to replace
 
 #FIXME:
-# logging
 # change to global usage of config
-# buildable external test
+# able to update form milestone in cache
+# remove dependency on File::Temp, File::Copy::Recursive
 
-#FIXME FIXME FIXME
-my $DEBUG= 0;
+############################ Constants
+my $DEBUG_LOG_LEVEL= 3;
+my $NORMAL_LOG_LEVEL= 2;
+my $QUIET_LOG_LEVEL= 0;
+
+############################ Globals
+my $log_level;
 
 ############################ Prototypes
 sub merge_defaults($$);     #works
-sub milestone_in_cache($$); #works <- rename me
+sub milestone_in_cache($$); #works 
 sub ensure_cache_dir($);    #works
 sub cache_touch($$);        #works
 sub cache_evict($);         #works
 sub cache_add_from_checkout($$);
-sub run;                    #needs improvements
+sub run;                    #works
 sub interpret_branch($$);
 sub is_milestone($);        #works (copied)
 sub latest_milestone($);    
@@ -36,6 +40,7 @@ sub update_to($$$);
 sub ensure_workdir();        #works
 sub untar_milestone($$);  
 sub download_from_go_oo($$); #works
+sub logger;                  #works
 
 ############################ Subs			  
 sub merge_defaults($$)
@@ -62,6 +67,7 @@ sub milestone_in_cache($$)
     {
 	if (/$milestone\.tar\.bz2/)
 	{
+	    logger "$milestone is a cache hit";
 	    return 1;
 	}
     }
@@ -102,10 +108,11 @@ sub cache_evict($)
 	    $meta{$file}= $stat_values[9];
 	}
     }
-    print Dumper(\%meta);
+    logger "Cache data: $(Dumper(\%meta))";
     if ((keys %meta) == $config->{'cache_size'})
     {
 	my $evictee = (sort { $meta{$a} <=> $meta{$b} } keys %meta)[0];
+	logger "evicting $evictee from cache";
 	unlink $dir . $evictee;
     }
 }
@@ -117,23 +124,20 @@ sub cache_add_from_checkout($$)
 
     my $cwd = &Cwd::cwd();
     chdir('workdir');
+    logger "grabbing $milestone from cvs";
     run('cvs', '-d', $config->{'cvs_root'}, 
 	$config->{'cvs_options'}, 'co', '-r', $milestone, 'OpenOffice2');
     my @files= glob '*';
+    logger "tarballing $milestone for cache...";
     run('tar', 'cjvf', $config->{'cache_dir'} . "$milestone.tar.bz2", @files);
+    logger "done!";
     chdir $cwd;
 }
 
 sub run
 {
-    if ($DEBUG)
-    {
-	print "system(\"" . join ('", "', @_) . "\");\n";
-    }
-    else
-    {
-	die "can't run $_[0]!!\n" unless !system(@_);
-    }
+    logger "system(\"" . join ('", "', @_) . "\");\n", $DEBUG_LOG_LEVEL;
+    die "can't run $_[0]!!\n" unless !system(@_);
 }
 
 sub interpret_branch($$)
@@ -214,18 +218,22 @@ sub update_to($$$)
     my $name= shift;
     my $cwd = &Cwd::cwd();
     my $cws_tag= $cws_list->{$name}->{'tag'};
+    logger "updating to $cws_tag...";
     chdir 'workdir';
     foreach (@{$cws_list->{$name}->{'dirs'}})
     {
 	run('cvs', "-d", $config->{'cvs_root'}, $config->{'cvs_options'}, 'co', "-Pr", "$cws_tag", "$_");
     }
+    logger "done!";
     chdir $cwd;
 }
 
 sub ensure_workdir()
 {
+    logger "removing workdir if exists ...";
     rmtree 'workdir' if -d 'workdir';
     mkdir 'workdir';
+    logger "done!";
 }
 
 sub untar_milestone($$)
@@ -256,6 +264,7 @@ sub download_from_go_oo($$)
 	       "system.tar.bz2");
     my $cwd = &Cwd::cwd();
     my $tempdir = tempdir ( $milestone . "-XXXX", DIR => $cwd, CLEANUP => 1);
+    logger "trying to find $milestone tarballs at go-oo...";
     chdir($tempdir);
     foreach my $file (@files)
     {
@@ -263,24 +272,48 @@ sub download_from_go_oo($$)
 	unless (is_success(getstore("$base_url$base_file-$file", $file)))
 	{
 	    chdir $cwd;
+	    logger "failing";
 	    return 0;
 	}
     }
+    logger "success!";
     foreach my $file (@files)
     {
 	chdir $cwd;
 	chdir 'workdir';
+	logger "unpacking $file ...";
 	run('tar', 'xjf', "$tempdir/$file");
+	logger "done!";
     }
     my @dirs= glob "$base_file/*";
     foreach my $dir (@dirs) { run("mv", $dir, ".") }
     rmtree "$base_file";
     @dirs= glob '*';
+    logger "packing $milestone for cache ...";
     run('tar', 'cjf', $config->{'cache_dir'} . "$milestone.tar.bz2", @dirs);
+    logger "done!";
     chdir $cwd;
     return 1;
 }
 
+sub logger
+{
+    my $msg= shift;
+    my $level = shift || $log_level;
+    
+    if ($level <= $log_level)
+    {
+	if ($msg eq "done!" and ($level < $DEBUG_LOG_LEVEL))
+	{
+	    print STDERR $msg . " (at " . time() . ")\n";
+	}
+	else
+	{
+	    print STDERR "[" . time() . "] - " . $msg;
+	    print STDERR "\n" unless ($msg=~/.*\.\.\.$/ && $log_level < $DEBUG_LOG_LEVEL);
+	}
+    }
+}
 
 ##################  Main
 
@@ -306,26 +339,26 @@ my %defaults= (
 		'cache_size' => 4,
 		'cvs_root' => ':pserver:anoncvs@anoncvs.services.openoffice.org:/cvs',
 		'cvs_options' => "-z6",
-		'log_file' => 'newget.log',
-		'log_level' => 5,
+		'log_level' => $NORMAL_LOG_LEVEL,
 		'cache_dir' => &Cwd::cwd() . '/tarballs/'
 		);
 
 my $config= Config::Auto::parse("newget.config", format => 'equal');
 my $cws_list= grab_tag_list;
 merge_defaults(\%defaults, $config);
-print Dumper($config);
+$log_level= $config->{'log_level'};
+logger "config_values: " . Dumper($config), $DEBUG_LOG_LEVEL;
 ensure_cache_dir($config);
 (my $milestone, my $cws)= interpret_branch($branch, $cws_list);
 
-print "milestone= $milestone\n";
-print "cws= $cws\n";
+logger "milestone= $milestone";
+logger "cws= $cws";
 
 ensure_workdir();
 if (milestone_in_cache($config, $milestone))
 {
     cache_touch($config, $milestone);
-    untar($config, $milestone);
+    untar_milestone($config, $milestone);
 }
 else
 {
@@ -336,4 +369,4 @@ else
     } 
 }
 update_to($config, $cws_list, $cws) if $cws ne "none";
-
+logger "finished"
