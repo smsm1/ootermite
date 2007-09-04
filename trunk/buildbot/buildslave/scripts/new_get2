@@ -22,7 +22,7 @@ my $NORMAL_LOG_LEVEL= 2;
 my $QUIET_LOG_LEVEL= 0;
 
 ############################ Globals
-my $log_level;
+my $log_level= $NORMAL_LOG_LEVEL;
 
 ############################ Prototypes
 sub merge_defaults($$);     #works
@@ -108,7 +108,7 @@ sub cache_evict($)
 	    $meta{$file}= $stat_values[9];
 	}
     }
-    logger "Cache data: $(Dumper(\%meta))";
+    logger "Cache data: " . Dumper(\%meta), $DEBUG_LOG_LEVEL;
     if ((keys %meta) == $config->{'cache_size'})
     {
 	my $evictee = (sort { $meta{$a} <=> $meta{$b} } keys %meta)[0];
@@ -129,7 +129,7 @@ sub cache_add_from_checkout($$)
 	$config->{'cvs_options'}, 'co', '-r', $milestone, 'OpenOffice2');
     my @files= glob '*';
     logger "tarballing $milestone for cache...";
-    run('tar', 'cjvf', $config->{'cache_dir'} . "$milestone.tar.bz2", @files);
+    run('tar', 'cjf', $config->{'cache_dir'} . "$milestone.tar.bz2", @files);
     logger "done!";
     chdir $cwd;
 }
@@ -268,13 +268,14 @@ sub download_from_go_oo($$)
     chdir($tempdir);
     foreach my $file (@files)
     {
-	print "getting $base_url$base_file-$file\n";
+	logger "getting $base_url$base_file-$file...";
 	unless (is_success(getstore("$base_url$base_file-$file", $file)))
 	{
 	    chdir $cwd;
 	    logger "failing";
 	    return 0;
 	}
+	logger "done!";
     }
     logger "success!";
     foreach my $file (@files)
@@ -342,8 +343,8 @@ my %defaults= (
 		'log_level' => $NORMAL_LOG_LEVEL,
 		'cache_dir' => &Cwd::cwd() . '/tarballs/'
 		);
-
-my $config= Config::Auto::parse("newget.config", format => 'equal');
+logger "$0 started";
+my $config= Config::Auto::parse("$0.config", format => 'equal');
 my $cws_list= grab_tag_list;
 merge_defaults(\%defaults, $config);
 $log_level= $config->{'log_level'};
