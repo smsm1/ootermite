@@ -35,5 +35,4 @@ svn checkout http://ootermite.googlecode.com/svn/trunk/buildbot/buildslave/scrip
 {{{
 buildbot start BASEDIR
 }}}
-
-
+  # It should show up as online at http://termite.go-oo.org/ and you should be able to manually submit builds to it.
