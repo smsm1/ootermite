@@ -1,0 +1,38 @@
+#summary How the buildmaster/reporter server is set up
+
+= Introduction =
+The server setup is a little complicated, in that there are several components that one must set up to function properly.  The three components are apache, buildbot, and "reporter."  This document is a work in progress, as the applications themselves are a work in progress.  When theory diverges from current state of affairs, it is noted.
+
+= Buildbot =
+In our setup, we run the buildbot process under the buildmaster user.  This user has a copy of the buildbot in their home directory.  The buildbot configuration is designed to be pulled from svn with an svn up and not meant to be edited on the buildmaster.  
+
+== Setup ==
+The process for recreating the buildbot setup is more or less as follows:
+ # patch and install buildbot (see buildbot docs and patch)
+ # create the buildmaster
+{{{
+buildbot create-master buildmaster
+}}}
+ # checkout the buildmaster parts from svn
+{{{
+svn co http://ootermite.googlecode.com/svn/trunk/buildbot/buildmaster/ buildmaster
+}}}
+ # you will need to find/create OOCredentials, which has the slave names and passwords
+ # make start
+
+== Developing ==
+There are two "environments" defined in master.cfg that make development a little easier.  development.cfg and production.cfg have different slaves and builders to reflect the production environment, where you want to do such things as have lots of slaves and email tinderbox results.  The development environment is designed to be done on your workstation, and as such has only one slave defined.  One can have a buildslave and buildmaster running on the same workstation without much bother.
+
+Notes: 
+ * Install set upload is broken (wrong path)
+ * Tinderbox email needs some adjustment
+ * Factories are a mess.  f3 is the factory to use.  Others should be deprecated.
+
+= Apache =
+Apache forms the front-end.  It uses mod_proxy to either proxy requests to buildbot, reporter, or to serve the request itself.  This is currently not done and needs to be setup more or less as follows:
+ * /buildbot gets routed to buildbot
+ * /reporter gets routed to reporter
+ * /installsets gets served up by apache
+
+= Reporter =
+This is the general purpose reporting application.  This application is a normal rails application and will be managed with capistrano.  As it is more developed, more will be known.
