@@ -11,6 +11,8 @@ set :deploy_to, "/home/buildmaster/#{application}"
 
 set :user, "buildmaster"
 set :deploy_via, :export
+set :use_sudo, false
+set :mongrel_conf, "#{current_path}/config/mongrel_cluster.yml"
 
 # If you aren't using Subversion to manage your source code, specify
 # your SCM below:
