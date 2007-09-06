@@ -54,7 +54,7 @@ if ($help_option)
 
 if ($branch eq '')
 {
-    $branch= get_latest_milestone('SRC680');
+    $branch= latest_milestone('SRC680');
 }
 
 # discern cws,pws here
