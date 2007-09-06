@@ -1,0 +1,3 @@
+#! /bin/bash -x
+[ -f winenv.set.sh ] && . winenv.set.sh
+cd smoketestoo_native && build
