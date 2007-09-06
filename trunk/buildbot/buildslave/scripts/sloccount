@@ -9,12 +9,54 @@ use strict;
 
 use XML::Simple;
 use LWP::UserAgent;
+use LWP::Simple;
 use HTTP::Request::Common;
+use Getopt::Long;
+
+
+# pinched form cwsget
+sub latest_milestone($)
+{
+    my $master= shift;
+    my $url = 'http://go-oo.org/tinderbox/tags/tag-latest-master-list';
+    
+    my $response = get($url) || die "Couldn't get $url\n";
+    foreach(split /\n/, $response)
+    {
+	unless (/\#.*/)
+	{
+	    (my $name, my $base, my $tag, my $dirs) = split / : /, $_;
+	    return $name if $name =~ /$master/;
+	}
+    }
+    die "couldn't find latest milestone!\n";
+}
+
 
 my $server_url= "http://termite.go-oo.org:3000";
 
 
-my $branch= $ENV{'BRANCH'};
+my $branch= '';
+my $buildername;
+my $slavename;
+my $buildnumber;
+my $help_option;
+GetOptions('help'        => \$help_option,
+	   'branch:s'    => \$branch,
+	   'buildernamer:s' => \$buildername,
+	   'slavename:s'    => \$slavename,
+	   'buildnumber:s'  => \$buildnumber);
+if ($help_option)
+{
+    print STDERR "This script is undocumented.  It is meant to be invoked by buildbot, and should not be run by the user\n";
+    exit 1;
+}
+
+if ($branch eq '')
+{
+    $branch= get_latest_milestone('SRC680');
+}
+
 # discern cws,pws here
 my $cws, my $pws;
 my @thingy= split /_/, $branch; # coulnd't think of a better name
@@ -53,9 +95,9 @@ my $hashref=
     'build' => {
 	'pws' => $pws,
 	'cws' => $cws,
-	'builder' => $ENV{'BUILDERNAME'},
-	'host' => $ENV{'SLAVENAME'},
-	'build_number' => $ENV{'BUILDNUMBER'}
+	'builder' => $buildername,
+	'host' => $slavename,
+	'build_number' => $buildnumber,
 	},
 	    'data_item' =>
 	{
