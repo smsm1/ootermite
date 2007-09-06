@@ -119,9 +119,9 @@ my $response = $ua->request(POST "$server_url/data.xml",
 			    Content => $xml);
 if ($response->is_success) 
 {
-    die $response->content;  # oddly an error
+    print $response->status_line; # b0rked    
 }
 else 
 {
-    print $response->status_line; # success!
+    die $response->content;  # worked!
 }
