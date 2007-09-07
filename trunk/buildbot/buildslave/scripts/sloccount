@@ -13,6 +13,17 @@ use LWP::Simple;
 use HTTP::Request::Common;
 use Getopt::Long;
 
+sub is_milestone($);
+sub latest_milestone($);
+sub grab_tag_list();
+
+# pinched form cwsget
+sub is_milestone($)
+{
+    my $name= shift;
+    return 1 if ($name =~ /\w+680_m\d+/);
+    return 0;
+}
 
 # pinched form cwsget
 sub latest_milestone($)
@@ -107,8 +118,11 @@ my $cws_list= grab_tag_list;
 ($milestone, $cws) = interpret_branch($branch, $cws_list);
 if ($cws eq 'none')
 {# milestones will have milestone set to tag and cws set to none
-     $cws= $milestone;
-     ($pws, my $not_used)= (split /_/, $milestone);
+     ($pws, $cws)= (split /_/, $milestone);
+}
+else
+{
+    $pws= $milestone;
 }
 
 # run sloccount
