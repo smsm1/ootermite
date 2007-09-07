@@ -32,6 +32,53 @@ sub latest_milestone($)
     die "couldn't find latest milestone!\n";
 }
 
+sub grab_tag_list()
+{
+    my $url= 'http://go-oo.org/tinderbox/tags/tag-list';
+        
+    my $response = get($url) || die "Couldn't get $url\n";
+    my %h;
+    foreach(split /\n/, $response)
+    {
+	unless (/\#.*/)
+	{
+	    (my $name, my $base, my $tag, my $dirs) = split / : /, $_;
+	    
+	    $h{$name}= 
+	    {
+		'base' => $base,
+		'tag'  => $tag,
+		'dirs' => [split / /, $dirs]
+		};
+	}
+    }
+    return \%h;
+}
+
+sub interpret_branch($$)
+{
+    my $name= shift;
+    my $cws_list= shift;
+    my $milestone;
+    my $cws= "none"; #special case
+
+    if ($name eq 'HEAD' || $name eq '')
+    {
+	$milestone= latest_milestone('SRC680');
+    }
+    elsif(is_milestone($name))
+    {
+	$milestone= $name;
+    }
+    else
+    {
+	die "cws not found!!\n" unless $cws_list->{$name};
+	$cws= $name;
+	$milestone= $cws_list->{$name}->{'base'};
+    }
+    return ($milestone, $cws);
+}
+
 
 my $server_url= "http://termite.go-oo.org:3000";
 
@@ -52,27 +99,16 @@ if ($help_option)
     exit 1;
 }
 
-if ($branch eq '')
-{
-    $branch= latest_milestone('SRC680');
-}
 
 # discern cws,pws here
 my $cws, my $pws;
-my @thingy= split /_/, $branch; # coulnd't think of a better name
-if (@thingy == 3)
-{ # cws: 'cws_src680_dmake411'
-    $pws= uc $thingy[1];
-    $cws= $thingy[2];
-}
-elsif (@thingy == 2)
-{ # milestone: 'SRC680_m225'
-    $pws= $thingy[0];
-    $cws = $thingy[1];
-}
-else
-{
-    die "$branch doesn't seem to be cws or milestone!\n";
+my $milestone;
+my $cws_list= grab_tag_list;
+($milestone, $cws) = interpret_branch($branch, $cws_list);
+if ($cws eq 'none')
+{# milestones will have milestone set to tag and cws set to none
+     $cws= $milestone;
+     ($pws, my $not_used)= (split /_/, $milestone);
 }
 
 # run sloccount
