@@ -56,6 +56,7 @@ class Report < ActiveRecord::Base
   # the following has been pinched from active_record_store.rb 
   # with slight modification
   attr_writer :selectors
+  cattr_accessor :data_column_name
   self.data_column_name = 'selectors_dump'
   before_save :marshal_data!
   
