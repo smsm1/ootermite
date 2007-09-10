@@ -1,15 +1,15 @@
+=SCRIPTS TO SETUP A BUILDBOT=
+
+==Builder bots==
+
 These files invoked by the buildslave to perform various steps
 outlined below.  Note that you may need to modify these for your platform or build slave.
 The process for building OpenOffice.org is in the following order:
 
-cwsget.pl 		For getting CWS's from CVS
-
-newget			replacement for cwsget.pl under development
-
-(You only need to use one of the above scripts, this will depend on the configuration on the buildmaster.)
+cws_get 		For getting CWS's from CVS
 
 buildprep		Insert whatever you need in here to prepare the tree for
-			building.  For example, copying mozilla or patching
+				building.  For example, copying mozilla, that daft windows.dll or patching.
 
 configure		Runs configure, you supply configure line
 
@@ -17,7 +17,25 @@ bootstrap		Runs bootstrap
 
 compile			Actually does the compile
 
-bundle			Zips up the install set.  The name is supplied
-			in $1 by the buildmaster.
+smoketestoo		Run the smoketest after the build
 
+bundle			Zips up the install set.  The name is supplied
+				in $1 by the buildmaster.
+				
+
+---------------
+==Source bots==
+
+sloccount		Used by a source bot only, for getting some source code metrics
+				using static analysis
   
+--------------- 
+ 
+==Notes for the above scripts==
+These should work out the box on as many platforms as possible.
+As we don't build on all platforms, we need your help.
+ 
+Please send us any updates so that we can
+make the scripts cross-platform.
+
+A return code of 65 means that the command should be skipped.

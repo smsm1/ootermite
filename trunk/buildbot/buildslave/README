@@ -1,3 +1,5 @@
 scripts				scripts needed for a build slave, 
 				these may need to be customised to the 
 				specific buildslave environment.
+				Please send us any updates so that we can
+				make the scripts cross-platform.
