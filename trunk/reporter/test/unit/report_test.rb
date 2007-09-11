@@ -8,7 +8,7 @@ class ReportTest < Test::Unit::TestCase
     r.selectors= []
     r.selectors << Selector.new
     r.title= "test title"
-    r.graph_type= :bar
+    r.graph_type= 'Bar'
     assert r.valid?
     assert r.save
 

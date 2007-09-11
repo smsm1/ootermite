@@ -2,7 +2,11 @@ class ReportsController < ApplicationController
 
   # GET reports_url
   def index
-    # return all reports
+    @reports= Report.find(:all)
+    respond_to do |format|
+      format.html # index.rhtml
+      format.xml  { render :xml => @reports.to_xml }
+    end
   end
 
   # GET new_report_url
@@ -19,7 +23,7 @@ class ReportsController < ApplicationController
   # FIXME: extract dynamic vars from url
   def show
     @report= Report.find(params[:id])
-#    g = eval("Gruff::#{@report.graph_type.to_s.capitalize}.new(400)")
+#    g = eval("Gruff::#{@report.graph_type}.new")
     g= Gruff::Bar.new
     g.title = @report.title
 #    g.labels = { 0 => 'Mon', 2 => 'Wed', 4 => 'Fri', 6 => 'Sun' }
@@ -45,6 +49,12 @@ class ReportsController < ApplicationController
 
   # DELETE report_url(:id => 1)
   def destroy
-    # delete a specific report
+    @report= Report.find(params[:id])
+    @report.destroy
+
+    respond_to do |format|
+      format.html { redirect_to reports_url }
+      format.xml  { head :ok }
+    end
   end
 end

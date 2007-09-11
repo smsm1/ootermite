@@ -21,11 +21,9 @@
 #
 #
 # conditions is a hash of the form
-# { attribute_name => value }
-# that is used to build a query.  The condition is
-# that the attribute must be equal to the value
-# it normalizes the attribute names, to obscure the
-# build/data_item join
+# { :attributes => {:attr => [:eq/ne/lt,gt,like, value], :order = {:attr => asc/desc}, :limit => int, :group => attr}
+#
+# attributes from build and data_item are joined 
 #
 # FIXME: change to rdoc
 class Selector
@@ -34,7 +32,7 @@ class Selector
   def initialize
     @dynamic_inputs= {}
     @dynamic_outputs= {}
-    @conditions= {}
+    @conditions= { :attributes => {} }
   end
   
   #dynamic vars is a hash of the form
@@ -43,10 +41,22 @@ class Selector
   # FIXME: this ought to be more DRY
   def run(dynamic_vars, &block)
     @dynamic_inputs.each_pair do |k,v|
-      @conditions[v]= dynamic_vars[k]
+      @conditions[:attributes][v]= [:eq, dynamic_vars[k]]
     end
     query= conditions_to_query
-    found_records= query.find
+    find_options= []
+    find_options << ":limit => #{@conditions[:limit]}" if @conditions[:limit]
+    if @conditions[:order]
+      order= []
+      @conditions[:order].each_pair do |k, v|
+        ascdesc= k.to_s
+        ascdesc+= " DESC" if v == :desc
+        order << ascdesc
+      end
+      find_options << "order => #{order.join(', ')}"
+    end
+    find_options << ":group => #{@conditions[:group]}" if @conditions[:group]
+    found_records= eval("query.find(#{find_options.join(', ')})")
     found_items= found_records.collect{|r| r.data[@key]}
     @dynamic_outputs.each_pair do |k,v|
       if HashWithIndifferentAccess.new(Build.columns_hash)[v]
@@ -68,16 +78,16 @@ class Selector
   def conditions_to_query
     query= DataItem.query
     query.join :build
-    @conditions.each_pair do |k,v|
+    @conditions[:attributes].each_pair do |k,v|
       target= nil
       if HashWithIndifferentAccess.new(Build.columns_hash)[k]
-        target= query.build
+        target= 'query.build'
       elsif HashWithIndifferentAccess.new(DataItem.columns_hash)[k]
-        target= query
+        target= 'query'
       else
         raise "#{k} is not a column!"
       end
-      target.eq(k, v)
+      eval("#{target}.#{v[0].to_s}('#{k.to_s}', '#{v[1]}')")
     end
     query
   end
