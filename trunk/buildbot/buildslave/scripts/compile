@@ -1,8 +1,18 @@
-#! /bin/bash -x
+#!/bin/bash -x
 
 [ -f LinuxX86Env.Set.sh ] && source LinuxX86Env.Set.sh 
 [ -f LinuxIntelEnv.Set.sh ] && source LinuxIntelEnv.Set.sh
+[ -f MacOSXX86Env.Set.sh ] && source MacOSXX86Env.Set.sh
+[ -f MacOSXPPCEnv.Set.sh ] && source MacOSXPPCEnv.Set.sh
+[ -f SolarisX86Env.Set.sh ] && source SolarisX86Env.Set.sh 
+[ -f winenv.set.sh ] && . winenv.set.sh
+
+# Custom configure flags
+[ -f winenv.set.sh] && export PROFULLSWITCH="$PROFULLSWITCH"
 
 hash -r
-dmake
+
+#dmake
+export custom_buildflags="-P2 -- -P2"
+cd instsetoo_native && perl ../solenv/bin/build.pl --all $custom_buildflags
 
