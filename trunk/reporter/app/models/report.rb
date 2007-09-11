@@ -1,3 +1,5 @@
+require File.dirname(__FILE__) + '/selector'
+
 class Report < ActiveRecord::Base
   validates_uniqueness_of :title
   validates_presence_of :title, :graph_type

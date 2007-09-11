@@ -1,5 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
   map.resource :data
+  map.resources :reports
+
   # The priority is based upon order of creation: first created -> highest priority.
   
   # Sample of regular route:
