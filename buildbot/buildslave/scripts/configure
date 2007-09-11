@@ -1,6 +1,13 @@
-# !/bin/bash -x
+#!/bin/bash -x
 
 cd config_office
+
+[ -f MacOSXX86Env.Set.sh ] && ./configure --with-use-shell=bash --disable-build-mozilla --disable-headless --disable-gtk && exit 0
+
+[ -f MacOSXPPCEnv.Set.sh ] && ./configure --with-use-shell=bash --disable-build-mozilla --disable-headless --disable-gtk
+
+[ -f winenv.set.sh ] && ./configure --with-use-shell=bash --with-midl-path=/cygdrive/c/PROGRA~1/MI9547~1/Bin --with-psdk-home=/cygdrive/c/PROGRA~1/MI9547~1 --with-directx-home=/cygdrive/c/PROGRA~1/MI6996~1 --with-ant-home=/cygdrive/d/termite/prereq/apache-ant-1.7.0 --disable-build-mozilla --with-gpc --with-csc-path=/cygdrive/c/WINDOWS/Microsoft.NET/Framework/v2.0.50727 --with-jdk-home=/cygdrive/c/PROGRA~1/Java/JDK15~1.0_1 --disable-activex --with-frame-home=/cygdrive/c/PROGRA~1/MICROS~2/SDK/v2.0 --with-cl-home=/cygdrive/c/PROGRA~1/MICROS~2/VC --with-nsis-path=/cygdrive/d/termite/prereq/NSIS && exit 0
+
+# If it isn't covered above.
+
 ./configure --with-use-shell=bash
-
-
