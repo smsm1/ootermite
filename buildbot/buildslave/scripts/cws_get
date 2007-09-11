@@ -172,7 +172,7 @@ sub grab_tag_list()
     my %h;
     foreach(split /\n/, $response)
     {
-	unless (/\#.*/)
+	unless (/\#.*/ || /^\s*$/)
 	{
 	    (my $name, my $base, my $tag, my $dirs) = split / : /, $_;
 	    
