@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/selector'
 class Report < ActiveRecord::Base
   validates_uniqueness_of :title
   validates_presence_of :title, :graph_type
-  validates_inclusion_of :graph_type, :in=>[:bar, :pie, :line]
+  validates_inclusion_of :graph_type, :in=>['Bar', 'Line', 'Pie']
   
   # the following has been pinched from active_record_store.rb 
   # with slight modification

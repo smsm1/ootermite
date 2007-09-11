@@ -41,7 +41,7 @@ class SelectorTest < Test::Unit::TestCase
     inputs= { :foo => 'SRC680' }
     s= Selector.new
     s.dynamic_inputs[:foo]= :pws
-    s.conditions[:data_type]= 'tree_size'
+    s.conditions[:attributes][:data_type]= [:eq, 'tree_size']
     s.key= 'megabytes'
     results= s.run(inputs) {|k,v| nil }
 
@@ -56,8 +56,8 @@ class SelectorTest < Test::Unit::TestCase
   def test_run_with_outputs
     s= Selector.new
     s.dynamic_outputs[:foo]= :pws
-    s.conditions[:data_type]= 'tree_size'
-    s.conditions[:pws]= 'SRC680'
+    s.conditions[:attributes][:data_type]= [:eq, 'tree_size']
+    s.conditions[:attributes][:pws]= [:eq, 'SRC680']
     s.key= 'megabytes'
     outputs= {}
     results= s.run({}) {|k,v| outputs[k]= v }
@@ -67,8 +67,8 @@ class SelectorTest < Test::Unit::TestCase
   def test_run!
     s= Selector.new
     s.dynamic_outputs[:foo]= :pws
-    s.conditions[:data_type]= 'tree_size'
-    s.conditions[:pws]= 'SRC680'
+    s.conditions[:attributes][:data_type]= [:eq, 'tree_size']
+    s.conditions[:attributes][:pws]= [:eq, 'SRC680']
     s.key= 'megabytes'
     dynamic_variables= {}
     s.run! dynamic_variables
