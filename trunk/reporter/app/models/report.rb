@@ -2,8 +2,7 @@ class Report < ActiveRecord::Base
   validates_uniqueness_of :title
   validates_presence_of :title, :graph_type
   validates_inclusion_of :graph_type, :in=>[:bar, :pie, :line]
-
-
+  
   # the following has been pinched from active_record_store.rb 
   # with slight modification
   attr_writer :selectors
@@ -26,7 +25,7 @@ class Report < ActiveRecord::Base
   end
 
   # Lazy-unmarshal session state.
-  def data
+  def selectors
     @selectors ||= self.class.unmarshal(read_attribute(@@data_column_name)) || {}
   end
   
@@ -38,6 +37,6 @@ class Report < ActiveRecord::Base
   private  
   def marshal_data!
     return false if !loaded?
-    write_attribute(@@data_column_name, self.class.marshal(self.data))
+    write_attribute(@@data_column_name, self.class.marshal(self.selectors))
   end
 end
