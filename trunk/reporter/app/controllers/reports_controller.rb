@@ -20,11 +20,9 @@ class ReportsController < ApplicationController
   end
 
   # GET report_url(:id => 1)
-  # FIXME: extract dynamic vars from url
   def show
     @report= Report.find(params[:id])
     g = eval("Gruff::#{@report.graph_type}.new")
-#    g= Gruff::Bar.new
     g.title = @report.title
 #    g.labels = { 0 => 'Mon', 2 => 'Wed', 4 => 'Fri', 6 => 'Sun' }
     dynamic_variables= {}
