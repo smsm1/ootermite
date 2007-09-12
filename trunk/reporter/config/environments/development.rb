@@ -19,3 +19,9 @@ config.action_view.debug_rjs                         = true
 
 # Don't care if the mailer can't send
 config.action_mailer.raise_delivery_errors = false
+
+# this is ported over from the test environemnt.
+# see the note there.  The reason we repeat it hear
+# is to use the fixture data for some development
+# using the rake task
+srand(0)
