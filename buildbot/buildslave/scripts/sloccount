@@ -117,13 +117,20 @@ my $milestone;
 my $cws_list= grab_tag_list;
 ($milestone, $cws) = interpret_branch($branch, $cws_list);
 if ($cws eq 'none')
-{# milestones will have milestone set to tag and cws set to none
-     ($pws, $cws)= (split /_/, $milestone);
+{# milestones will have milestone set to tag and cws set to none   
+     if ($milestone =~ /(\w+)_/)
+ {
+     $pws= $1;
+     $cws= $milestone;
+ }
 }
 else
 {
     $pws= $milestone;
 }
+
+print "pws= $pws\ncws= $cws\n";
+die "here";
 
 # run sloccount
 my $sloc_output= `sloccount *`;
