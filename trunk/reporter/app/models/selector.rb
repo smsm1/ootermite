@@ -60,6 +60,9 @@ class Selector
         block.call(v, eval(join_mangle(k, 'found_records[0]') + '[k]'))
       end
     end
+    if dynamic_vars[@label]
+      @label= dynamic_vars[@label]
+    end
     found_items
   end
   
