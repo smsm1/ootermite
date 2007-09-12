@@ -37,8 +37,6 @@ class Selector
   
   #dynamic vars is a hash of the form
   # {dynamic_variable_name => value }
-  #
-  # FIXME: this ought to be more DRY
   def run(dynamic_vars, &block)
     @dynamic_inputs.each_pair do |k,v|
       @conditions[:attributes][v]= [:eq, dynamic_vars[k]]
@@ -49,30 +47,17 @@ class Selector
     if @conditions[:order]
       order= []
       @conditions[:order].each_pair do |k, v|
-        attr= ""
-        if Build.columns_hash[k.to_s]
-          attr= "builds.#{k.to_s}"
-        elsif DataItem.columns_hash[k.to_s]
-          attr= k.to_s
-        else
-          raise "#{k.to_s} is not a column!"
-        end          
+        attr= join_mangle(k, '', 'builds.') + k.to_s
         order << "#{attr} #{v.to_s}"
       end
       find_options << ":order => '#{order.join(', ')}'"
     end
     find_options << ":group => '#{@conditions[:group].to_s}'" if @conditions[:group]
     found_records= eval("query.find(#{find_options.join(', ')})")
-    found_items= found_records.collect{|r| r.data[@key].to_f}
+    found_items= found_records.collect{|r| Selector.infer_type(r.data[@key])}
     unless found_records.empty?
       @dynamic_outputs.each_pair do |k,v|
-        if Build.columns_hash[k.to_s]
-          block.call(v, found_records[0].build[k])
-        elsif DataItem.columns_hash[k.to_s]
-          block.call(v, found_records[0][k])
-        else
-          raise "#{k} is not a column!"
-        end
+        block.call(v, eval(join_mangle(k, 'found_records[0]') + '[k]'))
       end
     end
     found_items
@@ -87,17 +72,35 @@ class Selector
     query= DataItem.query
     query.join :build
     @conditions[:attributes].each_pair do |k,v|
-      target= nil
-      if Build.columns_hash[k.to_s]
-        target= 'query.build'
-      elsif DataItem.columns_hash[k.to_s]
-        target= 'query'
-      else
-        raise "#{k} is not a column!"
-      end
+      target= join_mangle(k, 'query')
       eval("#{target}.#{v[0].to_s}('#{k.to_s}', '#{v[1]}')")
     end
     query
   end
   
+  # takes the "flat" naming of attributes
+  # and mangles them to account for join
+  # if the attribute is from DataItem, then
+  #  prefix is returned
+  # if the attribute is from Build, then 
+  #  prefix + build_suffix is returned
+  # else is an exception
+  #
+  # FIXME: create custom exception
+  def join_mangle(attr, prefix, build_suffix='.build')
+    if Build.columns_hash[attr.to_s]
+      return prefix + build_suffix
+    elsif DataItem.columns_hash[attr.to_s]
+      return prefix
+    else
+      raise "#{attr.to_sym} is not a column!"
+    end
+  end
+
+  def self.infer_type(input)
+    if input.to_f == input.to_i
+      return input.to_i
+    end
+    return input.to_f
+  end
 end
