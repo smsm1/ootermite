@@ -34,7 +34,8 @@ class ReportsController < ApplicationController
     end
     logger.info("dynamic_variables= #{dynamic_variables.inspect}")
     @report.selectors.each do |s|
-      g.data(s.label, s.run!(dynamic_variables))
+      data= s.run!(dynamic_variables)
+      g.data(s.label, data)
     end
     send_data(g.to_blob, 
               :disposition => 'inline', 
