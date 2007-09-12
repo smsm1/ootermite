@@ -64,13 +64,15 @@ class Selector
     find_options << ":group => '#{@conditions[:group].to_s}'" if @conditions[:group]
     found_records= eval("query.find(#{find_options.join(', ')})")
     found_items= found_records.collect{|r| r.data[@key]}
-    @dynamic_outputs.each_pair do |k,v|
-      if Build.columns_hash[k.to_s]
-        block.call(v, found_records[0].build[k])
-      elsif DataItem.columns_hash[k.to_s]
-        block.call(v, found_records[0][k])
-      else
-        raise "#{k} is not a column!"
+    unless found_records.empty?
+      @dynamic_outputs.each_pair do |k,v|
+        if Build.columns_hash[k.to_s]
+          block.call(v, found_records[0].build[k])
+        elsif DataItem.columns_hash[k.to_s]
+          block.call(v, found_records[0][k])
+        else
+          raise "#{k} is not a column!"
+        end
       end
     end
     found_items
