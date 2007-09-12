@@ -17,3 +17,8 @@ config.action_controller.perform_caching             = false
 # The :test delivery method accumulates sent emails in the
 # ActionMailer::Base.deliveries array.
 config.action_mailer.delivery_method = :test
+
+# it is bad practice to use rand in tests, but I have done
+# anyway. seed random number generator so we always get
+# reproducable results
+srand(0)

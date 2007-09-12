@@ -49,22 +49,28 @@ class Selector
     if @conditions[:order]
       order= []
       @conditions[:order].each_pair do |k, v|
-        ascdesc= k.to_s
-        ascdesc+= " DESC" if v == :desc
-        order << ascdesc
+        attr= ""
+        if Build.columns_hash[k.to_s]
+          attr= "builds.#{k.to_s}"
+        elsif DataItem.columns_hash[k.to_s]
+          attr= k.to_s
+        else
+          raise "#{k.to_s} is not a column!"
+        end          
+        order << "#{attr} #{v.to_s}"
       end
-      find_options << "order => #{order.join(', ')}"
+      find_options << ":order => '#{order.join(', ')}'"
     end
-    find_options << ":group => #{@conditions[:group]}" if @conditions[:group]
+    find_options << ":group => '#{@conditions[:group].to_s}'" if @conditions[:group]
     found_records= eval("query.find(#{find_options.join(', ')})")
     found_items= found_records.collect{|r| r.data[@key]}
     @dynamic_outputs.each_pair do |k,v|
-      if HashWithIndifferentAccess.new(Build.columns_hash)[v]
-        block.call(k, found_records[0].build[v])
-      elsif HashWithIndifferentAccess.new(DataItem.columns_hash)[v]
-        block.call(k, found_records[0][v])
+      if Build.columns_hash[k.to_s]
+        block.call(v, found_records[0].build[k])
+      elsif DataItem.columns_hash[k.to_s]
+        block.call(v, found_records[0][k])
       else
-        raise "#{v} is not a column!"
+        raise "#{k} is not a column!"
       end
     end
     found_items
@@ -80,9 +86,9 @@ class Selector
     query.join :build
     @conditions[:attributes].each_pair do |k,v|
       target= nil
-      if HashWithIndifferentAccess.new(Build.columns_hash)[k]
+      if Build.columns_hash[k.to_s]
         target= 'query.build'
-      elsif HashWithIndifferentAccess.new(DataItem.columns_hash)[k]
+      elsif DataItem.columns_hash[k.to_s]
         target= 'query'
       else
         raise "#{k} is not a column!"

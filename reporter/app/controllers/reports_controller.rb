@@ -23,11 +23,18 @@ class ReportsController < ApplicationController
   # FIXME: extract dynamic vars from url
   def show
     @report= Report.find(params[:id])
-#    g = eval("Gruff::#{@report.graph_type}.new")
-    g= Gruff::Bar.new
+    g = eval("Gruff::#{@report.graph_type}.new")
+#    g= Gruff::Bar.new
     g.title = @report.title
 #    g.labels = { 0 => 'Mon', 2 => 'Wed', 4 => 'Fri', 6 => 'Sun' }
     dynamic_variables= {}
+    params.each_pair do |k, v|
+      # fixme: action, controller
+      if (k != :id and k != :format) #more elegant way?
+        dynamic_variables[k.to_sym]= v
+      end
+    end
+    logger.info("dynamic_variables= #{dynamic_variables.inspect}")
     @report.selectors.each do |s|
       g.data(s.label, s.run!(dynamic_variables))
     end

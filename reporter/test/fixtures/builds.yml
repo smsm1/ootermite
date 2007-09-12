@@ -1,7 +1,7 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 <% milestones= Array.new(20) {|i| {:name => "SRC680_m#{i}", :parent => "SRC680"} } %>
-<% cwses = Array.new(20) {|i| {:name => "cws_#{i}", :parent => milestones[rand(20)]} } %>
+<% cwses = Array.new(20) {|i| {:name => "cws_#{i}", :parent => milestones[rand(20)][:name]} } %>
 <% trees = milestones + cwses %>
 
 <% builders = 5 %>
@@ -15,8 +15,9 @@
 <% builds_per_builder.times do |build_number| %>
 <%= "build_#{builder}-#{build_number}:" %>
   id: <%= take_id %>
-  pws: <%= trees[rand(trees.length)][:parent] %>
-  cws: <%= trees[rand(trees.length)][:name] %>
+  <% treeidx= rand(trees.length) %>
+  pws: <%= trees[treeidx][:parent] %>
+  cws: <%= trees[treeidx][:name] %>
   builder: <%= builder %>
   host: <%= "#{builder}-host_#{rand(hosts_per_builder)}" %>
   build_number: <%= build_number %>
