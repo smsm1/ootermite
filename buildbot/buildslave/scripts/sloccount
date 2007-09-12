@@ -129,9 +129,6 @@ else
     $pws= $milestone;
 }
 
-print "pws= $pws\ncws= $cws\n";
-die "here";
-
 # run sloccount
 my $sloc_output= `sloccount *`;
 die "couldn't run sloccount!\n" unless $? == 0;
