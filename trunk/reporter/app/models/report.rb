@@ -7,7 +7,7 @@ class Report < ActiveRecord::Base
 
   def input_names
     list= []
-    @selectors.each do |s|
+    self.selectors.each do |s|
       s.dynamic_inputs.each_key {|k| list << k }
     end
     list

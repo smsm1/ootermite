@@ -20,7 +20,8 @@ class ReportTest < Test::Unit::TestCase
   end
 
   def test_input_names
-    r= Report.new
+    r= Report.new(:title => 'test title2', :graph_type => 'Bar')
+    assert_equal [], r.input_names    
     r.selectors= []
     2.times { r.selectors << Selector.new}
     assert_equal [], r.input_names
