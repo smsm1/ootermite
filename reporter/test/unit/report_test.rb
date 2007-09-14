@@ -19,4 +19,18 @@ class ReportTest < Test::Unit::TestCase
     assert_kind_of Selector, r2.selectors[0]
   end
 
+  def test_input_names
+    r= Report.new
+    r.selectors= []
+    2.times { r.selectors << Selector.new}
+    assert_equal [], r.input_names
+    r.selectors[0].dynamic_inputs = { 
+      :var1 => :cws,
+      :var2 => :pws }
+    r.selectors[1].dynamic_inputs = { 
+      :var3 => :cws,
+      :var4 => :pws }
+    assert_equal [:var1, :var2, :var3, :var4], r.input_names
+  end
+
 end

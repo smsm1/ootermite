@@ -4,6 +4,15 @@ class Report < ActiveRecord::Base
   validates_uniqueness_of :title
   validates_presence_of :title, :graph_type
   validates_inclusion_of :graph_type, :in=>['Bar', 'Line', 'Pie']
+
+  def input_names
+    list= []
+    @selectors.each do |s|
+      s.dynamic_inputs.each_key {|k| list << k }
+    end
+    list
+  end
+  
   
   # the following has been pinched from active_record_store.rb 
   # with slight modification
