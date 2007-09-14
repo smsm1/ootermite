@@ -42,6 +42,20 @@ The order, limit, and group keys are optional.  The attribute names are one of t
 
 Dynamic variables are a hash that is created at runtime (when the graph is viewed) to add additionally attribute conditions to the constraints.  These dynamic variables only use the equality operator at present.  At run time, dynamic variables can be instantiated either by the URL (reports/<report_id>?variable0=value&variable1=value&...) or may be instantiated by selectors as they produce their result set.  Dynamic variables do not necessarily carry the name of the attribute.  This will be come more clear in the next few sections.
 
-Dynamic inputs is a hash of dynamic variables that will be added to the attributes condition hash at run time with the values interpolated.  These take the form of 
+dynamic_inputs is a hash of dynamic variables that will be added to the attributes condition hash at run time with the values interpolated.  These take the form of:
+{{{
+{ dynamic_variable_name => attribute_name }
+}}}
+The attributes conditions hash will have <attribute_name> => [:eq, dynamic_variables[dynamic_variable_name]
 
-  
+dynamic_outputs is a hash in the reverse order, outputting the *first* result set item into the dynamic_variables hash.  They take the reverse form as above:
+{{{
+{ attribute_name => dynamic_variable_name }
+}}}
+
+Care must be used to avoid making circular dependencies.  This dynamic variable system allows one to create graphs such as CWS vs Milestone type graphs.  Such graphs have two selectors, one which takes cws from the URL as a dynamic input and sets the milestone dynamic variable.  The second selector finds the milestone based on the dynamic variable outputted by the first one.
+
+Labels are either string or dynamic variable names that are used to label the data source.    If the label is a dynamic variable name, it will be interpolated.
+
+
+ 
