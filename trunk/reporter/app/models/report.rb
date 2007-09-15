@@ -5,14 +5,10 @@ class Report < ActiveRecord::Base
   validates_presence_of :title, :graph_type
   validates_inclusion_of :graph_type, :in=>['Bar', 'Line', 'Pie']
 
-  def input_names
-    list= []
-    self.selectors.each do |s|
-      s.dynamic_inputs.each_key {|k| list << k }
-    end
-    list
+  def net_inputs
+    input_names.reject{|n| output_names.index(n) }
   end
-  
+
   
   # the following has been pinched from active_record_store.rb 
   # with slight modification
@@ -50,4 +46,21 @@ class Report < ActiveRecord::Base
     return false if !loaded?
     write_attribute(@@data_column_name, self.class.marshal(self.selectors))
   end
+
+  def input_names
+    list= []
+    self.selectors.each do |s|
+      s.dynamic_inputs.each_key {|k| list << k }
+    end
+    list
+  end
+  
+  def output_names
+    list= []
+    self.selectors.each do |s|
+      s.dynamic_outputs.each_value {|v| list << v}
+    end
+    list
+  end
+  
 end
