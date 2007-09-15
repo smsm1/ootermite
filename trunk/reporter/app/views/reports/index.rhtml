@@ -7,7 +7,7 @@
   </tr>
 <% @reports.each do |report| %>
   <tr>
-    <td><%= link_to(h report.title, report_path(report)) %></td>
+    <td><%= link_to(h(report.title), report_path(report)) %></td>
     <td><%= h report.net_inputs.join(", ") %></td>
     <td><%= link_to 'Edit', edit_report_path(report) %></td>
     <td><%= link_to 'Destroy', report_path(report), :confirm => 'Are you sure?', :method => :delete %></td>
