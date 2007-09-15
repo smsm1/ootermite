@@ -57,5 +57,36 @@ Care must be used to avoid making circular dependencies.  This dynamic variable 
 
 Labels are either string or dynamic variable names that are used to label the data source.    If the label is a dynamic variable name, it will be interpolated.
 
-
+= Example =
+This example documents the SLOC CWS vs Milestone report.  A dump of the Report object follows
+{{{
+Title: SLOC of CWS vs Milestone
+Type: Bar
+Selectors: [
+  Selector 0:
+    dynamic_inputs= { :cws => :cws }
+    dynamic_outputs= { :pws => :milestone }
+    conditions= {
+                 attributes=>{ 
+                              :data_type => [:eq, "sloccount"]
+                             }
+                 limit=>1
+                 order=>{ :created_at => :desc },
+                 } 
+     label= :cws
+     key="SLOC"
+  Selector 1:
+    dynamic_inputs={:milestone=>:cws}
+    conditions = {
+                  :attributes => { 
+                                    :cws => [:eq, "SRC680_m217"], 
+                                    :data_type=>[:eq, "sloccount"]}, 
+                  :limit => 1
+                  order => { :created_at => :desc }
+                  } 
+     label=:milestone
+     key="SLOC"
+]
+}}}
+ 
  
