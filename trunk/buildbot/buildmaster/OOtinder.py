@@ -52,7 +52,7 @@ class OOTinderboxMailNotifier(tinderbox.TinderboxMailNotifier):
                   res = "fold"
                   text += res
             else:
-                  if re.match(r'slave lost', build.getText()):
+                  if re.match(r'slave lost', "\n".join(build.getText())):
                         res = "fold"
                   else:
                         res = "busted"
