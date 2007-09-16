@@ -12,7 +12,7 @@ class MyUpload(transfer.FileUpload):
             bname = self.getProperty("buildername")
             bnumber = self.getProperty("buildnumber")            
             self.masterdest = "/home/buildmaster/install_sets/%s-%s-install_set.zip" % (bname, bnumber)
-            url = "http://termite.go-oo.org:/install_sets/%s-%s-install_set.zip" % (bname, bnumber)
+            url = "http://termite.go-oo.org/install_sets/%s-%s-install_set.zip" % (bname, bnumber)
             if self.getProperty("install_set"):
                   self.addURL("Install Set", url)
                   return transfer.FileUpload.start(self)
