@@ -1,3 +1,18 @@
-#!/bin/bash -x
+#!/bin/bash -v
+
+# for those requiring X
+if [ -f LinuxX86Env.Set.sh -o -f LinuxIntelEnv.Set.sh -o -f SolarisX86Env.Set.sh ]
+then
+    /usr/bin/Xvfb :2
+    export DISPLAY=:2
+    export EXTERNAL_WARNINGS_NOT_ERRORS=TRUE
+fi
+
+[ -f LinuxX86Env.Set.sh ] && source LinuxX86Env.Set.sh 
+[ -f LinuxIntelEnv.Set.sh ] && source LinuxIntelEnv.Set.sh
+[ -f MacOSXX86Env.Set.sh ] && source MacOSXX86Env.Set.sh
+[ -f MacOSXPPCEnv.Set.sh ] && source MacOSXPPCEnv.Set.sh
+[ -f SolarisX86Env.Set.sh ] && source SolarisX86Env.Set.sh 
 [ -f winenv.set.sh ] && . winenv.set.sh
-cd smoketestoo_native && build
+
+cd smoketestoo_native && perl ../solenv/bin/build.pl
