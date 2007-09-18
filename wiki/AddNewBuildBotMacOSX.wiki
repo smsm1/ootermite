@@ -1,24 +1,37 @@
-#summary How to add a new bot
-#labels buildslave
-= Introduction =
+#summary How to add a new bot on Mac OS X
+#labels buildslave MacOSX
 
 There is a number of things that you need to do to add a new build slave.
 
-You will need the following prerequisites:
-
+The following are the installation instructions that I used to get the bot working on Mac OS X:
   * a working build environment for OpenOffice.org. Please make sure that you have already managed to built OpenOffice.org on the machine that you want to put the bot on.
-  * python 2.4 or later (Use *python -V* to get the python version number)
-  * twisted 2.4 or later
+  * python 2.3.5 comes with Mac OS X 10.4 (Use *python -V* to get the python version number)
+{{{
+python -V
+}}}
+  * Download Zope 2.8.1-final.tgz (the last version to support Python 2.3.5)
+{{{
+./configure
+make
+sudo make install
+}}}
+  * Download twisted 2.5.0
+{{{
+python setup.py build
+# You can ignore the errors that are shown.
+}}}
+  * Grab a copy of buildbot 0.7.5 [https://sourceforge.net/project/showfiles.php?group_id=73177 source]
+  # unpack the source
+  # build the buildbot [http://buildbot.net/repos/release/docs/buildbot.html#Installing-the-code the buildbot manual]
+{{{
+python setup.py build
+sudo python setup.py install
+}}}
   * perl (and the following modules: LWP::Simple, File::Copy::Recursive, Config::Auto
   * bash
   * subversion (for the buildbot scripts)
   * cvs (for OpenOffice.org source)
 
-= Details =
-
-  # Grab a copy of buildbot 0.7.5 [https://sourceforge.net/project/showfiles.php?group_id=73177 source]
-  # unpack the source
-  # build the buildbot [http://buildbot.net/repos/release/docs/buildbot.html#Installing-the-code the buildbot manual]
   # create the build-slave
 {{{
 buildbot create-slave BASEDIR termite.go-oo.org:9999 SLAVENAME PASSWORD
