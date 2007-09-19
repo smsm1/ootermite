@@ -34,6 +34,8 @@ def parseOOAllCVSmail(self, fd, prefix=None, sep="/"):
     # there.
     when = util.now()
     subject = m.getheader("subject")
+    if not subject:
+        return None
     # syncmail puts the repository-relative directory in the subject:
     # mprefix + "%(dir)s %(file)s,%(oldversion)s,%(newversion)s", where
     # 'mprefix' is something that could be added by a mailing list
