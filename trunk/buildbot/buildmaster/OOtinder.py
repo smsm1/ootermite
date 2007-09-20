@@ -72,7 +72,7 @@ class OOTinderboxMailNotifier(tinderbox.TinderboxMailNotifier):
             # if the build finished...
             else:
                   if (build.getProperty("install_set")) and (results == SUCCESS):
-                        text += "TinderboxPrint: <a href=\"http://termite.go-oo.org:8081/~mikeleib/%s-%s-install_set.zip\">Install Set</a>\n" % (build.getProperty("buildername"), build.getProperty("buildnumber"))
+                        text += "TinderboxPrint: <a href=\"http://termite.go-oo.org/install_sets/%s-%s-install_set.zip\">Install Set</a>\n" % (build.getProperty("buildername"), build.getProperty("buildnumber"))
 
                   # logs will always be appended
                   tinderboxLogs = ""
