@@ -8,7 +8,7 @@
 [ -f winenv.set.sh ] && . winenv.set.sh
 
 # Custom configure flags
-[ -f winenv.set.sh] && export PROFULLSWITCH="$PROFULLSWITCH"
+[ -f winenv.set.sh ] && export PROFULLSWITCH="$PROFULLSWITCH"
 
 hash -r
 
