@@ -7,10 +7,13 @@ This page is for the status of the buildbot system.
 
 = Buildbots =
 
-|| *Botname* || *Builder* || *Owner* || *CVS Commit*|| *Status* ||
+The CVS column tells you whether the bot is building whenever there is a CVS commit.
+
+|| *Botname* || *Builder* || *Owner* || *CVS*|| *Status* ||
 || MacPort1  || Mac-x86 || Shaun !McDonald || Yes || Install sets not uploading ||
 || pumbaa-etch || O3 Build || Christian Lohmaier || No || Reliably building. Builds are initiated by buildbot owner based on the tinderbox status ||
 
 = EIS/Tinderbox Status =
 
 Due to the issue 35, we are currently experiencing all builds started from a CVS commit or IRC to not have the final status submitted.
+The status is getting updated in any other case.
