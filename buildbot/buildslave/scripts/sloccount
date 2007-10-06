@@ -1,4 +1,4 @@
-#!/usr/bin/env perl
+#!/usr/bin/env LC_ALL=en_US perl
 #
 # This is a hack to run SLOCCOUNT and send the data back.
 # it is not a finished product
