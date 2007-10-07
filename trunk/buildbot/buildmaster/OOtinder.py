@@ -77,7 +77,7 @@ class OOTinderboxMailNotifier(tinderbox.TinderboxMailNotifier):
                   # Do it slightly differently if we don't have an install_set
                   except KeyError:
                         if (results == SUCCESS):
-                                text += "TinderboxPrint: No install set was produced"
+                                text += "TinderboxPrint: No install set was produced\n"
                                 
                   # logs will always be appended
                   tinderboxLogs = ""
