@@ -9,7 +9,7 @@ You will need the following prerequisites:
   * a working build environment for OpenOffice.org. Please make sure that you have already managed to built OpenOffice.org on the machine that you want to put the bot on.
   * python 2.4 or later (Use *python -V* to get the python version number)
   * twisted 2.4 or later
-  * perl (and the following modules: LWP::Simple, File::Copy::Recursive, Config::Auto
+  * perl (and the following modules: LWP::Simple, File::Copy::Recursive, Config::Auto which can be installed from CPAN)
   * bash
   * subversion (for the buildbot scripts)
   * cvs (for OpenOffice.org source)
