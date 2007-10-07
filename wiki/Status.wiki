@@ -14,7 +14,7 @@ The CVS column tells you whether the bot is building whenever there is a CVS com
 || manu_ppc_bot || [http://termite.go-oo.org/buildbot/Mac-PPC Mac-PPC] || Manuel Naudin || No || No || Needs scripts update. ||
 || glacial_g3 || [http://termite.go-oo.org/buildbot/Mac-PPC Mac-PPC] || Hisashi T Fujinaka || No || No || Takes around a day or more to complete builds as it is a 400MHz G4 ||
 || pumbaa-etch || [http://termite.go-oo.org/buildbot/O3-build O3-build] || Christian Lohmaier || No || No || Reliably building. Builds are initiated by buildbot owner based on the tinderbox status ||
-
+|| sun-buildbot-win1 || [http://termite.go-oo.org/buildbot/Win-XP Win-XP] || ause || Yes || Yes || ||
 == EIS/Tinderbox ==
 
 Due to the issue 35, we are currently experiencing all builds started from a CVS commit or IRC to not have the final status submitted.
