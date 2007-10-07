@@ -15,7 +15,7 @@ import zlib, bz2, base64, time, StringIO, gzip, re
 class OOTinderboxMailNotifier(tinderbox.TinderboxMailNotifier):
       def __init__(self, fromaddr, extraRecipients,
                  categories=None, builders=None, relayhost="localhost",
-                 subject="buildbot %(result)s in %(builder)s", binaryURL="",
+                 subject="buildbot %(result)s in %(builder)s for the CWS %(branch)s", binaryURL="",
                  logCompression=""):
             tree= "garbage"
             tinderbox.TinderboxMailNotifier.__init__(self, fromaddr, tree, extraRecipients,
@@ -46,7 +46,7 @@ class OOTinderboxMailNotifier(tinderbox.TinderboxMailNotifier):
                   res = "success"
                   text += res
             elif results == WARNINGS:
-                  res = "testfailed"
+                  res = "test_failed"
                   text += res
             elif results == SKIPPED:
                   res = "fold"
@@ -55,7 +55,7 @@ class OOTinderboxMailNotifier(tinderbox.TinderboxMailNotifier):
                   if re.match(r'slave lost', "\n".join(build.getText())):
                         res = "fold"
                   else:
-                        res = "busted"
+                        res = "build_failed"
                   text += res
 
             text += "\n";
@@ -126,6 +126,7 @@ class OOTinderboxMailNotifier(tinderbox.TinderboxMailNotifier):
             m['Date'] = formatdate(localtime=True)
             m['Subject'] = self.subject % { 'result': res,
                                             'builder': name,
+                                            'branch': branch,
                                             }
             m['From'] = self.fromaddr
             # m['To'] is added later
