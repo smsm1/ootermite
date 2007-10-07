@@ -9,10 +9,10 @@ This page is for the status of the buildbot system.
 
 The CVS column tells you whether the bot is building whenever there is a CVS commit.
 
-|| *Botname* || *Builder* || *Owner* || *CVS*|| *Install Sets* || *Status* ||
+|| *Botname* || *_Builder_* || *Owner* || *CVS*|| *[http://termite.go-oo.org/install_sets/ Install Sets]* || *Status* ||
 || breon1 || [http://termite.go-oo.org/buildbot/etch-gij etch-gij] || Michael Leibowitz || No || No || Using the wrong builder, so not doing the right thing. Needs to be updated client side. ||
 || breon2 || [http://termite.go-oo.org/buildbot/etch-gij etch-gij] || Michael Leibowitz || No || No || Using the wrong builder, so not doing the right thing. Needs to be updated client side. ||
-|| MacPort1  || [http://termite.go-oo.org/buildbot/Mac-x86 Mac-x86] || Shaun !McDonald || Yes || No || Install sets not uploading ||
+|| !MacPort1  || [http://termite.go-oo.org/buildbot/Mac-x86 Mac-x86] || Shaun !McDonald || Yes || No || Install sets not uploading ||
 || openoffice3 || [http://termite.go-oo.org/buildbot/edgy-jdk edgy-jdk] || Michael Leibowitz || Yes || Yes || ||
 || manu_ppc_bot || [http://termite.go-oo.org/buildbot/Mac-PPC Mac-PPC] || Manuel Naudin || No || No || Needs scripts update. ||
 || glacial_g3 || [http://termite.go-oo.org/buildbot/Mac-PPC Mac-PPC] || Hisashi T Fujinaka || No || No || Takes around a day or more to complete builds as it is a 400MHz G4 ||
@@ -20,7 +20,7 @@ The CVS column tells you whether the bot is building whenever there is a CVS com
 || pumbaa-etch || [http://termite.go-oo.org/buildbot/O3-build O3-build] || Christian Lohmaier || No || No || Reliably building. Builds are initiated by buildbot owner based on the tinderbox status ||
 || sun-buildbot-win1 || [http://termite.go-oo.org/buildbot/Win-XP Win-XP] || ause || Yes || Yes || ||
 || sun-buildbot-sols1 || [http://termite.go-oo.org/buildbot/Solaris-Sparc Solaris-Sparc] || ause || Yes || ? || Not sure if installsets are produced ||
-|| sd-buildbot-lngi1 || [http://termite.go-oo.org/buildbot/Ubuntu Ubuntu] || Gregor Hartmann || Yes || ? || Not sure if installsets are produced ||
+|| sd-buildbot-lngi1 || [http://termite.go-oo.org/buildbot/Ubuntu Ubuntu] || Gregor Hartmann || Yes || Yes || Not sure if installsets are produced ||
 || sourcebot || [http://termite.go-oo.org/buildbot/Source Source] || Michael Leibowitz || Yes || N/A || This bot just does source code statistics ||
 == EIS/Tinderbox ==
 
