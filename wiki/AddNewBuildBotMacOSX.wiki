@@ -1,5 +1,5 @@
 #summary How to add a new bot on Mac OS X
-#labels buildslave MacOSX
+#labels slave,MacOSX
 
 There is a number of things that you need to do to add a new build slave.
 
@@ -27,10 +27,19 @@ python setup.py build
 python setup.py build
 sudo python setup.py install
 }}}
-  * perl (and the following modules: LWP::Simple, File::Copy::Recursive, Config::Auto
+  # perl (and the following modules: LWP::Simple, File::Copy::Recursive, Config::Auto
+{{{
+sudo perl -MCPAN -e shell
+install LWP::Simple
+install File::Copy::Recursive
+install Config::Auto
+exit
+}}}
   * bash
   * subversion (for the buildbot scripts)
   * cvs (for OpenOffice.org source)
+
+You should now have all the prerequisites installed, so you can now create the slave:
 
   # create the build-slave
 {{{
@@ -43,7 +52,7 @@ svn checkout http://ootermite.googlecode.com/svn/trunk/buildbot/buildslave/scrip
   # Edit the info/admin and info/host files to contain information about yourself/host
   # Customise the scripts for your platform
   # Create a build_copy dir (used by buildprep) with things you wish to be copied into the source tree after checkout and before configure (such as moz)
-  # Email mikeleib or shaunmcdonald the name and password to add your bot to the master
+  # Email mikeleib and shaunmcdonald131 the name and password to add your bot to the master
   # Start your bot
 {{{
 buildbot start BASEDIR
