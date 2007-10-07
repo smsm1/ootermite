@@ -26,4 +26,4 @@ Issue 35 appears to have been fixed, but we now have a problem where the tinderb
 Running as expected, occasional restarts while debugging to fix bugs, thus the loss of some builds.
 
 == Installset Serving ==
-All install sets are served from http://termite.go-oo.org/install_sets/. They currently need to be specifically requested through the web pages. Not all bots are uploading them.
+Working as expected. All install sets are served from http://termite.go-oo.org/install_sets/. They currently need to be specifically requested through the web pages. Not all bots are uploading them.
