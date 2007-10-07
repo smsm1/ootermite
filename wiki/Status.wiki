@@ -15,8 +15,12 @@ The CVS column tells you whether the bot is building whenever there is a CVS com
 || glacial_g3 || [http://termite.go-oo.org/buildbot/Mac-PPC Mac-PPC] || Hisashi T Fujinaka || No || Takes around a day or more to complete builds as it is a 400MHz G4 ||
 || pumbaa-etch || [http://termite.go-oo.org/buildbot/O3-build O3-build] || Christian Lohmaier || No || Reliably building. Builds are initiated by buildbot owner based on the tinderbox status ||
 
-= EIS/Tinderbox Status =
+= EIS/Tinderbox =
 
 Due to the issue 35, we are currently experiencing all builds started from a CVS commit or IRC to not have the final status submitted.
 The status is getting updated in any other case.
 Issue 35 appears to have been fixed, but we now have a problem where the tinderbox isn't properly dealing with the mails.
+
+= Build Master =
+
+Running as expected, occasional restarts while debugging to fix bugs, thus the loss of some builds.
