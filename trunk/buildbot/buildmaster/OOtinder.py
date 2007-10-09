@@ -126,7 +126,7 @@ class OOTinderboxMailNotifier(tinderbox.TinderboxMailNotifier):
             m['Date'] = formatdate(localtime=True)
             m['Subject'] = self.subject % { 'result': res,
                                             'builder': name,
-                                            'branch': branch,
+                                            'branch': build.getProperty("branch"),
                                             }
             m['From'] = self.fromaddr
             # m['To'] is added later
