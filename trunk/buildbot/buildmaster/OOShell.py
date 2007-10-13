@@ -16,7 +16,7 @@ class OOShellCommand(ShellCommand):
       print >>sys.stdout, self.describe(False)
       print >>sys.stdout, self.describe(True)
 
-      if self.describe(False) == "['CWS']":
+      if self.describe(False) == 'CWS':
         self.build.buildFinished(['slave rejected CWS', 'The bot has decided to skip the build at CWS fetching stage'], 'grey',
                                SKIPPED)
       elif self.describe(False) == "['Prep']":
