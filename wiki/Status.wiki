@@ -12,7 +12,7 @@ The CVS column tells you whether the bot is building whenever there is a CVS com
 || *Botname* || *_Builder_* || *Owner* || *CVS*|| *[http://termite.go-oo.org/install_sets/ Install Sets]* || *Status* ||
 || breon1 || [http://termite.go-oo.org/buildbot/etch-gij etch-gij] || Michael Leibowitz || No || No || Using the wrong builder, so not doing the right thing. Needs to be updated client side. ||
 || breon2 || [http://termite.go-oo.org/buildbot/etch-gij etch-gij] || Michael Leibowitz || No || No || Using the wrong builder, so not doing the right thing. Needs to be updated client side. ||
-|| !MacPort1  || [http://termite.go-oo.org/buildbot/Mac-x86 Mac-x86] || Shaun !McDonald || Yes || No || Install sets not uploading ||
+|| !MacPort1  || [http://termite.go-oo.org/buildbot/Mac-x86 Mac-x86] || Shaun !McDonald || Yes || No || Install sets not uploading. All bots failing, due to an error as the smoketest is skipped. ||
 || openoffice3 || [http://termite.go-oo.org/buildbot/edgy-jdk edgy-jdk] || Michael Leibowitz || Yes || Yes || ||
 || manu_ppc_bot || [http://termite.go-oo.org/buildbot/Mac-PPC Mac-PPC] || Manuel Naudin || No || No || Needs scripts update. ||
 || glacial_g3 || [http://termite.go-oo.org/buildbot/Mac-PPC Mac-PPC] || Hisashi T Fujinaka || No || No || Takes around a day or more to complete builds as it is a 400MHz G4 ||
