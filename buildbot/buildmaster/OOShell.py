@@ -1,4 +1,5 @@
 from buildbot.steps.shell import ShellCommand
+from buildbot.process.buildstep import BuildStep
 from buildbot.status.builder import SUCCESS, WARNINGS, FAILURE, SKIPPED
 class OOShellCommand(ShellCommand):
   def __init__(self, **kwargs):
@@ -22,7 +23,7 @@ class OOShellCommand(ShellCommand):
         self.build.buildFinished(['slave rejected bootstrap', 'The bot has decided to skip the build at bootstrap'], 'grey', SKIPPED)
       #anything else should just continue with the build
       else:
-        self.BuildStep.finished(self, SKIPPED)
+        BuildStep.finished(self, SKIPPED)
       
       return SKIPPED
     if cmd.rc != 0:
