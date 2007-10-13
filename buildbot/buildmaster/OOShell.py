@@ -12,6 +12,7 @@ class OOShellCommand(ShellCommand):
       # We only want to stop the build if it is skipped in 
       # the CWS, Prep, Configure, Bootstrap or Compile stages.
       # In the Smoketest, Bundle and Install set stages, we want the build to go on
+      print >>sys.stdout, "foobar"
       print >>sys.stdout, self.describe(False)
       print >>sys.stdout, self.describe(True)
 
