@@ -1,6 +1,7 @@
 from buildbot.steps.shell import ShellCommand
 from buildbot.process.buildstep import BuildStep
 from buildbot.status.builder import SUCCESS, WARNINGS, FAILURE, SKIPPED
+import sys
 class OOShellCommand(ShellCommand):
   def __init__(self, **kwargs):
     ShellCommand.__init__(self, **kwargs)   # always upcall!
