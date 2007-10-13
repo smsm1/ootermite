@@ -16,14 +16,14 @@ class OOShellCommand(ShellCommand):
       print >>sys.stdout, self.describe(False)
       print >>sys.stdout, self.describe(True)
 
-      if self.describe(False) == "CWS":
+      if self.describe(False) == "['CWS']":
         self.build.buildFinished(['slave rejected CWS', 'The bot has decided to skip the build at CWS fetching stage'], 'grey',
                                SKIPPED)
-      elif self.describe(False) == "Prep":
+      elif self.describe(False) == "['Prep']":
         self.build.buildFinished(['slave rejected prep', 'The bot has decided to skip the build at prep'], 'grey', SKIPPED)
-      elif self.describe(False) == "Configure":
+      elif self.describe(False) == "['Configure']":
         self.build.buildFinished(['slave rejected configure', 'The bot has decided to skip the build at configure'], 'grey', SKIPPED)
-      elif self.describe(False) == "Bootstrap":
+      elif self.describe(False) == "['Bootstrap']":
         self.build.buildFinished(['slave rejected bootstrap', 'The bot has decided to skip the build at bootstrap'], 'grey', SKIPPED)
       #anything else should just continue with the build
       else:
