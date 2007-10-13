@@ -12,14 +12,14 @@ class OOShellCommand(ShellCommand):
       # the CWS, Prep, Configure, Bootstrap or Compile stages.
       # In the Smoketest, Bundle and Install set stages, we want the build to go on
       print self.describe(True)
-      if self.describe(True) == "CWS ":
+      if self.describe(False) == "CWS":
         self.build.buildFinished(['slave rejected CWS', 'The bot has decided to skip the build at CWS fetching stage'], 'grey',
                                SKIPPED)
-      elif self.describe(True) == "Prep":
+      elif self.describe(False) == "Prep":
         self.build.buildFinished(['slave rejected prep', 'The bot has decided to skip the build at prep'], 'grey', SKIPPED)
-      elif self.describe(True) == "Configure":
+      elif self.describe(False) == "Configure":
         self.build.buildFinished(['slave rejected configure', 'The bot has decided to skip the build at configure'], 'grey', SKIPPED)
-      elif self.describe(True) == "Bootstrap":
+      elif self.describe(False) == "Bootstrap":
         self.build.buildFinished(['slave rejected bootstrap', 'The bot has decided to skip the build at bootstrap'], 'grey', SKIPPED)
       #anything else should just continue with the build
       else:
