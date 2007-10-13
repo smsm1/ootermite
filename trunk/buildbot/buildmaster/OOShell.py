@@ -6,10 +6,23 @@ class OOShellCommand(ShellCommand):
 
   def evaluateCommand(self, cmd):
     if cmd.rc == 65:        
-      # this works, but step remains yellow forever.  <no reason given> never
-      # seems to apear anywhere.  But the build does stop, which is good
-      self.build.buildFinished(['slave rejected', '<no reason given'], 'green',
+      # the reason is given in the build status page and in the build status mails.
+      # We only want to stop the build if it is skipped in 
+      # the CWS, Prep, Configure, Bootstrap or Compile stages.
+      # In the Smoketest, Bundle and Install set stages, we want the build to go on
+      if self.describe(True) == "CWS":
+        self.build.buildFinished(['slave rejected CWS', 'The bot has decided to skip the build at CWS fetching stage'], 'grey',
                                SKIPPED)
+      elif self.describe(True) == "Prep":
+        self.build.buildFinished(['slave rejected prep', 'The bot has decided to skip the build at prep'], 'grey', SKIPPED)
+      elif self.describe(True) == "Configure":
+        self.build.buildFinished(['slave rejected configure', 'The bot has decided to skip the build at configure'], 'grey', SKIPPED)
+      elif self.describe(True) == "Bootstrap":
+        self.build.buildFinished(['slave rejected bootstrap', 'The bot has decided to skip the build at bootstrap'], 'grey', SKIPPED)
+      #anything else should just continue with the build
+      else:
+        BuildStep.finished(self, SKIPPED)
+      
       return SKIPPED
     if cmd.rc != 0:
       return FAILURE
@@ -33,7 +46,7 @@ class OOShellCommand(ShellCommand):
     elif results == WARNINGS:
       return "orange"
     elif results == SKIPPED:
-      return "green"
+      return "grey"
     else:
       return "red"
 
