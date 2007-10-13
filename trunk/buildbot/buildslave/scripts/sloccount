@@ -63,6 +63,7 @@ sub grab_tag_list()
 		};
 	}
     }
+    print "Got tag list from $url\n";
     return \%h;
 }
 
@@ -87,12 +88,17 @@ sub interpret_branch($$)
 	$cws= $name;
 	$milestone= $cws_list->{$name}->{'base'};
     }
+    print "The milestone of the CWS $cws is $milestone\n";
     return ($milestone, $cws);
 }
+
+print "Starting to run sloccount\n\n";
 
 
 my $server_url= "http://termite.go-oo.org:3000";
 
+
+print "Using the server $server_url\n";
 
 my $branch= '';
 my $buildername;
@@ -179,3 +185,8 @@ else
 {
     die $response->content;  # worked!
 }
+print "TinderPrint: http://termite.go-oo.org/reporter/reports/1?cws=$cws \n";
+print "TinderPrint: http://termite.go-oo.org/reporter/reports/2?cws=$cws \n";
+print "TinderPrint: http://termite.go-oo.org/reporter/reports/3 \n";
+
+print "Finished running sloccount\n";
