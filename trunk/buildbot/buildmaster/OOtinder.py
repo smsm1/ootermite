@@ -1,4 +1,3 @@
-from buildbot.status import tinderbox
 from email.Message import Message
 from email.Utils import formatdate
 from email.MIMEBase import MIMEBase
@@ -8,7 +7,7 @@ from email import Encoders
 from twisted.internet import defer
 from buildbot import interfaces
 from buildbot.twcompat import implements
-from buildbot.status import base, mail
+from buildbot.status import base, mail, tinderbox
 from buildbot.status.builder import SUCCESS, WARNINGS, SKIPPED
 import zlib, bz2, base64, time, StringIO, gzip, re
 
