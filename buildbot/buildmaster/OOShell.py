@@ -1,6 +1,7 @@
 from buildbot.steps.shell import ShellCommand
 from buildbot.process.buildstep import BuildStep
 from buildbot.status.builder import SUCCESS, WARNINGS, FAILURE, SKIPPED
+from buildbot.status.builder import BuildStepStatus
 import sys
 class OOShellCommand(ShellCommand):
   def __init__(self, **kwargs):
@@ -17,16 +18,16 @@ class OOShellCommand(ShellCommand):
       print self.describe(True)
 
       if self.describe(False) == ['CWS']:
-        self.build.buildFinished(['slave rejected CWS', 'The bot has decided to skip the build at CWS fetching stage'], 'grey',
-                               SKIPPED)
+        self.build.buildFinished(['slave rejected CWS', 'CWS problem'], 'grey', SKIPPED)
       elif self.describe(False) == ['Prep']:
-        self.build.buildFinished(['slave rejected prep', 'The bot has decided to skip the build at prep'], 'grey', SKIPPED)
+        self.build.buildFinished(['slave rejected prep', 'prep problem'], 'grey', SKIPPED)
       elif self.describe(False) == ['Configure']:
-        self.build.buildFinished(['slave rejected configure', 'The bot has decided to skip the build at configure'], 'grey', SKIPPED)
+        self.build.buildFinished(['slave rejected configure', 'configure problem'], 'grey', SKIPPED)
       elif self.describe(False) == ['Bootstrap']:
-        self.build.buildFinished(['slave rejected bootstrap', 'The bot has decided to skip the build at bootstrap'], 'grey', SKIPPED)
+        self.build.buildFinished(['slave rejected bootstrap', 'bootstrap problem'], 'grey', SKIPPED)
+
       BuildStep.finished(self, SKIPPED)
-      
+      self.step_status.setColor(self, "grey")
       return SKIPPED
     if cmd.rc != 0:
       return FAILURE
