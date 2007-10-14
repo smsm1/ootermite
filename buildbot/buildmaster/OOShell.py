@@ -13,9 +13,6 @@ class OOShellCommand(ShellCommand):
       # We only want to stop the build if it is skipped in 
       # the CWS, Prep, Configure, Bootstrap or Compile stages.
       # In the Smoketest, Bundle and Install set stages, we want the build to go on
-      print "**********debug:"
-      print self.describe(False)
-      print self.describe(True)
 
       if self.describe(False) == ['CWS']:
         self.build.buildFinished(['slave rejected CWS', 'CWS problem'], 'grey', SKIPPED)
