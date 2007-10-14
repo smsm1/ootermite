@@ -25,8 +25,8 @@ class OOShellCommand(ShellCommand):
         self.build.buildFinished(['slave rejected configure', 'The bot has decided to skip the build at configure'], 'grey', SKIPPED)
       elif self.describe(False) == ['Bootstrap']:
         self.build.buildFinished(['slave rejected bootstrap', 'The bot has decided to skip the build at bootstrap'], 'grey', SKIPPED)
-      else:
-        BuildStep.finished(self, SKIPPED)
+      #else:
+      BuildStep.finished(self, SKIPPED)
       
       return SKIPPED
     if cmd.rc != 0:
