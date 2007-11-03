@@ -24,13 +24,13 @@
 purge_old_logs() {
     cd $1
     echo Clearing logs from $1
-    find -name \*log\* -mtime +10 -exec rm {} \;
+    find . -name \*log\* -mtime +10 -exec rm {} \;
     cd ..
 }
 
 purge_old_installsets() {
     cd install_sets
-    find *.zip -mtime +10 -exec rm {} \;
+    find . -name \*.zip -mtime +10 -exec rm {} \;
     cd ..
 }
 
