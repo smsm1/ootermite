@@ -21,6 +21,18 @@
 ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 ##
 
+purge_old_logs() {
+    cd $1
+    find *log* -mtime +10 -exec rm {} \;
+    cd ..
+}
+
+purge_old_installsets() {
+    cd install_sets
+    find *.zip -mtime +10 -exec rm {} \;
+    cd ..
+}
+
 echo "Space before"
 df -P /dev/sda1
 
@@ -42,14 +54,3 @@ purge_old_intallsets
 echo "Space after"
 df -P /dev/sda1
 
-purge_old_logs() {
-    cd $1
-    find *log* -mtime +10 -exec rm {} \;
-    cd ..
-}
-
-purge_old_installsets() {
-    cd install_sets
-    find *.zip -mtime +10 -exec rm {} \;
-    cd ..
-}
