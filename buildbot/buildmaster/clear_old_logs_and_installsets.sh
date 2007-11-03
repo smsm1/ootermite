@@ -24,7 +24,7 @@
 purge_old_logs() {
     cd $1
     echo Clearing logs from $1
-    find *log* -mtime +10 -exec rm {} \;
+    find -name \*log\* -mtime +10 -exec rm {} \;
     cd ..
 }
 
