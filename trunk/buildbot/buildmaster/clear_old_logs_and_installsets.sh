@@ -23,6 +23,7 @@
 
 purge_old_logs() {
     cd $1
+    echo Clearing logs from $1
     find *log* -mtime +10 -exec rm {} \;
     cd ..
 }
@@ -49,7 +50,7 @@ purge_old_logs SuSE-10
 purge_old_logs Ubuntu-Sun
 purge_old_logs Win-XP
 
-purge_old_intallsets
+purge_old_installsets
 
 echo "Space after"
 df -P /dev/sda1
