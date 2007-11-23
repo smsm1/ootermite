@@ -29,9 +29,10 @@ class OOShellCommand(ShellCommand):
         self.step_status.setColor(self, "grey")
       return SKIPPED
     if cmd.rc == 255:
-      # This is returned when the CWS script has a problem
-      self.build.buildFinished(['slave rejected CWS', 'CWS problem'], 'grey', SKIPPED)
-      return SKIPPED
+      if self.describe(False) == ['Everything']:
+        # This is returned when the CWS script has a problem
+        self.build.buildFinished(['slave rejected CWS', 'CWS problem'], 'grey', SKIPPED)
+        return SKIPPED
     if cmd.rc != 0:
       return FAILURE
     # if cmd.log.getStderr(): return WARNINGS
