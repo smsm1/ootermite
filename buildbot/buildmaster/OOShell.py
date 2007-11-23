@@ -22,9 +22,11 @@ class OOShellCommand(ShellCommand):
         self.build.buildFinished(['slave rejected configure', 'configure problem'], 'grey', SKIPPED)
       elif self.describe(False) == ['Bootstrap']:
         self.build.buildFinished(['slave rejected bootstrap', 'bootstrap problem'], 'grey', SKIPPED)
-
-      BuildStep.finished(self, SKIPPED)
-      self.step_status.setColor(self, "grey")
+      elif self.describe(False) == ['Everything']:
+        self.build.buildFinished(['slave rejected source', 'Source problem'], 'grey', SKIPPED)
+      else
+        BuildStep.finished(self, SKIPPED)
+        self.step_status.setColor(self, "grey")
       return SKIPPED
     if cmd.rc != 0:
       return FAILURE
