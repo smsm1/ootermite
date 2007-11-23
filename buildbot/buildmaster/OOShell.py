@@ -24,7 +24,7 @@ class OOShellCommand(ShellCommand):
         self.build.buildFinished(['slave rejected bootstrap', 'bootstrap problem'], 'grey', SKIPPED)
       elif self.describe(False) == ['Everything']:
         self.build.buildFinished(['slave rejected source', 'Source problem'], 'grey', SKIPPED)
-      else
+      else:
         BuildStep.finished(self, SKIPPED)
         self.step_status.setColor(self, "grey")
       return SKIPPED
