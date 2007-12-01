@@ -131,7 +131,7 @@ class OOTinderboxMailNotifier(tinderbox.TinderboxMailNotifier):
                                             'builder': name,
                                             'branch': build.getProperty("branch"),
                                             }
-            m['From'] = build.getProperty("builder").getAdmin() #self.fromaddr # need to use the property of the e-mail of the builder
+            m['From'] = self.fromaddr # need to use the property of the e-mail of the builder
             
             # m['To'] is added later
 
