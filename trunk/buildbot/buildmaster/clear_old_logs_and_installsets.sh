@@ -21,36 +21,11 @@
 ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 ##
 
-purge_old_logs() {
-    cd $1
-    echo Clearing logs from $1
-    find . -name \*log\* -mtime +10 -exec rm {} \;
-    cd ..
-}
-
-purge_old_installsets() {
-    cd install_sets
-    find . -name \*.zip -mtime +10 -exec rm {} \;
-    cd ..
-}
-
 echo "Space before"
 df -P /dev/sda1
 
-purge_old_logs edgy-jdk
-purge_old_logs etch-gij
-purge_old_logs MacPort1
-purge_old_logs Mac-PPC
-purge_old_logs Mac-x86
-purge_old_logs O3-build
-purge_old_logs Solaris-Intel
-purge_old_logs Solaris-Sparc
-purge_old_logs source
-purge_old_logs SuSE-10
-purge_old_logs Ubuntu-Sun
-purge_old_logs Win-XP
-
-purge_old_installsets
+find . -mindepth 2 -type f -not -path \*/.svn\*  -not -path \*/modules\* -not -path \*/builder -mtime +30 -print0 | xargs -0 -r rm
+find twistd.log* -mtime +30 -print0 | xargs -0 -r rm
 
 echo "Space after"
 df -P /dev/sda1

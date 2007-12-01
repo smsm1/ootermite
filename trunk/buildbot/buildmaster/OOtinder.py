@@ -116,7 +116,7 @@ class OOTinderboxMailNotifier(tinderbox.TinderboxMailNotifier):
                   msg.add_header('Content-Disposition', 'attachment', filename="bogusfilename.gz")
 
                   #keep tinderbox parser happy
-                  msg2= MIMEText("keep tinderbox happy") #can use only 1 arg?
+                  msg2= MIMEText(text) #can use only 1 arg?
                   msg2.add_header('Content-Disposition', 'inline')
                   m.attach(msg2)
                   m.attach(msg)
@@ -127,7 +127,8 @@ class OOTinderboxMailNotifier(tinderbox.TinderboxMailNotifier):
                                             'builder': name,
                                             'branch': build.getProperty("branch"),
                                             }
-            m['From'] = self.fromaddr
+            m['From'] = slave.getAdmin() #self.fromaddr # need to use the property of the e-mail of the builder
+            
             # m['To'] is added later
 
             d = defer.DeferredList([])
