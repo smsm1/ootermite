@@ -9,6 +9,10 @@ from buildbot import interfaces
 from buildbot.twcompat import implements
 from buildbot.status import base, mail, tinderbox
 from buildbot.status.builder import SUCCESS, WARNINGS, SKIPPED
+
+# for tests
+from buildbot.status import builder, base
+
 import zlib, bz2, base64, time, StringIO, gzip, re
 
 class OOTinderboxMailNotifier(tinderbox.TinderboxMailNotifier):
