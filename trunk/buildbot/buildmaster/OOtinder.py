@@ -93,6 +93,7 @@ class OOTinderboxMailNotifier(tinderbox.TinderboxMailNotifier):
                               tinderboxLogs += log.getText()
 
                   text += "%s END\n\n" % t
+                  compressedSummary = text
                   text += tinderboxLogs
                   text += "\n"
 
@@ -120,7 +121,7 @@ class OOTinderboxMailNotifier(tinderbox.TinderboxMailNotifier):
                   msg.add_header('Content-Disposition', 'attachment', filename="bogusfilename.gz")
 
                   #keep tinderbox parser happy
-                  msg2= MIMEText(text) #can use only 1 arg?
+                  msg2= MIMEText(compressedSummary) #can use only 1 arg?
                   msg2.add_header('Content-Disposition', 'inline')
                   m.attach(msg2)
                   m.attach(msg)
