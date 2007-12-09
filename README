@@ -1,4 +1,5 @@
-Stuff in here:
-
-reporter/   a ruby on rails app that forms the reporting engine
-buildbot/   stuff relating to the buildbot app
+buildmaster			buildmaster related config files/code.
+buildslave/scripts		scripts needed for a build slave, 
+				these may need to be customised to the 
+				specific buildslave environment.
+buildslave/OO-changes.diff	hacks to buildbot for slave-side CWS.
