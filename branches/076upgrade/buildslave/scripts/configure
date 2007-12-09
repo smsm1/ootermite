@@ -1,0 +1,24 @@
+#!/bin/bash -x
+
+cd config_office
+
+OS=`uname`
+
+if [[ $OS = "Darwin" ]]; then
+    ./configure --with-use-shell=bash --disable-build-mozilla --disable-headless --disable-gtk 
+    exit 0
+fi    
+
+if [[ $OS = "Solaris" ]]; then
+    ./configure --with-use-shell=bash --disable-cups --disable-build-mozilla --with-gnu-patch=/usr/bin/gpatch --with-gnu-cp=/opt/sfw/bin/cp --with-ant-home=/usr/sfw --with-jdk-home=/usr/jdk/jdk1.5.0_06 --disable-pasf
+    exit 0
+fi
+
+if [[ $OS = "CYGWIN_NT-5.1" ]]; then
+    ./configure --with-use-shell=bash --with-midl-path=/cygdrive/c/PROGRA~1/MI9547~1/Bin --with-psdk-home=/cygdrive/c/PROGRA~1/MI9547~1 --with-directx-home=/cygdrive/c/PROGRA~1/MI6996~1 --with-ant-home=/cygdrive/d/termite/prereq/apache-ant-1.7.0 --disable-build-mozilla --with-gpc --with-csc-path=/cygdrive/c/WINDOWS/Microsoft.NET/Framework/v2.0.50727 --with-jdk-home=/cygdrive/c/PROGRA~1/Java/JDK15~1.0_1 --disable-activex --with-frame-home=/cygdrive/c/PROGRA~1/MICROS~2/SDK/v2.0 --with-cl-home=/cygdrive/c/PROGRA~1/MICROS~2/VC --with-nsis-path=/cygdrive/d/termite/prereq/NSIS
+    exit 0
+fi
+
+# If it isn't covered above.
+
+./configure --with-use-shell=bash
