@@ -24,13 +24,13 @@ The CVS column tells you whether the bot is building whenever there is a CVS com
 || sourcebot || [http://termite.go-oo.org/buildbot/Source Source] || Michael Leibowitz || Yes || N/A || This bot just does source code statistics ||
 == EIS/Tinderbox ==
 
-Due to the issue 35, we are currently experiencing all builds started from a CVS commit or IRC to not have the final status submitted.
-The status is getting updated in any other case.
-Issue 35 appears to have been fixed, but we now have a problem where the tinderbox isn't properly dealing with the mails.
+Mails appear to be going across to the tinderbox fine. Large logs occasionally cause a problem.
 
 == Build Master ==
 
-Running as expected, occasional restarts while debugging to fix bugs, thus the loss of some builds.
+Running as expected, occasional restarts while debugging to fix bugs, thus the loss of some currently running builds.
+
+Most development is currently on the [http://140.211.166.227:8010/ development server]
 
 == Installset Serving ==
 Working as expected. All install sets are served from http://termite.go-oo.org/install_sets/. They currently need to be specifically requested through the web pages. Not all bots are uploading them.
