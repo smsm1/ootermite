@@ -88,7 +88,7 @@ class OOTinderboxMailNotifier(tinderbox.TinderboxMailNotifier):
                         logName= log.getName()
 #                   if logName and logName[-1] == '\n':
 #                         logName = logName[:-1]
-                        if (logName != "summary log" and logName != "tail" and logName != "warnings"):
+                        if (logName != "summary log" and logName != "tail" and logName != "warnings" and logName != "errors"):
                               tinderboxLogs += "*********************************************** %s ***********************************************\n" % logName
                               tinderboxLogs += log.getText()
 
