@@ -1,5 +1,11 @@
 #!/bin/bash -x
 
+export TMP=/tmp
+export CC="/usr/local/bin/ccache gcc"
+export CXX="/usr/local/bin/ccache g++"
+export SYSTEM_OPENSSL="YES" 
+
+
 [ -f LinuxX86Env.Set.sh ] && source LinuxX86Env.Set.sh 
 [ -f LinuxIntelEnv.Set.sh ] && source LinuxIntelEnv.Set.sh
 [ -f MacOSXX86Env.Set.sh ] && source MacOSXX86Env.Set.sh
