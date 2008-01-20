@@ -1,6 +1,16 @@
 #!/bin/bash -x
 
+if [ $7 != "--install_set=on" ]; then
+    exit 65
+fi
+export zipname=install_set.zip
 
-cd instsetoo_native/unxlngi6.pro/
-find . -name \*.rpm -print | zip -0 ../../install_set.zip -@
+rm $zipname
+
+[ -f MacOSXX86Env.Set.sh ]
+cd instsetoo_native/unxmacxi.pro
+find . -name \*.dmg -print | zip -0 ../../$zipname -@
+
+#cd instsetoo_native/unxlngi6.pro/
+#find . -name \*.rpm -print | zip -0 ../../$1 -@
 
