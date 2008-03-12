@@ -19,8 +19,13 @@ The CVS column tells you whether the bot is building whenever there is a CVS com
 || sun-buildbot-soli1 || [http://termite.go-oo.org/buildbot/Solaris-Intel Solaris-Intel] || ause || No || No || Bug with uploading the installsets due to a hang ||
 || pumbaa-etch || [http://termite.go-oo.org/buildbot/O3-build O3-build] || Christian Lohmaier || No || No || Reliably building. Builds are initiated by buildbot owner based on the tinderbox status ||
 || sun-buildbot-win1 || [http://termite.go-oo.org/buildbot/Win-XP Win-XP] || ause || No || Yes || ||
+|| sun-buildbot-win2 || [http://termite.go-oo.org/buildbot/Win-XP2 Win-XP2] || Gregor Hartmann || No || Yes || ||
+|| WinXP-OOoDeV || [http://termite.go-oo.org/buildbot/Win-XP3 Win-XP3] || ??? || No || Yes || Offline due to connectivity issues ||
+|| win2003bot || [http://termite.go-oo.org/buildbot/Win-2003 Win-2003] || baohonglin || No || Yes || ||
+|| sun-buildbot-mingw1 || [http://termite.go-oo.org/buildbot/MinGW MinGW] || Vladimir Glazounov || No || Yes || ||
 || sun-buildbot-sols1 || [http://termite.go-oo.org/buildbot/Solaris-Sparc Solaris-Sparc] || ause || No || No || Installsets are not produced due to a hang on completion of upload ||
 || sd-buildbot-lngi1 || [http://termite.go-oo.org/buildbot/Ubuntu Ubuntu] || Gregor Hartmann || No || Yes || ||
+|| redflagbot || [http://termite.go-oo.org/buildbot/RedFlag RedFlag] || baohonglin || No || Yes || ||
 || sourcebot || [http://termite.go-oo.org/buildbot/Source Source] || Michael Leibowitz || Yes || N/A || This bot just does source code statistics, which isn't working ||
 == EIS/Tinderbox ==
 
