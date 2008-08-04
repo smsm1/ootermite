@@ -1,8 +1,5 @@
-#summary Explanation of the ootermite slave basedir layout. Useful for developers that want to adapt  the scripts.
+#summary Explanation of the ootermite slave basedir layout. Useful for developers that want to adapt the scripts.
 #labels slave
-
-
-= Slave Basedir Layout =
 
 The following files/scripts should reside within the ootermite slave basedir:
 
