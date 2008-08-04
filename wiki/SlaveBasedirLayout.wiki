@@ -3,13 +3,13 @@
 
 The following files/scripts should reside within the ootermite slave basedir:
 
-  * bootstrap
-  * buildprep
-  * bundle
-  * compile
-  * configure
-  * cws_get
-  * cws_get.config
+  * bootstrap: Runs bootstrap
+  * buildprep: Insert whatever you need in here to prepare the tree for building. For example, copying Mozilla, that daft windows.dll or patching.
+  * bundle: Zips up the install set.  The name is supplied in $1 by the buildmaster.
+  * compile: Actually does the compile
+  * configure: Runs configure, you supply configure line
+  * cws_get: For getting CWS's from CVS
+  * cws_get.config: cws_get config file
   * sloccount
   * smoketestoo
 
