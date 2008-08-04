@@ -1,5 +1,5 @@
+#summary Explanation of the ootermite slave basedir layout. Useful for developers that want to adapt  the scripts.
 #labels slave
-#Explanation of the ootermite slave basedir layout. Useful for developers that want to adapt  the scripts.
 
 
 = Slave Basedir Layout =
@@ -15,6 +15,8 @@ The following files/scripts should reside within the ootermite slave basedir:
   * cws_get.config
   * sloccount
   * smoketestoo
+
+These files can be obtained through Subversion (trunk/buildbot/buildslave/scripts/).
 
 The file _buildbot.tac_ is created through the buildbot create-slave command. If this file is missing the Buildbot will not recognize the slave's basedir! It is important because it contains basic (but important) information about the slave-master connection.
 
