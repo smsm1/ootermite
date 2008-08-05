@@ -34,6 +34,7 @@ sub cache_add_from_checkout($$);
 sub run;                    #works
 sub interpret_branch($$);
 sub is_milestone($);        #works (copied)
+sub cached_get($);
 sub latest_milestone($);    
 sub grab_tag_list();        #works (copied)
 sub update_to($$$);
@@ -149,7 +150,12 @@ sub interpret_branch($$)
 
     if ($name eq 'HEAD' || $name eq '')
     {
-	$milestone= latest_milestone('SRC680');
+	$milestone= latest_milestone('DEV300');
+        if ( !$milestone )
+        {
+            $milestone= latest_milestone('SRC680');
+        }
+        die "couldn't find latest milestone!\n" unless $milestone;
     }
     elsif(is_milestone($name))
     {
@@ -164,23 +170,52 @@ sub interpret_branch($$)
     return ($milestone, $cws);
 }
 
+sub cached_get($)
+{
+    my $url = shift;
+    my $filename = $url;
+    my $fetchfailed = 0;
+
+    $filename =~ s/.*\///;
+    my $response_ = get($url) || { $fetchfailed = 1 };
+    #my $response_ = "" ; $fetchfailed = 1;
+
+    if ( $fetchfailed )
+    {
+        print "Couldn't get $url\ reading from file $filename\n";
+        open CACHEX, "< $filename" || die "error opening file $filename\n";
+        $response_ = join( "", <CACHEX> ) || die "error reading file $filename\n";
+        close CACHEX;
+    }
+    else
+    {
+        open CACHEX, ">$filename";
+        print CACHEX $response_;
+        close CACHEX;
+    }
+
+    return $response_;
+}
+
 sub grab_tag_list()
 {
     my $url= 'http://go-oo.org/tinderbox/tags/tag-list';
-        
-    my $response = get($url) || die "Couldn't get $url\n";
+    
+    my $response = cached_get($url);
+
     my %h;
     foreach(split /\n/, $response)
     {
-	unless (/\#.*/ || /^\s*$/)
+	unless (/\#.*/)
 	{
-	    (my $name, my $base, my $tag, my $dirs) = split / : /, $_;
+	    (my $name, my $base, my $tag, my $dirs, my $newdirs) = split / : /, $_;
 	    
 	    $h{$name}= 
 	    {
 		'base' => $base,
 		'tag'  => $tag,
-		'dirs' => [split / /, $dirs]
+		'dirs' => [split / /, $dirs],
+		'newdirs' => [split / /, $newdirs]
 		};
 	}
     }
@@ -192,7 +227,7 @@ sub latest_milestone($)
     my $master= shift;
     my $url = 'http://go-oo.org/tinderbox/tags/tag-latest-master-list';
     
-    my $response = get($url) || die "Couldn't get $url\n";
+    my $response = cached_get($url);
     foreach(split /\n/, $response)
     {
 	unless (/\#.*/)
@@ -201,13 +236,13 @@ sub latest_milestone($)
 	    return $name if $name =~ /$master/;
 	}
     }
-    die "couldn't find latest milestone!\n";
+    return undef;
 }
 
 sub is_milestone($)
 {
     my $name= shift;
-    return 1 if ($name =~ /\w+680_m\d+/);
+    return 1 if ($name =~ /\w+(680)|(300)_m\d+/);
     return 0;
 }
 
@@ -224,14 +259,22 @@ sub update_to($$$)
     {
 	run('cvs', "-d", $config->{'cvs_root'}, $config->{'cvs_options'}, 'co', "-Pr", "$cws_tag", "$_");
     }
+    foreach (@{$cws_list->{$name}->{'newdirs'}})
+    {
+        run('cvs', "-d", $config->{'cvs_root'}, $config->{'cvs_options'}, 'co', "-Pr", "HEAD", "$_");
+    }
+
     logger "done!";
     chdir $cwd;
 }
 
 sub ensure_workdir()
 {
+    my $px;
     logger "removing workdir if exists ...";
-    rmtree 'workdir' if -d 'workdir';
+    rmtree 'workdir.old' if -d 'workdir.old';
+    $px = system "mv workdir workdir.old" if -d 'workdir';
+    die "" if $px;
     mkdir 'workdir';
     logger "done!";
 }
@@ -329,10 +372,10 @@ if ($help_option)
     print STDERR "\t$0 [--branch=<branch>]\n";
     print STDERR "\twhere <branch> is a cws name or milestone name\n";
     print STDERR "Examples:\n";
-    print STDERR "\"$0 --branch=SRC680_m212\"  get SRC680 milestone 212\n";
+    print STDERR "\"$0 --branch=DEV300_m212\"  get DEV300 milestone 212\n";
     print STDERR "\"$0 --branch=swwarnings\"  get swwarnings cws\n";
-    print STDERR "\"$0 --branch=HEAD\"  get latest SRC680 milestone\n";
-    print STDERR "\"$0\"  get latest SRC680 milestone\n\n\n";
+    print STDERR "\"$0 --branch=HEAD\"  get latest DEV300 milestone\n";
+    print STDERR "\"$0\"  get latest DEV300 milestone\n\n\n";
     exit 1;
 }
 
@@ -355,7 +398,25 @@ ensure_cache_dir($config);
 logger "milestone= $milestone";
 logger "cws= $cws";
 
+logger "modules= ".join( " ", @{$cws_list->{$cws}->{'dirs'}}) if $cws ne "none";
+logger "new modules= ".join( " ", @{$cws_list->{$cws}->{'newdirs'}}) if $cws ne "none";
+
+# Read the list with broken milestones from config
+my @brokenlist = @{$config->{'brokenlist'}};
+
+foreach my $known_broken (@brokenlist) 
+{
+	logger "used $milestone - check $known_broken";
+	if ("$milestone" =~ "$known_broken") {
+		logger "Build rejected!";
+		logger "This build is based on milestone $milestone - This milestone is known to be broken or not supported by this buildbot";
+		logger "Please resync!";
+		exit 65;
+	}
+}
+
 ensure_workdir();
+
 if (milestone_in_cache($config, $milestone))
 {
     cache_touch($config, $milestone);
@@ -368,6 +429,31 @@ else
     {
 	cache_add_from_checkout($config, $milestone);
     } 
+}
+
+my $milestonenr = $milestone;
+my $workstamp = $milestone;
+$milestonenr =~ s/.*_m//;
+$workstamp =~ s/_m.*//;
+open(MILESTONEFILE, ">workdir/milestone") or die "can't write milestone file\n";
+print MILESTONEFILE "fetched_milestone=$milestonenr\nexport fetched_milestone\n";
+print MILESTONEFILE "fetched_workstamp=$workstamp\nexport fetched_workstamp\n";
+close MILESTONEFILE;
+
+if ( !opendir(DIR, "workdir/scext") ) 
+{
+    logger "trying to checkout module scext for $milestone";
+    my $cwd = &Cwd::cwd();
+    chdir("workdir");
+    my @cmd_ = ('cvs', '-d', $config->{'cvs_root'},
+                 $config->{'cvs_options'}, 'co', '-r', $milestone, 'scext');
+    logger "system(\"" . join ('", "', @cmd_) . "\");\n", $DEBUG_LOG_LEVEL;
+    logger "can't run $cmd_[0]!!\n" unless !system(@cmd_);
+    chdir $cwd;
+}
+else
+{
+    closedir( DIR )
 }
 update_to($config, $cws_list, $cws) if $cws ne "none";
 logger "finished"
