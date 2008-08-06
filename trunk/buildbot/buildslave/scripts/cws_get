@@ -379,12 +379,15 @@ if ($help_option)
     exit 1;
 }
 
+my @ar=();
+my $arrayref = \@ar;
 my %defaults= ( 
 		'cache_size' => 4,
 		'cvs_root' => ':pserver:anoncvs@anoncvs.services.openoffice.org:/cvs',
 		'cvs_options' => "-z6",
 		'log_level' => $NORMAL_LOG_LEVEL,
-		'cache_dir' => &Cwd::cwd() . '/tarballs/'
+		'cache_dir' => &Cwd::cwd() . '/tarballs/',
+		'brokenlist' => $arrayref
 		);
 logger "$0 started";
 my $config= Config::Auto::parse("$0.config", format => 'equal');
