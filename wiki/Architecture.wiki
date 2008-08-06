@@ -1,5 +1,5 @@
+#summary A basic architectural overview
 #labels Phase-Design
-#A basic architectural overview 
 
 == Major Components ==
 http://ootermite.googlecode.com/svn/wiki/simple_block_diagram.png
