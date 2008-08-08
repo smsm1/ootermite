@@ -30,7 +30,7 @@ sub milestone_in_cache($$); #works
 sub ensure_cache_dir($);    #works
 sub cache_touch($$);        #works
 sub cache_evict($);         #works
-sub cache_add_from_checkout($$);
+sub cache_add_from_checkout($$$);
 sub run;                    #works
 sub interpret_branch($$);
 sub is_milestone($);        #works (copied)
@@ -118,16 +118,25 @@ sub cache_evict($)
     }
 }
 
-sub cache_add_from_checkout($$)
+sub cache_add_from_checkout($$$)
 {
     my $config= shift;
     my $milestone= shift;
+    my $vcs= shift;
 
     my $cwd = &Cwd::cwd();
     chdir('workdir');
-    logger "grabbing $milestone from cvs";
-    run('cvs', '-d', $config->{'cvs_root'}, 
-	$config->{'cvs_options'}, 'co', '-r', $milestone, 'OpenOffice2');
+    logger "grabbing $milestone from $vcs";
+    if ( $vcs eq "cvs" )
+    {
+        run('cvs', '-d', $config->{'cvs_root'}, 
+	    $config->{'cvs_options'}, 'co', '-r', $milestone, 'OpenOffice2');
+    }
+    elsif ( $vcs eq "svn" )
+    {
+        run('svn', 'checkout', $config->{'svn_root'}."/tags/$milestone",
+            $config->{'svn_options'} );
+    }
     my @files= glob '*';
     logger "tarballing $milestone for cache...";
     run('tar', 'cjf', $config->{'cache_dir'} . "$milestone.tar.bz2", @files);
@@ -150,10 +159,10 @@ sub interpret_branch($$)
 
     if ($name eq 'HEAD' || $name eq '')
     {
-	$milestone= latest_milestone('DEV300');
+	$milestone= latest_milestone('DEV310');
         if ( !$milestone )
         {
-            $milestone= latest_milestone('SRC680');
+            $milestone= latest_milestone('DEV300');
         }
         die "couldn't find latest milestone!\n" unless $milestone;
     }
@@ -242,7 +251,7 @@ sub latest_milestone($)
 sub is_milestone($)
 {
     my $name= shift;
-    return 1 if ($name =~ /\w+(680)|(300)_m\d+/);
+    return 1 if ($name =~ /\w+(300)|(310)_m\d+/);
     return 0;
 }
 
@@ -372,10 +381,10 @@ if ($help_option)
     print STDERR "\t$0 [--branch=<branch>]\n";
     print STDERR "\twhere <branch> is a cws name or milestone name\n";
     print STDERR "Examples:\n";
-    print STDERR "\"$0 --branch=DEV300_m212\"  get DEV300 milestone 212\n";
+    print STDERR "\"$0 --branch=DEV310_m12\"  get DEV310 milestone 12\n";
     print STDERR "\"$0 --branch=swwarnings\"  get swwarnings cws\n";
-    print STDERR "\"$0 --branch=HEAD\"  get latest DEV300 milestone\n";
-    print STDERR "\"$0\"  get latest DEV300 milestone\n\n\n";
+    print STDERR "\"$0 --branch=HEAD\"  get latest DEV310 milestone\n";
+    print STDERR "\"$0\"  get latest DEV310 milestone\n\n\n";
     exit 1;
 }
 
@@ -420,6 +429,9 @@ foreach my $known_broken (@brokenlist)
 
 ensure_workdir();
 
+my $vcs= "cvs";      #default for now
+$vcs= "svn" if ( $milestone =~ "(DEV300_m999)|(DEV310.*)" );
+
 if (milestone_in_cache($config, $milestone))
 {
     cache_touch($config, $milestone);
@@ -430,7 +442,7 @@ else
     cache_evict($config);
     unless (download_from_go_oo($config, $milestone))
     {
-	cache_add_from_checkout($config, $milestone);
+	cache_add_from_checkout($config, $milestone, $vcs);
     } 
 }
 

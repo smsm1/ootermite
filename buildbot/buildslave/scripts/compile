@@ -1,24 +1,27 @@
 #!/bin/bash -x
 
-export TMP=/tmp
-export CC="/usr/local/bin/ccache gcc"
-export CXX="/usr/local/bin/ccache g++"
-export SYSTEM_OPENSSL="YES" 
+# read config
+. ../../steps.config
 
-
-[ -f LinuxX86Env.Set.sh ] && source LinuxX86Env.Set.sh 
-[ -f LinuxIntelEnv.Set.sh ] && source LinuxIntelEnv.Set.sh
-[ -f MacOSXX86Env.Set.sh ] && source MacOSXX86Env.Set.sh
-[ -f MacOSXPPCEnv.Set.sh ] && source MacOSXPPCEnv.Set.sh
-[ -f SolarisX86Env.Set.sh ] && source SolarisX86Env.Set.sh 
-[ -f winenv.set.sh ] && . winenv.set.sh
+#put name of OOo config file created by configure in $envname
+. ../../getOOoEnv
+. $envname 
 
 # Custom configure flags
 [ -f winenv.set.sh ] && export PROFULLSWITCH="$PROFULLSWITCH"
 
+. ../../ccsetup.sh $ccdatapath
+
 hash -r
 
-#dmake
-export custom_buildflags="-P2 -- -P2"
+# hack to survive build.pl "feature" :(
+export TMP=/tmp
+
 cd instsetoo_native && perl ../solenv/bin/build.pl --all $custom_buildflags
+rcode=$?
+
+#call site specific compile_post copied from build_copy
+[ -f site_compile_post ] && . site_compile_post
+
+exit $rcode
 

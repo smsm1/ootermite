@@ -1,18 +1,26 @@
-#!/bin/bash -v
+#!/bin/bash -x
 
 # for those requiring X
-if [ -f LinuxX86Env.Set.sh -o -f LinuxIntelEnv.Set.sh -o -f SolarisX86Env.Set.sh ]
+if [ -f LinuxX86Env.Set.sh -o -f LinuxIntelEnv.Set.sh -o -f SolarisX86Env.Set.sh -o -f SolarisSparcEnv.Set.sh -o -f MacOSXX86Env.Set.sh -o -f MacOSXPPCEnv.Set.sh ]
 then
-    /usr/bin/Xvfb :2
+    /usr/bin/Xvfb :2 &
     export DISPLAY=:2
-    export EXTERNAL_WARNINGS_NOT_ERRORS=TRUE
+    export EXTERNAL_WARNINGS_NOT_ERRORS="TRUE"
+    XStarted=Yes
 fi
 
-[ -f LinuxX86Env.Set.sh ] && source LinuxX86Env.Set.sh 
-[ -f LinuxIntelEnv.Set.sh ] && source LinuxIntelEnv.Set.sh
-[ -f MacOSXX86Env.Set.sh ] && source MacOSXX86Env.Set.sh
-[ -f MacOSXPPCEnv.Set.sh ] && source MacOSXPPCEnv.Set.sh
-[ -f SolarisX86Env.Set.sh ] && source SolarisX86Env.Set.sh 
-[ -f winenv.set.sh ] && . winenv.set.sh
+#put name of OOo config file created by configure in $envname
+. ../../getOOoEnv
+. $envname
 
+# hack to survive build.pl "feature" :(
+export TMP=/tmp
+
+export TEMP="/tmp"
 cd smoketestoo_native && perl ../solenv/bin/build.pl
+export rcode=$?
+
+[ "$XStarted" ] && ../../../Xvfb_stop.sh
+
+exit $rcode
+
