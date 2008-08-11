@@ -1,0 +1,20 @@
+#!/bin/bash -x
+
+# get milestone number written by cws_get
+. ./milestone
+# read config
+. ../../steps.config
+
+$copyrecursive ../../build_copy/Common/* .
+$copyrecursive ../../build_copy/${fetched_workstamp}_m$fetched_milestone/* .
+
+for name in ../../build_copy/${fetched_workstamp}_m$fetched_milestone/*.patch
+do echo patching $name
+   $patch -f -p0 -F4 -N -i $name
+done
+
+#call site specific buildprep copied from build_copy
+[ -f ./site_buildprep ] && . ./site_buildprep
+
+echo do not fail on patches
+

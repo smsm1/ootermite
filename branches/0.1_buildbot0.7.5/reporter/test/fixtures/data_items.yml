@@ -1,0 +1,26 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+<% @id= 0 %>
+<% def get_id; @id+= 1; @id; end %>
+
+# should match builds.yml
+<% builders = 5 %>
+<% builds_per_builder = 10 %>
+<% builds = builders * builds_per_builder %>
+
+<% builds.times do |i| %>
+<%= "data_item_#{i}_1:" %>
+  id: <%= get_id %>
+  build_id: <%= i + 1 %>
+  data_type: tree_size
+  data: 
+    megabytes: <%= 1000 + rand(100) %>
+
+<%= "data_item_#{i}_2:" %>
+  id: <%= get_id %>
+  build_id: <%= i + 1 %>
+  data_type: oprofile
+  data:
+    symbol: <%= a= []; 10.times { a << "symbol_#{rand(25)}"}; a.inspect %>
+    percent: <%= a= []; 10.times { a << rand(10) }; a.inspect %>
+<% end %>
