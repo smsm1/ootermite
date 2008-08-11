@@ -1,7 +1,7 @@
 from buildbot import util
 import os, os.path, re
 from rfc822 import Message
-from buildbot.changes import base, changes, maildirtwisted
+from buildbot.changes import base, changes#, maildirtwisted #COMMENTED-OUT BY CHRIS
 from buildbot.changes import mail
 
 def parseOOAllCVSmail(self, fd, prefix=None, sep="/"):
