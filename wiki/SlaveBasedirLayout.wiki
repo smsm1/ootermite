@@ -20,6 +20,8 @@ The file _buildbot.tac_ is created through the buildbot create-slave command. If
   * info/admin: Contains mail address of the slave's admin
   * info/host: Contains information about the host machine the slave is running on. Should be customized.
 
+The buildprep step needs a build_copy/ directory which is currently not automatically created.
+
 While running there are two additional files:
   * twistd.log: Output of the slave.
   * twistd.pid: Contains PID of the currently running twistd process.
