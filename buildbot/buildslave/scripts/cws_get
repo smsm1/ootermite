@@ -307,13 +307,13 @@ sub download_from_go_oo($$)
     my $config= shift;
     my $milestone= shift;
     (my $master, my $number)= split /_/, $milestone;
-    my $base_url= "http://go-oo.org/packages/$master/";
+    my $base_url= "http://download.go-oo.org/$master/";
     my $base_file= lc $master . "-$number";
-    my @files=("binfilter.tar.bz2",
-	       "core.tar.bz2",
-	       "lang.tar.bz2",
-	       "sdk_oo.tar.bz2",
-	       "system.tar.bz2");
+    my @files = ("artwork.tar.bz2", "base.tar.bz2", "bootstrap.tar.bz2", "calc.tar.bz2",
+                 "components.tar.bz2", "filters.tar.bz2", "impress.tar.bz2", "l10n.tar.bz2",
+                 "libs_core.tar.bz2", "libs_extern.tar.bz2", "libs_extern_sys.tar.bz2",
+                 "libs_gui.tar.bz2", "postprocess.tar.bz2", "sdk.tar.bz2", "swext.tar.bz2",
+                 "testing.tar.bz2", "ure.tar.bz2", "writer.tar.bz2");
     my $cwd = &Cwd::cwd();
     my $tempdir = tempdir ( $milestone . "-XXXX", DIR => $cwd, CLEANUP => 1);
     logger "trying to find $milestone tarballs at go-oo...";
