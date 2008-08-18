@@ -28,35 +28,14 @@ class OOShellCommand(ShellCommand):
     ShellCommand.__init__(self, **kwargs)   # always upcall!
 
   def evaluateCommand(self, cmd):
-    if cmd.rc == 65:        
-      # the reason is given in the build status page and in the build status mails.
-      # We only want to stop the build if it is skipped in 
-      # the CWS, Prep, Configure, Bootstrap or Compile stages.
-      # In the Smoketest, Bundle and Install set stages, we want the build to go on
-
-      if self.describe(False) == ['CWS']:
-        self.build.buildFinished(['slave rejected CWS', 'CWS problem'], 'grey', SKIPPED)
-      elif self.describe(False) == ['Prep']:
-        self.build.buildFinished(['slave rejected prep', 'prep problem'], 'grey', SKIPPED)
-      elif self.describe(False) == ['Configure']:
-        self.build.buildFinished(['slave rejected configure', 'configure problem'], 'grey', SKIPPED)
-      elif self.describe(False) == ['Bootstrap']:
-        self.build.buildFinished(['slave rejected bootstrap', 'bootstrap problem'], 'grey', SKIPPED)
-      elif self.describe(False) == ['Everything']:
-        self.build.buildFinished(['slave rejected source', 'Source problem'], 'grey', SKIPPED)
-      else:
-        self.step_status.setColor(self, "grey")
-        BuildStep.finished(self, SKIPPED)
-      return SKIPPED
-    if cmd.rc == 255:
-      if self.describe(False) == ['Everything']:
-        # This is returned when the CWS script has a problem
-        self.build.buildFinished(['slave rejected CWS', 'CWS problem'], 'grey', SKIPPED)
-        return SKIPPED
+    # Skip the failed but non vital steps
     if cmd.rc != 0:
-      return FAILURE
-    # if cmd.log.getStderr(): return WARNINGS
-    return SUCCESS
+      if self.describe(False) == ['Smoketest']:
+        return SKIPPED
+      if self.describe(False) == ['Bundle Installset']:
+        return SKIPPED
+
+    return ShellCommand.evaluateCommand(self, cmd)
 
   def getText(self, cmd, results):
     if results == SUCCESS:
