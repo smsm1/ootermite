@@ -130,7 +130,7 @@ sub cache_add_from_checkout($$$)
     if ( $vcs eq "cvs" )
     {
         run('cvs', '-d', $config->{'cvs_root'}, 
-	    $config->{'cvs_options'}, 'co', '-r', $milestone, 'OpenOffice2');
+	        $config->{'cvs_options'}, 'co', '-r', $milestone, 'OpenOffice2');
     }
     elsif ( $vcs eq "svn" )
     {
@@ -144,10 +144,21 @@ sub cache_add_from_checkout($$$)
     chdir $cwd;
 }
 
+# Runs a command via system(), prints a result to logger and returns
+# the exit code of the command after its execution.
 sub run
 {
     logger "system(\"" . join ('", "', @_) . "\");\n", $DEBUG_LOG_LEVEL;
-    die "can't run $_[0]!!\n" unless !system(@_);
+
+    my $resultcode = system(@_);
+    if($resultcode != 0)
+    {
+        die "can't run $_[0]!!\n";
+    }
+    else
+    {
+        return $resultcode;
+    }
 }
 
 sub interpret_branch($$)
@@ -159,7 +170,7 @@ sub interpret_branch($$)
 
     if ($name eq 'HEAD' || $name eq '')
     {
-	$milestone= latest_milestone('DEV310');
+        $milestone= latest_milestone('DEV310');
         if ( !$milestone )
         {
             $milestone= latest_milestone('DEV300');
@@ -168,13 +179,13 @@ sub interpret_branch($$)
     }
     elsif(is_milestone($name))
     {
-	$milestone= $name;
+        $milestone= $name;
     }
     else
     {
-	die "cws not found!!\n" unless $cws_list->{$name};
-	$cws= $name;
-	$milestone= $cws_list->{$name}->{'base'};
+        die "cws not found!!\n" unless $cws_list->{$name};
+        $cws= $name;
+        $milestone= $cws_list->{$name}->{'base'};
     }
     return ($milestone, $cws);
 }
@@ -266,7 +277,7 @@ sub update_to($$$)
     chdir 'workdir';
     foreach (@{$cws_list->{$name}->{'dirs'}})
     {
-	run('cvs', "-d", $config->{'cvs_root'}, $config->{'cvs_options'}, 'co', "-Pr", "$cws_tag", "$_");
+        run('cvs', "-d", $config->{'cvs_root'}, $config->{'cvs_options'}, 'co', "-Pr", "$cws_tag", "$_");
     }
     foreach (@{$cws_list->{$name}->{'newdirs'}})
     {
@@ -351,20 +362,20 @@ sub download_from_go_oo($$)
 
 sub logger
 {
-    my $msg= shift;
+    my $msg   = shift;
     my $level = shift || $log_level;
     
     if ($level <= $log_level)
     {
-	if ($msg eq "done!" and ($level < $DEBUG_LOG_LEVEL))
-	{
-	    print STDERR $msg . " (at " . time() . ")\n";
-	}
-	else
-	{
-	    print STDERR "[" . time() . "] - " . $msg;
-	    print STDERR "\n" unless ($msg=~/.*\.\.\.$/ && $log_level < $DEBUG_LOG_LEVEL);
-	}
+        if ($msg eq "done!" and ($level < $DEBUG_LOG_LEVEL))
+        {
+            print STDERR $msg . " (at " . time() . ")\n";
+        }
+        else
+        {
+            print STDERR "[" . time() . "] - " . $msg;
+            print STDERR "\n" unless ($msg=~/.*\.\.\.$/ && $log_level < $DEBUG_LOG_LEVEL);
+        }
     }
 }
 
