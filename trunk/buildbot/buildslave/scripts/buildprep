@@ -1,14 +1,26 @@
 #!/bin/bash -x
 
+BUILDCOPY_DIR="../../build_copy"
+
 # get milestone number written by cws_get
 . ./milestone
 # read config
 . ../../steps.config
 
-$copyrecursive ../../build_copy/Common/* .
-$copyrecursive ../../build_copy/${fetched_workstamp}_m$fetched_milestone/* .
+if test -d $BUILDCOPY_DIR then
+    echo "$BUILDCOPY_DIR exists"
+else
+    mkdir $BUILDCOPY_DIR/
+    mkdir $BUILDCOPY_DIR/Common/
+    echo "Dummy" > $BUILDCOPY_DIR/Common/dummy
+    echo "$BUILDCOPY_DIR dir created"
+fi
 
-for name in ../../build_copy/${fetched_workstamp}_m$fetched_milestone/*.patch
+# Copy necessary files and directories
+$copyrecursive $BUILDCOPY_DIR/Common/* .
+$copyrecursive $BUILDCOPY_DIR/${fetched_workstamp}_m$fetched_milestone/* .
+
+for name in $BUILDCOPY_DIR/${fetched_workstamp}_m$fetched_milestone/*.patch
 do echo patching $name
    $patch -f -p0 -F4 -N -i $name
 done
