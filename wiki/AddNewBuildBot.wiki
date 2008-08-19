@@ -2,7 +2,7 @@
 #labels slave
 = Introduction =
 
-There is a number of things that you need to do to add a new build slave. Slightly fuller/alternative instructions are available from AddNewBuildBotMacOSX.
+There is a number of things that you need to do to add a new build slave. Slightly fuller/alternative instructions are available from [AddNewBuildBotMacOSX].
 
 You will need the following prerequisites:
 
@@ -23,7 +23,7 @@ exit
 
 = Details =
 
-  # Grab a copy of buildbot 0.7.5 [https://sourceforge.net/project/showfiles.php?group_id=73177 source]
+  # Grab a copy of buildbot 0.7.8 [https://sourceforge.net/project/showfiles.php?group_id=73177 source]
   # Unpack the source
   # Build the buildbot [http://buildbot.net/repos/release/docs/buildbot.html#Installing-the-code the buildbot manual]
   # Create the build-slave
