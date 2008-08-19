@@ -14,7 +14,7 @@ The process for recreating the buildbot setup is more or less as follows:
 {{{
 buildbot create-master buildmaster
 }}}
- # Checkout the buildmaster parts from svn. Please not that _trunk_ is work in progress! For the more stable version use a branch (e.g. /branches/0.1_buildbot0.7.5/9 instead.
+ # Checkout the buildmaster parts from svn. Please not that _trunk_ is work in progress! For the more stable version use a branch (e.g. /branches/0.1_buildbot0.7.5/) instead.
 {{{
 svn co http://ootermite.googlecode.com/svn/trunk/buildbot/buildmaster/ buildmaster
 }}}
