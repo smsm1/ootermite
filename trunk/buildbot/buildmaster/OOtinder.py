@@ -25,7 +25,6 @@ from email.MIMEText import MIMEText
 from email import Encoders
 from twisted.internet import defer
 from buildbot import interfaces
-#from buildbot.twcompat import implements #COMMENTED OUT BY CHRIS
 from buildbot.status import base, mail, tinderbox
 from buildbot.status.builder import SUCCESS, WARNINGS, SKIPPED
 
