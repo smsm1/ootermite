@@ -44,7 +44,7 @@ class OOShellCommand(ShellCommand):
         # Skip the failed but non vital steps
         if cmd.rc != 0:
             if self.describe(False) == ['Smoketest']:
-            return SKIPPED
+                return SKIPPED
 
         return ShellCommand.evaluateCommand(self, cmd)
 
