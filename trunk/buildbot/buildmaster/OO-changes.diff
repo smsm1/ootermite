@@ -1,7 +1,80 @@
-diff -r --unified buildbot-0.7.8-orig/buildbot/process/builder.py buildbot-0.7.8/buildbot/process/builder.py
+diff --unified -r buildbot-0.7.8-orig/buildbot/changes/bonsaipoller.py buildbot-0.7.8/buildbot/changes/bonsaipoller.py
+--- buildbot-0.7.8-orig/buildbot/changes/bonsaipoller.py	2008-07-25 01:36:24.000000000 +0200
++++ buildbot-0.7.8/buildbot/changes/bonsaipoller.py	2008-08-18 16:55:07.000000000 +0200
+@@ -48,7 +48,7 @@
+         return 0
+ 
+ class CiNode:
+-    """I hold information baout one <ci> node, including a list of files"""
++    """I hold information about one <ci> node, including a list of files"""
+     def __init__(self, log="", who="", date=0, files=[]):
+         self.log = log
+         self.who = who
+diff --unified -r buildbot-0.7.8-orig/buildbot/process/base.py buildbot-0.7.8/buildbot/process/base.py
+--- buildbot-0.7.8-orig/buildbot/process/base.py	2008-07-25 01:36:28.000000000 +0200
++++ buildbot-0.7.8/buildbot/process/base.py	2008-08-20 10:08:07.000000000 +0200
+@@ -70,6 +70,22 @@
+         self.start_watchers = []
+         self.finish_watchers = []
+         self.status = BuildRequestStatus(source, builderName)
++    
++    # This method is necessary to remove equal builds from the
++    # queue.
++    def __eq__(self, other):
++        # properties contains our custom build properties (e.g. languages and install_set)
++        # The branch and revision must be obtained through the SourceStamp
++        #if canBeMergedWith(other):
++        #    # Compare the custom build properties
++        #    for key in self.properties.keys():
++        #        value = self.properties[key]
++        #        if not other.properties.hasKey(key) and other.properties[key] != value:
++        #            return False
++        #    return True
++        #else:
++        #    return False
++        return self.canBeMergedWith(other)
+ 
+     def canBeMergedWith(self, other):
+         return self.source.canBeMergedWith(other.source)
+diff --unified -r buildbot-0.7.8-orig/buildbot/process/builder.py buildbot-0.7.8/buildbot/process/builder.py
 --- buildbot-0.7.8-orig/buildbot/process/builder.py	2008-07-25 01:36:28.000000000 +0200
-+++ buildbot-0.7.8/buildbot/process/builder.py	2008-08-08 14:42:24.000000000 +0200
-@@ -714,7 +714,10 @@
++++ buildbot-0.7.8/buildbot/process/builder.py	2008-08-20 11:29:55.000000000 +0200
+@@ -333,13 +333,33 @@
+     def __repr__(self):
+         return "<Builder '%s' at %d>" % (self.name, id(self))
+ 
+-
++    # Is this the method to cancel double queued builds?
+     def submitBuildRequest(self, req):
++        for breq in self.buildable:
++            if breq == req:
++                # Check if install_set is on and languages equal
++                # This is an ugly hack!!!
++                if req.properties.has_key('install_set') and breq.properties.has_key('install_set') and \
++                    req.properties.has_key('languages') and breq.properties.has_key('languages'):
++                    if breq.properties['languages'] == req.properties['languages'] and \
++                        breq.properties['install_set'] == req.properties['install_set']:
++                        print "DEBUG: Build %s skipped!" % req
++                        return
++                    else:
++                        # Enable install_set
++                        breq.properties['install_set'] = 'on' 
++                        print "DEBUG: Build %s merged!" % req
++                        return                  
++                else:
++                    print "DEBUG: Build %s skipped!" % req
++                    return
++        
+         req.submittedAt = now()
+         self.buildable.append(req)
+         req.requestSubmitted(self)
+         self.builder_status.addBuildRequest(req.status)
+         self.maybeStartBuild()
++        return
+ 
+     def cancelBuildRequest(self, req):
+         if req in self.buildable:
+@@ -714,7 +734,10 @@
              return
  
          ss = bs.getSourceStamp(absolute=True)
@@ -13,10 +86,124 @@ diff -r --unified buildbot-0.7.8-orig/buildbot/process/builder.py buildbot-0.7.8
          self.requestBuild(req)
  
      def getPendingBuilds(self):
-diff -r --unified buildbot-0.7.8-orig/buildbot/process/properties.py buildbot-0.7.8/buildbot/process/properties.py
+diff --unified -r buildbot-0.7.8-orig/buildbot/process/factory.py buildbot-0.7.8/buildbot/process/factory.py
+--- buildbot-0.7.8-orig/buildbot/process/factory.py	2008-07-25 01:36:28.000000000 +0200
++++ buildbot-0.7.8/buildbot/process/factory.py	2008-08-20 15:05:27.000000000 +0200
+@@ -51,10 +51,10 @@
+ # BuildFactory subclasses for common build tools
+ 
+ class GNUAutoconf(BuildFactory):
+-    def __init__(self, source, configure="./configure",
+-                 configureEnv={},
+-                 configureFlags=[],
+-                 compile=["make", "all"],
++    def __init__(self, source, configure="./configure", 
++                 configureEnv={}, 
++                 configureFlags=[], 
++                 compile=["make", "all"], 
+                  test=["make", "check"]):
+         BuildFactory.__init__(self, [source])
+         if configure is not None:
+@@ -105,10 +105,10 @@
+     randomly = False
+     recurse = False
+ 
+-    def __init__(self, source,
+-                 buildpython=["python"], trialpython=[], trial=None,
+-                 testpath=".", randomly=None, recurse=None,
+-                 tests=None,  useTestCaseNames=False, env=None):
++    def __init__(self, source, 
++                 buildpython=["python"], trialpython=[], trial=None, 
++                 testpath=".", randomly=None, recurse=None, 
++                 tests=None, useTestCaseNames=False, env=None):
+         BuildFactory.__init__(self, [source])
+         assert tests or useTestCaseNames, "must use one or the other"
+         if trial is not None:
+@@ -121,13 +121,13 @@
+         from buildbot.steps.python_twisted import Trial
+         buildcommand = buildpython + ["./setup.py", "build"]
+         self.addStep(Compile, command=buildcommand, env=env)
+-        self.addStep(Trial,
+-                     python=trialpython, trial=self.trial,
+-                     testpath=testpath,
+-                     tests=tests, testChanges=useTestCaseNames,
+-                     randomly=self.randomly,
+-                     recurse=self.recurse,
+-                     env=env,
++        self.addStep(Trial, 
++                     python=trialpython, trial=self.trial, 
++                     testpath=testpath, 
++                     tests=tests, testChanges=useTestCaseNames, 
++                     randomly=self.randomly, 
++                     recurse=self.recurse, 
++                     env=env, 
+                      )
+ 
+ 
+@@ -140,41 +140,41 @@
+ class BasicBuildFactory(GNUAutoconf):
+     # really a "GNU Autoconf-created tarball -in-CVS tree" builder
+ 
+-    def __init__(self, cvsroot, cvsmodule,
+-                 configure=None, configureEnv={},
+-                 compile="make all",
++    def __init__(self, cvsroot, cvsmodule, 
++                 configure=None, configureEnv={}, 
++                 compile="make all", 
+                  test="make check", cvsCopy=False):
+         mode = "clobber"
+         if cvsCopy:
+             mode = "copy"
+         source = s(CVS, cvsroot=cvsroot, cvsmodule=cvsmodule, mode=mode)
+-        GNUAutoconf.__init__(self, source,
+-                             configure=configure, configureEnv=configureEnv,
+-                             compile=compile,
++        GNUAutoconf.__init__(self, source, 
++                             configure=configure, configureEnv=configureEnv, 
++                             compile=compile, 
+                              test=test)
+ 
+ class QuickBuildFactory(BasicBuildFactory):
+     useProgress = False
+ 
+-    def __init__(self, cvsroot, cvsmodule,
+-                 configure=None, configureEnv={},
+-                 compile="make all",
++    def __init__(self, cvsroot, cvsmodule, 
++                 configure=None, configureEnv={}, 
++                 compile="make all", 
+                  test="make check", cvsCopy=False):
+         mode = "update"
+         source = s(CVS, cvsroot=cvsroot, cvsmodule=cvsmodule, mode=mode)
+-        GNUAutoconf.__init__(self, source,
+-                             configure=configure, configureEnv=configureEnv,
+-                             compile=compile,
++        GNUAutoconf.__init__(self, source, 
++                             configure=configure, configureEnv=configureEnv, 
++                             compile=compile, 
+                              test=test)
+ 
+ class BasicSVN(GNUAutoconf):
+ 
+-    def __init__(self, svnurl,
+-                 configure=None, configureEnv={},
+-                 compile="make all",
++    def __init__(self, svnurl, 
++                 configure=None, configureEnv={}, 
++                 compile="make all", 
+                  test="make check"):
+         source = s(SVN, svnurl=svnurl, mode="update")
+-        GNUAutoconf.__init__(self, source,
+-                             configure=configure, configureEnv=configureEnv,
+-                             compile=compile,
++        GNUAutoconf.__init__(self, source, 
++                             configure=configure, configureEnv=configureEnv, 
++                             compile=compile, 
+                              test=test)
+diff --unified -r buildbot-0.7.8-orig/buildbot/process/properties.py buildbot-0.7.8/buildbot/process/properties.py
 --- buildbot-0.7.8-orig/buildbot/process/properties.py	2008-07-25 01:36:29.000000000 +0200
-+++ buildbot-0.7.8/buildbot/process/properties.py	2008-08-08 12:44:24.000000000 +0200
-@@ -39,8 +39,10 @@
++++ buildbot-0.7.8/buildbot/process/properties.py	2008-08-20 11:34:15.000000000 +0200
+@@ -39,8 +39,13 @@
  
      def __getitem__(self, name):
          """Just get the value for this property."""
@@ -26,12 +213,15 @@ diff -r --unified buildbot-0.7.8-orig/buildbot/process/properties.py buildbot-0.
 +            return self.properties[name][0]
 +        else:
 +            return None
++        
++    def __setitem__(self, key, value):
++        self.properties[key] = (value, "Merged")
  
      def has_key(self, name):
          return self.properties.has_key(name)
-diff -r --unified buildbot-0.7.8-orig/buildbot/status/web/about.py buildbot-0.7.8/buildbot/status/web/about.py
+diff --unified -r buildbot-0.7.8-orig/buildbot/status/web/about.py buildbot-0.7.8/buildbot/status/web/about.py
 --- buildbot-0.7.8-orig/buildbot/status/web/about.py	2008-07-25 01:36:19.000000000 +0200
-+++ buildbot-0.7.8/buildbot/status/web/about.py	2008-08-08 12:07:09.000000000 +0200
++++ buildbot-0.7.8/buildbot/status/web/about.py	2008-08-18 16:55:05.000000000 +0200
 @@ -5,6 +5,8 @@
  import twisted
  import sys
@@ -52,9 +242,9 @@ diff -r --unified buildbot-0.7.8-orig/buildbot/status/web/about.py buildbot-0.7.
          data += '''
  <h2>Source code</h2>
  
-diff -r --unified buildbot-0.7.8-orig/buildbot/status/web/base.py buildbot-0.7.8/buildbot/status/web/base.py
+diff --unified -r buildbot-0.7.8-orig/buildbot/status/web/base.py buildbot-0.7.8/buildbot/status/web/base.py
 --- buildbot-0.7.8-orig/buildbot/status/web/base.py	2008-07-25 01:36:25.000000000 +0200
-+++ buildbot-0.7.8/buildbot/status/web/base.py	2008-08-07 15:59:17.000000000 +0200
++++ buildbot-0.7.8/buildbot/status/web/base.py	2008-08-18 16:55:05.000000000 +0200
 @@ -87,6 +87,12 @@
                   "<input type='text' name='branch' />")
        + make_row("Revision to build:",
@@ -68,9 +258,9 @@ diff -r --unified buildbot-0.7.8-orig/buildbot/status/web/base.py buildbot-0.7.8
        + '<input type="submit" value="Force Build" /></form>\n')
  
  colormap = {
-diff -r --unified buildbot-0.7.8-orig/buildbot/status/web/builder.py buildbot-0.7.8/buildbot/status/web/builder.py
+diff --unified -r buildbot-0.7.8-orig/buildbot/status/web/builder.py buildbot-0.7.8/buildbot/status/web/builder.py
 --- buildbot-0.7.8-orig/buildbot/status/web/builder.py	2008-07-25 01:36:28.000000000 +0200
-+++ buildbot-0.7.8/buildbot/status/web/builder.py	2008-08-07 17:17:11.000000000 +0200
++++ buildbot-0.7.8/buildbot/status/web/builder.py	2008-08-18 16:55:05.000000000 +0200
 @@ -9,6 +9,7 @@
  from buildbot.status.web.base import HtmlResource, make_row, \
       make_force_build_form, OneLineMixin
@@ -99,3 +289,19 @@ diff -r --unified buildbot-0.7.8-orig/buildbot/status/web/builder.py buildbot-0.
          try:
              self.builder_control.requestBuildSoon(req)
          except interfaces.NoSlaveError:
+Nur in buildbot-0.7.8/buildbot/status/web: continuum.py.
+diff --unified -r buildbot-0.7.8-orig/buildbot/status/web/waterfall.py buildbot-0.7.8/buildbot/status/web/waterfall.py
+--- buildbot-0.7.8-orig/buildbot/status/web/waterfall.py	2008-07-25 01:36:29.000000000 +0200
++++ buildbot-0.7.8/buildbot/status/web/waterfall.py	2008-08-20 15:45:37.000000000 +0200
+@@ -129,8 +129,9 @@
+         number = b.getNumber()
+         url = path_to_build(req, b)
+         reason = b.getReason()
+-        text = ('<a title="Reason: %s" href="%s">Build %d</a>'
+-                % (html.escape(reason), url, number))
++        branch = b.getProperty('branch')
++        text = ('<a title="Reason: %s | Branch: %s" href="%s">Build %d<br/>Branch: %s</a>'
++                % (html.escape(reason), html.escape(branch), url, number, html.escape(branch)))
+         color = "yellow"
+         class_ = "start"
+         if b.isFinished() and not b.getSteps():
