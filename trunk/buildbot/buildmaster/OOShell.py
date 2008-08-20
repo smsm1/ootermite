@@ -24,37 +24,48 @@ from buildbot.status.builder import BuildStepStatus
 import sys
 
 class OOShellCommand(ShellCommand):
-  def __init__(self, **kwargs):
-    ShellCommand.__init__(self, **kwargs)   # always upcall!
+    def __init__(self, **kwargs):
+        ShellCommand.__init__(self, **kwargs)   # always upcall!
 
-  def evaluateCommand(self, cmd):
-    # Skip the failed but non vital steps
-    if cmd.rc != 0:
-      if self.describe(False) == ['Smoketest']:
-        return SKIPPED
-      if self.describe(False) == ['Bundle Installset']:
-        return SKIPPED
+    def evaluateCommand(self, cmd):
+    
+        # This shows the build as skipped, but internally it is broken due to a failure
+        if cmd.rc == 65:
+            self.build.buildFinished(['Slave rejected %s' self.describe, 'Rejected by slave'], 'grey', SKIPPED)
+            self.step_status.setColor(self, "grey")
+            return FAILURE
 
-    return ShellCommand.evaluateCommand(self, cmd)
+        if cmd.rc == 255:
+            if self.describe(False) == ['Everything']:
+                # This is returned when the CWS script has a problem
+                self.build.buildFinished(['slave rejected CWS', 'CWS problem'], 'grey', SKIPPED)
+            return SKIPPED
 
-  def getText(self, cmd, results):
-    if results == SUCCESS:
-      return self.describe(True)
-    elif results == WARNINGS:
-      return self.describe(True) + ["warnings"]
-    elif results == SKIPPED:
-      return self.describe(True) + ["skipped"]
-    else:
-      return self.describe(True) + ["failed"]
+        # Skip the failed but non vital steps
+        if cmd.rc != 0:
+            if self.describe(False) == ['Smoketest']:
+            return SKIPPED
 
-  def getColor(self, cmd, results):
-    assert results in (SUCCESS, WARNINGS, FAILURE, SKIPPED)
-    if results == SUCCESS:
-      return "green"
-    elif results == WARNINGS:
-      return "orange"
-    elif results == SKIPPED:
-      return "grey"
-    else:
-      return "red"
+        return ShellCommand.evaluateCommand(self, cmd)
+
+    def getText(self, cmd, results):
+        if results == SUCCESS:
+            return self.describe(True)
+        elif results == WARNINGS:
+            return self.describe(True) + ["warnings"]
+        elif results == SKIPPED:
+            return self.describe(True) + ["skipped"]
+        else:
+            return self.describe(True) + ["failed"]
+
+    def getColor(self, cmd, results):
+        assert results in (SUCCESS, WARNINGS, FAILURE, SKIPPED)
+        if results == SUCCESS:
+            return "green"
+        elif results == WARNINGS:
+            return "orange"
+        elif results == SKIPPED:
+            return "grey"
+        else:
+            return "red"
 
