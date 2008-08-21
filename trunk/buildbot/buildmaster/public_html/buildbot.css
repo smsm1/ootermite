@@ -5,10 +5,10 @@
 }
 
 a:link,a:visited,a:active {
-	color: #666666;
+	color: #000000;
 }
 a:hover {
-	background-color: #FFFFFF;
+	background-color: #EEEEEE;
 }
 
 .table {
@@ -18,7 +18,7 @@ a:hover {
 td.Event, td.Activity, td.Change, td.Time, td.Builder {
 	color: #333333;
 	border: 1px solid #666666;
-	background-color: #CCCCCC;
+	background-color: #FFFFFF;
 }
 
 /* LastBuild, BuildStep states */
