@@ -21,7 +21,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import jaxser.Jaxser;
+import java.util.Properties;
 
 /**
  *
@@ -35,22 +35,31 @@ public class Config
   {
     if(instance == null)
     {
-      Jaxser jaxser = new Jaxser();
+      instance = new Config();
+      Properties prop = new Properties();
       try
       {
-        instance = (Config)jaxser.fromXML(new FileInputStream("config.xml"));
+        // Load ini file
+        prop.load(new FileInputStream("config.ini"));
+        
+        instance.builders  = prop.getProperty("BUILDERS").split("|");
+        instance.maxBuilds = Integer.parseInt(prop.getProperty("MAX_BUILDS_PER_RUN"));
       }
-      catch(Exception ex)
+      catch(Exception ex1)
       {
-        ex.printStackTrace(Debug.out);
-        instance = new Config();
+        ex1.printStackTrace(Debug.out);
+        
+        // Create new ini file
+        prop.setProperty("BUILDERS", Bot.DEFAULT_BUILDERS);
+        prop.setProperty("MAX_BUILDS_PER_RUN", "1");
+        
         try
         {
-          jaxser.toXML(instance, new FileOutputStream("config.xml"));
+          prop.store(new FileOutputStream("config.ini"), "BotBooster");
         }
-        catch(Exception e)
+        catch(Exception ex2)
         {
-          e.printStackTrace(Debug.out);
+          ex2.printStackTrace(Debug.out);
         }
       }
     }
@@ -58,14 +67,14 @@ public class Config
     return instance;
   }
   
-  private List<String> builders  = new ArrayList<String>();
-  private int          maxBuilds = 1;
+  private String[] builders  = new String[0];
+  private int      maxBuilds = 1;
   
   private Config()
   {
   }
   
-  public List<String> builders()
+  public String[] builders()
   {
     return this.builders;
   }
