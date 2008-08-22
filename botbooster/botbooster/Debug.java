@@ -22,7 +22,7 @@ import java.io.PrintStream;
 
 /**
  *
- * @author sun
+ * @author Christian Lins (christian.lins@sun.com)
  */
 public class Debug 
 {

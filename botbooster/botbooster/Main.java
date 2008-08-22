@@ -105,10 +105,10 @@ public class Main
       {
         Debug.out.println("Forcing build of CWS named " + cwsNew.get(n));
 
-        for(int m = 0; m < Config.getInstance().builders().size(); m++)
+        for(int m = 0; m < Config.getInstance().builders().length; m++)
         {
-          Debug.out.println("\tBuilder: " + Config.getInstance().builders().get(m));
-          Bot.forceBuild(Config.getInstance().builders().get(m), cwsNew.get(n).toString());
+          Debug.out.println("\tBuilder: " + Config.getInstance().builders()[m]);
+          Bot.forceBuild(Config.getInstance().builders()[m], cwsNew.get(n).toString());
         }
 
         // Remember the cws we have submitted
