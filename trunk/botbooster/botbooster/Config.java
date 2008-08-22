@@ -19,12 +19,10 @@ package botbooster;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 /**
- *
+ * Simple configuration class.
  * @author Christian Lins (christian.lins@sun.com)
  */
 public class Config 
@@ -42,7 +40,7 @@ public class Config
         // Load ini file
         prop.load(new FileInputStream("config.ini"));
         
-        instance.builders  = prop.getProperty("BUILDERS").split("|");
+        instance.builders  = prop.getProperty("BUILDERS").split(",");
         instance.maxBuilds = Integer.parseInt(prop.getProperty("MAX_BUILDS_PER_RUN"));
       }
       catch(Exception ex1)
