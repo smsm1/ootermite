@@ -31,7 +31,7 @@ import java.util.List;
 public class Main
 {
   public static final String DEFAULT_CWS_LIST_FILE = "CWS_List";
-  public static final String VERSION               = "botbooster/0.3";
+  public static final String VERSION               = "botbooster/0.4";
   
   static final String GET_CWS_METHOD = "getCWSWithState";
   static final String GET_MWS_METHOD = "getMasterWorkspaces";
@@ -49,6 +49,7 @@ public class Main
     {
       if(args.length < 1)
       {
+        System.out.println(VERSION);
         System.out.println("botbooster <status of cws>");
         System.exit(1);
       }
@@ -100,13 +101,14 @@ public class Main
       cwsNew.removeAll(cwsLast);
 
       // Force a build of the new CWSs on all Buildbot/ootermite builders
-      for(int n = 0; n < cwsNew.size() && n < MAX_BUILDS; n++)
+      for(int n = 0; n < cwsNew.size() && n < Config.getInstance().maxBuilds(); n++)
       {
         Debug.out.println("Forcing build of CWS named " + cwsNew.get(n));
 
-        for(int m = 0; m < Bot.BUILDERS.length; m++)
+        for(int m = 0; m < Config.getInstance().builders().size(); m++)
         {
-          Bot.forceBuild(Bot.BUILDERS[m], cwsNew.get(n).toString());
+          Debug.out.println("\tBuilder: " + Config.getInstance().builders().get(m));
+          Bot.forceBuild(Config.getInstance().builders().get(m), cwsNew.get(n).toString());
         }
 
         // Remember the cws we have submitted
