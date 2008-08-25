@@ -108,11 +108,12 @@ public class Main
         for(int m = 0; m < Config.getInstance().builders().length; m++)
         {
           Debug.out.println("\tBuilder: " + Config.getInstance().builders()[m]);
-          Bot.forceBuild(Config.getInstance().builders()[m], cwsNew.get(n).toString());
+          if(Bot.forceBuild(Config.getInstance().builders()[m], cwsNew.get(n).toString()))
+          {
+            // Remember the cws we have submitted
+            cwsLast.add(cwsNew.get(n));
+          }
         }
-
-        // Remember the cws we have submitted
-        cwsLast.add(cwsNew.get(n));
       }
 
       // Save the list of successfully submitted builds

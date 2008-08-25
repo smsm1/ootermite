@@ -34,7 +34,7 @@ public class Bot
   public static boolean forceBuild(String builder, String build)
     throws IOException, MalformedURLException
   {
-    String urlStr = MASTER_URL + builder + "/force?username=botbooster&comments=AutoSubmitted&branch=" + build;
+    String urlStr = Config.getInstance().masterURL() + builder + "/force?username=botbooster&comments=AutoSubmitted&branch=" + build;
     
     URL               url   = new URL(urlStr);
     HttpURLConnection conn  = (HttpURLConnection)url.openConnection();
