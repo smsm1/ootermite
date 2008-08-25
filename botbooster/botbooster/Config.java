@@ -41,6 +41,7 @@ public class Config
         prop.load(new FileInputStream("config.ini"));
         
         instance.builders  = prop.getProperty("BUILDERS").split(",");
+        instance.masterURL = prop.getProperty("MASTER_URL");
         instance.maxBuilds = Integer.parseInt(prop.getProperty("MAX_BUILDS_PER_RUN"));
       }
       catch(Exception ex1)
@@ -49,6 +50,7 @@ public class Config
         
         // Create new ini file
         prop.setProperty("BUILDERS", Bot.DEFAULT_BUILDERS);
+        prop.setProperty("MASTER_URL", Bot.MASTER_URL);
         prop.setProperty("MAX_BUILDS_PER_RUN", "1");
         
         try
@@ -66,6 +68,7 @@ public class Config
   }
   
   private String[] builders  = new String[0];
+  private String   masterURL = null;
   private int      maxBuilds = 1;
   
   private Config()
