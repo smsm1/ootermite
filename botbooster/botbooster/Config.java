@@ -80,6 +80,11 @@ public class Config
     return this.builders;
   }
   
+  public String masterURL()
+  {
+    return this.masterURL;
+  }
+  
   public int maxBuilds()
   {
     return this.maxBuilds;
