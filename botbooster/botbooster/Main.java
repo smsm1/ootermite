@@ -107,7 +107,7 @@ public class Main
         for(int m = 0; m < Config.getInstance().builders().length; m++)
         {
           Debug.out.println("\tBuilder: " + Config.getInstance().builders()[m]);
-          if(Bot.forceBuild(Config.getInstance().builders()[m], cwsNew.get(n).toString()))
+          if(!Bot.forceBuild(Config.getInstance().builders()[m], cwsNew.get(n).toString()))
           {
             Debug.log("failed!\n");
           }
