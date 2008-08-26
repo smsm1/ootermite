@@ -20,7 +20,6 @@ package botbooster;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,7 +30,7 @@ import java.util.List;
 public class Main
 {
   public static final String DEFAULT_CWS_LIST_FILE = "CWS_List";
-  public static final String VERSION               = "botbooster/0.4";
+  public static final String VERSION               = "botbooster/0.4.1";
   
   static final String GET_CWS_METHOD = "getCWSWithState";
   static final String GET_MWS_METHOD = "getMasterWorkspaces";
@@ -62,7 +61,7 @@ public class Main
       }
       else
       {
-        cwsLast = new ArrayList();
+        cwsLast = new Set();
       }
 
       // Make a SOAP request to the public EIS and get the list of MWSs.
@@ -71,7 +70,7 @@ public class Main
       List        mwsLst = ListUtils.soapObjectToList(mwsObj);
 
       // This list will contain all CWSs that must be rebuilt
-      List cwsNew = new ArrayList();
+      List cwsNew = new Set();
 
       // For every MWS make a SOAP request to retrieve the list of CWSs with
       // status args[0].
@@ -110,10 +109,12 @@ public class Main
           Debug.out.println("\tBuilder: " + Config.getInstance().builders()[m]);
           if(Bot.forceBuild(Config.getInstance().builders()[m], cwsNew.get(n).toString()))
           {
-            // Remember the cws we have submitted
-            cwsLast.add(cwsNew.get(n));
+            Debug.log("failed!\n");
           }
         }
+        
+        // Remember the cws we have submitted
+        cwsLast.add(cwsNew.get(n));
       }
 
       // Save the list of successfully submitted builds

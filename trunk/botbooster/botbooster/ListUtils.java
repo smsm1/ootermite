@@ -24,7 +24,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,7 +35,7 @@ public class ListUtils
   public static List loadList(InputStream ins)
     throws IOException
   {
-    List           list = new ArrayList();
+    List           list = new Set();
     BufferedReader in   = new BufferedReader(new InputStreamReader(ins));
     
     String line;
@@ -69,7 +68,7 @@ public class ListUtils
    */
   public static List soapObjectToList(Object obj)
   {
-    List list = new ArrayList();
+    List list = new Set();
     
     for(int n = 0; n < Array.getLength(obj); n++)
     {
