@@ -41,11 +41,6 @@ class OOShellCommand(ShellCommand):
                 self.build.buildFinished(['slave rejected CWS', 'CWS problem'], 'grey', SKIPPED)
             return SKIPPED
 
-        # Skip the failed but non vital steps
-        if cmd.rc != 0:
-            if self.describe(False) == ['Smoketest']:
-                return SKIPPED
-
         return ShellCommand.evaluateCommand(self, cmd)
 
     def getText(self, cmd, results):
