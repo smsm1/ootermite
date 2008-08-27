@@ -349,9 +349,9 @@ sub download_from_go_oo($$)
 	run('tar', 'xjf', "$tempdir/$file");
 	logger "done!";
     }
-    my @dirs= glob "$base_file/*";
+    my @dirs= glob "$base_file*/*";
     foreach my $dir (@dirs) { run("mv", $dir, ".") }
-    rmtree "$base_file";
+    rmtree "$base_file*";
     @dirs= glob '*';
     logger "packing $milestone for cache ...";
     run('tar', 'cjf', $config->{'cache_dir'} . "$milestone.tar.bz2", @dirs);
