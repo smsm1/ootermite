@@ -7,7 +7,7 @@ BUILDCOPY_DIR="../../build_copy"
 # read config
 . ../../steps.config
 
-if test -d $BUILDCOPY_DIR then
+if test -d $BUILDCOPY_DIR; then
     echo "$BUILDCOPY_DIR exists"
 else
     mkdir $BUILDCOPY_DIR/
