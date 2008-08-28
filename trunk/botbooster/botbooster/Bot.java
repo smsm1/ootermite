@@ -32,20 +32,48 @@ public class Bot
   public static final String MASTER_URL       = "http://termite.go-oo.org/buildbot/";
   
   public static boolean forceBuild(String builder, String build)
-    throws IOException, MalformedURLException
+    throws MalformedURLException
   {
-    String urlStr = Config.getInstance().masterURL() + builder + "/force?username=botbooster&comments=AutoSubmitted&branch=" + build;
+    HttpURLConnection conn = null;
     
-    URL               url   = new URL(urlStr);
-    HttpURLConnection conn  = (HttpURLConnection)url.openConnection();
-    conn.connect();
-    
-    if(conn.getResponseCode() != HttpURLConnection.HTTP_OK)
+    try
     {
-      Debug.out.println("Server returned: " + conn.getResponseMessage());
+      String urlStr = Config.getInstance().masterURL() + builder + "/force?username=botbooster&comments=AutoSubmitted&branch=" + build;
+
+      URL url = new URL(urlStr);
+      
+      // Create a HttpURLConnection object. At this point no actual connection
+      // is going to the remote server.
+      conn  = (HttpURLConnection)url.openConnection();
+      
+      // Actually connect to the remote server
+      conn.connect();
+
+      if(conn.getResponseCode() != HttpURLConnection.HTTP_OK)
+      {
+        Debug.out.println("Server returned: " + conn.getResponseMessage());
+        return false;
+      }
+      else
+        return true;
+    }
+    catch(IOException ex)
+    {
+      ex.printStackTrace(Debug.out);
       return false;
     }
-    else
-      return true;
+    finally
+    {
+      if(conn != null)
+        conn.disconnect();
+      try
+      {
+        // Sleep to give the system the time to "really" shutdown the
+        // connection
+        Thread.sleep(1000);
+      }
+      catch(InterruptedException ex2) 
+      {}
+    }
   }
 }
