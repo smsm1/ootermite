@@ -6,7 +6,7 @@ copyrecursive="cp -rv"
 patch=patch
 
 ### configure
-configureswitches="--disable-mozilla --disable-cups --disable-headless --disable-gnome-vfs --disable-gconf --disable-gtk --disable-randr --disable-mediawiki --with-system-lpsolve=no --enable-werror with_jdk_home=/usr/local/jdk1.5.0_12 --with-package-format=deb"
+configureswitches="--disable-mozilla --disable-cups --disable-headless --disable-gnome-vfs --disable-gconf --disable-gtk --disable-randr --disable-mediawiki --with-system-lpsolve=no --enable-werror with_jdk_home=/usr/local/jdk1.5.0_12 --with-package-format=deb --enable-report-builder=no"
 
 # --disable-mediawiki added because ant is too old
 # --disable-gconf added for sb91 see http://www.openoffice.org/servlets/ReadMsg?list=interface-announce&msgNo=1179
