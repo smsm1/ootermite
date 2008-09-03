@@ -40,7 +40,8 @@ def svnExport(svnurl):
 def main():
     branch = '' # If no branch parameter given, checkout HEAD
     
-    opts, args = getopt.getopt(sys.argv[1:], "hb", ["help", "branch="])
+    opts, args = getopt.getopt(sys.argv[1:], "hbnNsrli", ["help", "branch=", "buildername=", "buildnumber=", "slavename=", "revision=", "languages=", "install_set="])
+        
 
     for opt, arg in opts:
         if opt in ("-h", "--help"):
