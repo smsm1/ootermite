@@ -5,6 +5,7 @@ import sys
 import shutil
 import os
 import os.path
+import re
 from subprocess import *
 
 SVN_ROOT = "svn://svn.services.openoffice.org/ooo"
@@ -52,13 +53,20 @@ def main():
 
     # First, create directory structure...
     cleanUpDirectories();
-    
+
+    # Create regex pattern to match MWS
+    regex = "[A-Z]{3}[0-9]{3}_\s*"
+    pattern = re.compile(regex)    
+
     if branch == '':
         print "Getting trunk..."
         status = svnExport("/trunk/")
-    else:
-        print "Getting branch named '" + branch + "'"
+    elif pattern.match(branch) != None:
+        print "Getting MWS named '" + branch + "'"
         status = svnExport("/tags/" + branch)
+    else:
+        print "Getting CWS branch named '" + branch + "'"
+        status = svnExport("/cws/" + branch)
 
     print "Subversion exited with status %u" % status
 
@@ -71,3 +79,4 @@ def main():
     sys.exit(status)
 
 main()
+
