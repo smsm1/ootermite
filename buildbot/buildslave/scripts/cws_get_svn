@@ -15,7 +15,8 @@ def printHelp():
 # Moves workdir to workdir.old
 def cleanUpDirectories():
     #print "Remove workdir.old if existing..."
-    #shutil.rmtree("workdir.old", True) # Ignore errors
+    if os.path.exists("workdir.old"):
+        shutil.rmtree("workdir.old", True) # Ignore errors
 
     print "Save a copy of the workdir to workdir.old..."
     if os.path.exists("workdir"):
