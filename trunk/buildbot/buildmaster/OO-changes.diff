@@ -1,6 +1,6 @@
-diff --unified -r buildbot-0.7.8-orig/buildbot/changes/bonsaipoller.py buildbot-0.7.8/buildbot/changes/bonsaipoller.py
+diff -r --unified -N buildbot-0.7.8-orig/buildbot/changes/bonsaipoller.py buildbot-0.7.8-patch/buildbot/changes/bonsaipoller.py
 --- buildbot-0.7.8-orig/buildbot/changes/bonsaipoller.py	2008-07-25 01:36:24.000000000 +0200
-+++ buildbot-0.7.8/buildbot/changes/bonsaipoller.py	2008-08-18 16:55:07.000000000 +0200
++++ buildbot-0.7.8-patch/buildbot/changes/bonsaipoller.py	2008-08-18 16:55:07.000000000 +0200
 @@ -48,7 +48,7 @@
          return 0
  
@@ -10,9 +10,9 @@ diff --unified -r buildbot-0.7.8-orig/buildbot/changes/bonsaipoller.py buildbot-
      def __init__(self, log="", who="", date=0, files=[]):
          self.log = log
          self.who = who
-diff --unified -r buildbot-0.7.8-orig/buildbot/process/base.py buildbot-0.7.8/buildbot/process/base.py
+diff -r --unified -N buildbot-0.7.8-orig/buildbot/process/base.py buildbot-0.7.8-patch/buildbot/process/base.py
 --- buildbot-0.7.8-orig/buildbot/process/base.py	2008-07-25 01:36:28.000000000 +0200
-+++ buildbot-0.7.8/buildbot/process/base.py	2008-08-20 10:08:07.000000000 +0200
++++ buildbot-0.7.8-patch/buildbot/process/base.py	2008-08-20 10:08:07.000000000 +0200
 @@ -70,6 +70,22 @@
          self.start_watchers = []
          self.finish_watchers = []
@@ -36,9 +36,9 @@ diff --unified -r buildbot-0.7.8-orig/buildbot/process/base.py buildbot-0.7.8/bu
  
      def canBeMergedWith(self, other):
          return self.source.canBeMergedWith(other.source)
-diff --unified -r buildbot-0.7.8-orig/buildbot/process/builder.py buildbot-0.7.8/buildbot/process/builder.py
+diff -r --unified -N buildbot-0.7.8-orig/buildbot/process/builder.py buildbot-0.7.8-patch/buildbot/process/builder.py
 --- buildbot-0.7.8-orig/buildbot/process/builder.py	2008-07-25 01:36:28.000000000 +0200
-+++ buildbot-0.7.8/buildbot/process/builder.py	2008-08-20 11:29:55.000000000 +0200
++++ buildbot-0.7.8-patch/buildbot/process/builder.py	2008-09-04 13:30:45.000000000 +0200
 @@ -333,13 +333,33 @@
      def __repr__(self):
          return "<Builder '%s' at %d>" % (self.name, id(self))
@@ -74,7 +74,7 @@ diff --unified -r buildbot-0.7.8-orig/buildbot/process/builder.py buildbot-0.7.8
  
      def cancelBuildRequest(self, req):
          if req in self.buildable:
-@@ -714,7 +734,10 @@
+@@ -714,12 +734,18 @@
              return
  
          ss = bs.getSourceStamp(absolute=True)
@@ -86,9 +86,19 @@ diff --unified -r buildbot-0.7.8-orig/buildbot/process/builder.py buildbot-0.7.8
          self.requestBuild(req)
  
      def getPendingBuilds(self):
-diff --unified -r buildbot-0.7.8-orig/buildbot/process/factory.py buildbot-0.7.8/buildbot/process/factory.py
+-        # return IBuildRequestControl objects
+-        raise NotImplementedError
++        """Return a list of L{IBuildRequestControl} objects for this Builder.
++        Each one corresponds to a pending build that has not yet started (due
++        to a scarcity of build slaves). These upcoming builds can be canceled
++        through the control object."""
++        return self.original.buildable
+ 
+     def getBuild(self, number):
+         return self.original.getBuild(number)
+diff -r --unified -N buildbot-0.7.8-orig/buildbot/process/factory.py buildbot-0.7.8-patch/buildbot/process/factory.py
 --- buildbot-0.7.8-orig/buildbot/process/factory.py	2008-07-25 01:36:28.000000000 +0200
-+++ buildbot-0.7.8/buildbot/process/factory.py	2008-08-20 15:05:27.000000000 +0200
++++ buildbot-0.7.8-patch/buildbot/process/factory.py	2008-08-20 15:05:27.000000000 +0200
 @@ -51,10 +51,10 @@
  # BuildFactory subclasses for common build tools
  
@@ -200,9 +210,9 @@ diff --unified -r buildbot-0.7.8-orig/buildbot/process/factory.py buildbot-0.7.8
 +                             configure=configure, configureEnv=configureEnv, 
 +                             compile=compile, 
                               test=test)
-diff --unified -r buildbot-0.7.8-orig/buildbot/process/properties.py buildbot-0.7.8/buildbot/process/properties.py
+diff -r --unified -N buildbot-0.7.8-orig/buildbot/process/properties.py buildbot-0.7.8-patch/buildbot/process/properties.py
 --- buildbot-0.7.8-orig/buildbot/process/properties.py	2008-07-25 01:36:29.000000000 +0200
-+++ buildbot-0.7.8/buildbot/process/properties.py	2008-08-20 11:34:15.000000000 +0200
++++ buildbot-0.7.8-patch/buildbot/process/properties.py	2008-08-20 11:34:15.000000000 +0200
 @@ -39,8 +39,13 @@
  
      def __getitem__(self, name):
@@ -219,9 +229,9 @@ diff --unified -r buildbot-0.7.8-orig/buildbot/process/properties.py buildbot-0.
  
      def has_key(self, name):
          return self.properties.has_key(name)
-diff --unified -r buildbot-0.7.8-orig/buildbot/status/web/about.py buildbot-0.7.8/buildbot/status/web/about.py
+diff -r --unified -N buildbot-0.7.8-orig/buildbot/status/web/about.py buildbot-0.7.8-patch/buildbot/status/web/about.py
 --- buildbot-0.7.8-orig/buildbot/status/web/about.py	2008-07-25 01:36:19.000000000 +0200
-+++ buildbot-0.7.8/buildbot/status/web/about.py	2008-08-18 16:55:05.000000000 +0200
++++ buildbot-0.7.8-patch/buildbot/status/web/about.py	2008-08-18 16:55:05.000000000 +0200
 @@ -5,6 +5,8 @@
  import twisted
  import sys
@@ -242,9 +252,9 @@ diff --unified -r buildbot-0.7.8-orig/buildbot/status/web/about.py buildbot-0.7.
          data += '''
  <h2>Source code</h2>
  
-diff --unified -r buildbot-0.7.8-orig/buildbot/status/web/base.py buildbot-0.7.8/buildbot/status/web/base.py
+diff -r --unified -N buildbot-0.7.8-orig/buildbot/status/web/base.py buildbot-0.7.8-patch/buildbot/status/web/base.py
 --- buildbot-0.7.8-orig/buildbot/status/web/base.py	2008-07-25 01:36:25.000000000 +0200
-+++ buildbot-0.7.8/buildbot/status/web/base.py	2008-08-29 15:20:54.000000000 +0200
++++ buildbot-0.7.8-patch/buildbot/status/web/base.py	2008-08-29 15:20:54.000000000 +0200
 @@ -83,10 +83,14 @@
                   "<input type='text' name='username' />")
        + make_row("Reason for build:",
@@ -263,9 +273,20 @@ diff --unified -r buildbot-0.7.8-orig/buildbot/status/web/base.py buildbot-0.7.8
        + '<input type="submit" value="Force Build" /></form>\n')
  
  colormap = {
-diff --unified -r buildbot-0.7.8-orig/buildbot/status/web/builder.py buildbot-0.7.8/buildbot/status/web/builder.py
+diff -r --unified -N buildbot-0.7.8-orig/buildbot/status/web/baseweb.py buildbot-0.7.8-patch/buildbot/status/web/baseweb.py
+--- buildbot-0.7.8-orig/buildbot/status/web/baseweb.py	2008-07-25 01:36:25.000000000 +0200
++++ buildbot-0.7.8-patch/buildbot/status/web/baseweb.py	2008-09-04 11:52:38.000000000 +0200
+@@ -20,6 +20,7 @@
+ from buildbot.status.web.slaves import BuildSlavesResource
+ from buildbot.status.web.xmlrpc import XMLRPCServer
+ from buildbot.status.web.about import AboutBuildbot
++from buildbot.status.web.queue import QueueStatusResource
+ 
+ # this class contains the status services (WebStatus and the older Waterfall)
+ # which can be put in c['status']. It also contains some of the resources
+diff -r --unified -N buildbot-0.7.8-orig/buildbot/status/web/builder.py buildbot-0.7.8-patch/buildbot/status/web/builder.py
 --- buildbot-0.7.8-orig/buildbot/status/web/builder.py	2008-07-25 01:36:28.000000000 +0200
-+++ buildbot-0.7.8/buildbot/status/web/builder.py	2008-08-18 16:55:05.000000000 +0200
++++ buildbot-0.7.8-patch/buildbot/status/web/builder.py	2008-09-04 13:00:32.000000000 +0200
 @@ -9,6 +9,7 @@
  from buildbot.status.web.base import HtmlResource, make_row, \
       make_force_build_form, OneLineMixin
@@ -274,7 +295,51 @@ diff --unified -r buildbot-0.7.8-orig/buildbot/status/web/builder.py buildbot-0.
  from buildbot.sourcestamp import SourceStamp
  from buildbot import version, util
  
-@@ -190,11 +191,18 @@
+@@ -50,6 +51,14 @@
+   <input type="submit" value="Stop Build" />
+ </form>''' % stopURL
+         return data
++    
++    def makeRemoveFromQueueButton(self, req, buildnum):
++        stopURL = urllib.quote(req.childLink("builds/%d/remove" % buildnum))
++        data = '''
++<form action="%s" class="command stopbuild" style="display:inline">
++  <input type="submit" value="Remove Build" />
++</form>''' % stopURL
++        return data
+ 
+     def body(self, req):
+         b = self.builder_status
+@@ -76,6 +85,28 @@
+             data += "</ul>\n"
+         else:
+             data += "<h2>no current builds</h2>\n"
++            
++        # Then a section with the queued build requests
++        data += "<h2>Pending Builds:</h2>\n"
++        # Retrieve the builders queue
++        pendingBuilds = b.getPendingBuilds()
++        if pendingBuilds:
++            # Determine the build numbers of the queue builds.
++            # Sadly we cannot remove the build from the queue with this
++            # number as it is not valid yet.
++            nextBuildNumber = b.nextBuildNumber
++            data += "<ul>\n"
++            for buildRequestStatus in pendingBuilds:
++                sourceStamp = buildRequestStatus.getSourceStamp()
++                data += "<li>#%u " % nextBuildNumber
++                data += "Branch: %s " % sourceStamp.branch
++                data += "[rev=%s]" % sourceStamp.revision
++                data += self.makeRemoveFromQueueButton(req, nextBuildNumber)
++                data += "</li>"
++                nextBuildNumber += 1
++            data += "</ul>\n"
++        else:
++            data += "No pending builds"
+ 
+         # Then a section with the last 5 builds, with the most recent build
+         # distinguished from the rest.
+@@ -190,11 +221,18 @@
          if not revision:
              revision = None
  
@@ -294,10 +359,18 @@ diff --unified -r buildbot-0.7.8-orig/buildbot/status/web/builder.py buildbot-0.
          try:
              self.builder_control.requestBuildSoon(req)
          except interfaces.NoSlaveError:
-diff --unified -r buildbot-0.7.8-orig/buildbot/status/web/build.py buildbot-0.7.8/buildbot/status/web/build.py
+diff -r --unified -N buildbot-0.7.8-orig/buildbot/status/web/build.py buildbot-0.7.8-patch/buildbot/status/web/build.py
 --- buildbot-0.7.8-orig/buildbot/status/web/build.py	2008-07-25 01:36:29.000000000 +0200
-+++ buildbot-0.7.8/buildbot/status/web/build.py	2008-08-26 11:14:26.000000000 +0200
-@@ -56,8 +56,8 @@
++++ buildbot-0.7.8-patch/buildbot/status/web/build.py	2008-09-04 13:27:58.000000000 +0200
+@@ -11,6 +11,7 @@
+ from buildbot.status.web.tests import TestsResource
+ from buildbot.status.web.step import StepsResource
+ from buildbot import version, util
++from buildbot.status.web.queue import QueueStatusResource
+ 
+ # /builders/$builder/builds/$buildnum
+ class StatusResourceBuild(HtmlResource):
+@@ -56,8 +57,8 @@
              results = b.getResults()
              data += "<h2>Results:</h2>\n"
              text = " ".join(b.getText())
@@ -308,10 +381,63 @@ diff --unified -r buildbot-0.7.8-orig/buildbot/status/web/build.py buildbot-0.7.
              if b.getTestResults():
                  url = req.childLink("tests")
                  data += "<h3><a href=\"%s\">test results</a></h3>\n" % url
-Nur in buildbot-0.7.8/buildbot/status/web: continuum.py.
-diff --unified -r buildbot-0.7.8-orig/buildbot/status/web/waterfall.py buildbot-0.7.8/buildbot/status/web/waterfall.py
+@@ -284,6 +285,9 @@
+                     build_control = None
+                 return StatusResourceBuild(build_status, build_control,
+                                            self.builder_control)
++            else:
++                # Probably a build that was not started yet
++                return QueueStatusResource(path, req, num, self.builder_status, self.builder_control)
+ 
+         return HtmlResource.getChild(self, path, req)
+ 
+diff -r --unified -N buildbot-0.7.8-orig/buildbot/status/web/queue.py buildbot-0.7.8-patch/buildbot/status/web/queue.py
+--- buildbot-0.7.8-orig/buildbot/status/web/queue.py	1970-01-01 01:00:00.000000000 +0100
++++ buildbot-0.7.8-patch/buildbot/status/web/queue.py	2008-09-04 13:29:38.000000000 +0200
+@@ -0,0 +1,39 @@
++from twisted.web.util import Redirect, DeferredResource
++from twisted.internet import defer, reactor
++from buildbot.status.web.base import HtmlResource
++
++# Shows the queue of a Builder
++class QueueStatusResource(HtmlResource):
++    def __init__(self, path, req, num, builder_status, builder_control):
++        HtmlResource.__init__(self)
++        self.path = path
++        self.req  = req
++        self.num  = num
++        self.builder_status = builder_status
++        self.builder_control = builder_control
++        
++    def body(self, request):    
++        return ""
++    
++    # Removes a build from a builders queue
++    def removeFromQueue(self, req):
++        # Delete the build request from queue
++        idx = self.builder_status.nextBuildNumber - self.num
++        
++        if idx >= 0:
++            buildables = self.builder_control.getPendingBuilds()
++            buildables[idx].cancel()
++
++        # we're at http://localhost:8080/svn-hello/builds/5/stop?[args] and
++        # we want to go to: http://localhost:8080/svn-hello
++        r = Redirect("../..")
++        d = defer.Deferred()
++        reactor.callLater(1, d.callback, r)
++        return DeferredResource(d)
++        
++    def getChild(self, path, req):
++        if path == "remove":
++            return self.removeFromQueue(req)
++        else:
++            return HtmlResource.getChild(self, path, req)
++        
+\ Kein Zeilenumbruch am Dateiende.
+diff -r --unified -N buildbot-0.7.8-orig/buildbot/status/web/waterfall.py buildbot-0.7.8-patch/buildbot/status/web/waterfall.py
 --- buildbot-0.7.8-orig/buildbot/status/web/waterfall.py	2008-07-25 01:36:29.000000000 +0200
-+++ buildbot-0.7.8/buildbot/status/web/waterfall.py	2008-08-26 12:19:35.000000000 +0200
++++ buildbot-0.7.8-patch/buildbot/status/web/waterfall.py	2008-08-26 12:19:35.000000000 +0200
 @@ -129,8 +129,15 @@
          number = b.getNumber()
          url = path_to_build(req, b)
