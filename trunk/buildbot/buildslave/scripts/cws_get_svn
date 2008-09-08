@@ -72,7 +72,7 @@ def main():
 
     # If the CWS/MWS cannot be found in Subversion or an error has occurred,
     # we try to checkout the source from CVS    
-    if status != 0:
+    if status != 0 or not path.exists("workdir"):
         p = Popen("../cws_get --branch=%s" % branch, shell=True)
         status = os.waitpid(p.pid, 0)[1]
 
