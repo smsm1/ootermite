@@ -10,8 +10,8 @@ if [ -n "$1" ]; then
         #        export USE_PCH
         fi
 
-        export CC="ccache gcc"
-        export CXX="ccache g++"
+        export CC="ccache $CC"
+        export CXX="ccache $CXX"
 
 else
         echo usage...;

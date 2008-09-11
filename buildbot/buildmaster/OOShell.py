@@ -55,7 +55,7 @@ class OOShellCommand(ShellCommand):
         elif results == SKIPPED:
             return self.describe(True) + ["skipped"]
         else:
-            return self.describe(True) + ["failed"]
+            return self.describe(True) + ["failure"]
 
     def getColor(self, cmd, results):
         assert results in (SUCCESS, WARNINGS, FAILURE, SKIPPED)
