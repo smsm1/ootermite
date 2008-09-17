@@ -1,6 +1,6 @@
-diff -r --unified -N buildbot-0.7.8-orig/buildbot/changes/bonsaipoller.py buildbot-0.7.8-patch/buildbot/changes/bonsaipoller.py
---- buildbot-0.7.8-orig/buildbot/changes/bonsaipoller.py	2008-07-25 01:36:24.000000000 +0200
-+++ buildbot-0.7.8-patch/buildbot/changes/bonsaipoller.py	2008-08-18 16:55:07.000000000 +0200
+diff -r --unified buildbot-0.7.9-orig/buildbot/changes/bonsaipoller.py buildbot-0.7.9-patched/buildbot/changes/bonsaipoller.py
+--- buildbot-0.7.9-orig/buildbot/changes/bonsaipoller.py	2008-09-16 18:02:30.000000000 +0200
++++ buildbot-0.7.9-patched/buildbot/changes/bonsaipoller.py	2008-09-17 11:06:09.000000000 +0200
 @@ -48,7 +48,7 @@
          return 0
  
@@ -10,9 +10,9 @@ diff -r --unified -N buildbot-0.7.8-orig/buildbot/changes/bonsaipoller.py buildb
      def __init__(self, log="", who="", date=0, files=[]):
          self.log = log
          self.who = who
-diff -r --unified -N buildbot-0.7.8-orig/buildbot/process/base.py buildbot-0.7.8-patch/buildbot/process/base.py
---- buildbot-0.7.8-orig/buildbot/process/base.py	2008-07-25 01:36:28.000000000 +0200
-+++ buildbot-0.7.8-patch/buildbot/process/base.py	2008-08-20 10:08:07.000000000 +0200
+diff -r --unified buildbot-0.7.9-orig/buildbot/process/base.py buildbot-0.7.9-patched/buildbot/process/base.py
+--- buildbot-0.7.9-orig/buildbot/process/base.py	2008-09-16 18:02:34.000000000 +0200
++++ buildbot-0.7.9-patched/buildbot/process/base.py	2008-09-17 11:08:57.000000000 +0200
 @@ -70,6 +70,22 @@
          self.start_watchers = []
          self.finish_watchers = []
@@ -36,10 +36,10 @@ diff -r --unified -N buildbot-0.7.8-orig/buildbot/process/base.py buildbot-0.7.8
  
      def canBeMergedWith(self, other):
          return self.source.canBeMergedWith(other.source)
-diff -r --unified -N buildbot-0.7.8-orig/buildbot/process/builder.py buildbot-0.7.8-patch/buildbot/process/builder.py
---- buildbot-0.7.8-orig/buildbot/process/builder.py	2008-07-25 01:36:28.000000000 +0200
-+++ buildbot-0.7.8-patch/buildbot/process/builder.py	2008-09-04 13:30:45.000000000 +0200
-@@ -333,13 +333,33 @@
+diff -r --unified buildbot-0.7.9-orig/buildbot/process/builder.py buildbot-0.7.9-patched/buildbot/process/builder.py
+--- buildbot-0.7.9-orig/buildbot/process/builder.py	2008-09-16 18:02:31.000000000 +0200
++++ buildbot-0.7.9-patched/buildbot/process/builder.py	2008-09-17 11:10:31.000000000 +0200
+@@ -333,8 +333,27 @@
      def __repr__(self):
          return "<Builder '%s' at %d>" % (self.name, id(self))
  
@@ -68,13 +68,7 @@ diff -r --unified -N buildbot-0.7.8-orig/buildbot/process/builder.py buildbot-0.
          req.submittedAt = now()
          self.buildable.append(req)
          req.requestSubmitted(self)
-         self.builder_status.addBuildRequest(req.status)
-         self.maybeStartBuild()
-+        return
- 
-     def cancelBuildRequest(self, req):
-         if req in self.buildable:
-@@ -714,12 +734,18 @@
+@@ -714,12 +733,18 @@
              return
  
          ss = bs.getSourceStamp(absolute=True)
@@ -96,123 +90,9 @@ diff -r --unified -N buildbot-0.7.8-orig/buildbot/process/builder.py buildbot-0.
  
      def getBuild(self, number):
          return self.original.getBuild(number)
-diff -r --unified -N buildbot-0.7.8-orig/buildbot/process/factory.py buildbot-0.7.8-patch/buildbot/process/factory.py
---- buildbot-0.7.8-orig/buildbot/process/factory.py	2008-07-25 01:36:28.000000000 +0200
-+++ buildbot-0.7.8-patch/buildbot/process/factory.py	2008-08-20 15:05:27.000000000 +0200
-@@ -51,10 +51,10 @@
- # BuildFactory subclasses for common build tools
- 
- class GNUAutoconf(BuildFactory):
--    def __init__(self, source, configure="./configure",
--                 configureEnv={},
--                 configureFlags=[],
--                 compile=["make", "all"],
-+    def __init__(self, source, configure="./configure", 
-+                 configureEnv={}, 
-+                 configureFlags=[], 
-+                 compile=["make", "all"], 
-                  test=["make", "check"]):
-         BuildFactory.__init__(self, [source])
-         if configure is not None:
-@@ -105,10 +105,10 @@
-     randomly = False
-     recurse = False
- 
--    def __init__(self, source,
--                 buildpython=["python"], trialpython=[], trial=None,
--                 testpath=".", randomly=None, recurse=None,
--                 tests=None,  useTestCaseNames=False, env=None):
-+    def __init__(self, source, 
-+                 buildpython=["python"], trialpython=[], trial=None, 
-+                 testpath=".", randomly=None, recurse=None, 
-+                 tests=None, useTestCaseNames=False, env=None):
-         BuildFactory.__init__(self, [source])
-         assert tests or useTestCaseNames, "must use one or the other"
-         if trial is not None:
-@@ -121,13 +121,13 @@
-         from buildbot.steps.python_twisted import Trial
-         buildcommand = buildpython + ["./setup.py", "build"]
-         self.addStep(Compile, command=buildcommand, env=env)
--        self.addStep(Trial,
--                     python=trialpython, trial=self.trial,
--                     testpath=testpath,
--                     tests=tests, testChanges=useTestCaseNames,
--                     randomly=self.randomly,
--                     recurse=self.recurse,
--                     env=env,
-+        self.addStep(Trial, 
-+                     python=trialpython, trial=self.trial, 
-+                     testpath=testpath, 
-+                     tests=tests, testChanges=useTestCaseNames, 
-+                     randomly=self.randomly, 
-+                     recurse=self.recurse, 
-+                     env=env, 
-                      )
- 
- 
-@@ -140,41 +140,41 @@
- class BasicBuildFactory(GNUAutoconf):
-     # really a "GNU Autoconf-created tarball -in-CVS tree" builder
- 
--    def __init__(self, cvsroot, cvsmodule,
--                 configure=None, configureEnv={},
--                 compile="make all",
-+    def __init__(self, cvsroot, cvsmodule, 
-+                 configure=None, configureEnv={}, 
-+                 compile="make all", 
-                  test="make check", cvsCopy=False):
-         mode = "clobber"
-         if cvsCopy:
-             mode = "copy"
-         source = s(CVS, cvsroot=cvsroot, cvsmodule=cvsmodule, mode=mode)
--        GNUAutoconf.__init__(self, source,
--                             configure=configure, configureEnv=configureEnv,
--                             compile=compile,
-+        GNUAutoconf.__init__(self, source, 
-+                             configure=configure, configureEnv=configureEnv, 
-+                             compile=compile, 
-                              test=test)
- 
- class QuickBuildFactory(BasicBuildFactory):
-     useProgress = False
- 
--    def __init__(self, cvsroot, cvsmodule,
--                 configure=None, configureEnv={},
--                 compile="make all",
-+    def __init__(self, cvsroot, cvsmodule, 
-+                 configure=None, configureEnv={}, 
-+                 compile="make all", 
-                  test="make check", cvsCopy=False):
-         mode = "update"
-         source = s(CVS, cvsroot=cvsroot, cvsmodule=cvsmodule, mode=mode)
--        GNUAutoconf.__init__(self, source,
--                             configure=configure, configureEnv=configureEnv,
--                             compile=compile,
-+        GNUAutoconf.__init__(self, source, 
-+                             configure=configure, configureEnv=configureEnv, 
-+                             compile=compile, 
-                              test=test)
- 
- class BasicSVN(GNUAutoconf):
- 
--    def __init__(self, svnurl,
--                 configure=None, configureEnv={},
--                 compile="make all",
-+    def __init__(self, svnurl, 
-+                 configure=None, configureEnv={}, 
-+                 compile="make all", 
-                  test="make check"):
-         source = s(SVN, svnurl=svnurl, mode="update")
--        GNUAutoconf.__init__(self, source,
--                             configure=configure, configureEnv=configureEnv,
--                             compile=compile,
-+        GNUAutoconf.__init__(self, source, 
-+                             configure=configure, configureEnv=configureEnv, 
-+                             compile=compile, 
-                              test=test)
-diff -r --unified -N buildbot-0.7.8-orig/buildbot/process/properties.py buildbot-0.7.8-patch/buildbot/process/properties.py
---- buildbot-0.7.8-orig/buildbot/process/properties.py	2008-07-25 01:36:29.000000000 +0200
-+++ buildbot-0.7.8-patch/buildbot/process/properties.py	2008-08-20 11:34:15.000000000 +0200
+diff -r --unified buildbot-0.7.9-orig/buildbot/process/properties.py buildbot-0.7.9-patched/buildbot/process/properties.py
+--- buildbot-0.7.9-orig/buildbot/process/properties.py	2008-09-16 18:02:34.000000000 +0200
++++ buildbot-0.7.9-patched/buildbot/process/properties.py	2008-09-17 11:12:33.000000000 +0200
 @@ -39,8 +39,13 @@
  
      def __getitem__(self, name):
@@ -229,9 +109,9 @@ diff -r --unified -N buildbot-0.7.8-orig/buildbot/process/properties.py buildbot
  
      def has_key(self, name):
          return self.properties.has_key(name)
-diff -r --unified -N buildbot-0.7.8-orig/buildbot/status/web/about.py buildbot-0.7.8-patch/buildbot/status/web/about.py
---- buildbot-0.7.8-orig/buildbot/status/web/about.py	2008-07-25 01:36:19.000000000 +0200
-+++ buildbot-0.7.8-patch/buildbot/status/web/about.py	2008-08-18 16:55:05.000000000 +0200
+diff -r --unified buildbot-0.7.9-orig/buildbot/status/web/about.py buildbot-0.7.9-patched/buildbot/status/web/about.py
+--- buildbot-0.7.9-orig/buildbot/status/web/about.py	2008-09-16 18:02:29.000000000 +0200
++++ buildbot-0.7.9-patched/buildbot/status/web/about.py	2008-09-17 11:14:42.000000000 +0200
 @@ -5,6 +5,8 @@
  import twisted
  import sys
@@ -252,10 +132,27 @@ diff -r --unified -N buildbot-0.7.8-orig/buildbot/status/web/about.py buildbot-0
          data += '''
  <h2>Source code</h2>
  
-diff -r --unified -N buildbot-0.7.8-orig/buildbot/status/web/base.py buildbot-0.7.8-patch/buildbot/status/web/base.py
---- buildbot-0.7.8-orig/buildbot/status/web/base.py	2008-07-25 01:36:25.000000000 +0200
-+++ buildbot-0.7.8-patch/buildbot/status/web/base.py	2008-08-29 15:20:54.000000000 +0200
-@@ -83,10 +83,14 @@
+diff -r --unified buildbot-0.7.9-orig/buildbot/status/web/base.py buildbot-0.7.9-patched/buildbot/status/web/base.py
+--- buildbot-0.7.9-orig/buildbot/status/web/base.py	2008-09-16 18:02:30.000000000 +0200
++++ buildbot-0.7.9-patched/buildbot/status/web/base.py	2008-09-17 11:15:06.000000000 +0200
+@@ -3,7 +3,7 @@
+ from zope.interface import Interface
+ from twisted.web import html, resource
+ from buildbot.status import builder
+-from buildbot.status.builder import SUCCESS, WARNINGS, FAILURE, EXCEPTION
++from buildbot.status.builder import SUCCESS, WARNINGS, FAILURE, SKIPPED, EXCEPTION
+ 
+ 
+ class ITopBox(Interface):
+@@ -32,6 +32,7 @@
+ css_classes = {SUCCESS: "success",
+                WARNINGS: "warnings",
+                FAILURE: "failure",
++               SKIPPED: "skipped",
+                EXCEPTION: "exception",
+                }
+ 
+@@ -83,10 +84,14 @@
                   "<input type='text' name='username' />")
        + make_row("Reason for build:",
                   "<input type='text' name='comments' />")
@@ -273,9 +170,9 @@ diff -r --unified -N buildbot-0.7.8-orig/buildbot/status/web/base.py buildbot-0.
        + '<input type="submit" value="Force Build" /></form>\n')
  
  colormap = {
-diff -r --unified -N buildbot-0.7.8-orig/buildbot/status/web/baseweb.py buildbot-0.7.8-patch/buildbot/status/web/baseweb.py
---- buildbot-0.7.8-orig/buildbot/status/web/baseweb.py	2008-07-25 01:36:25.000000000 +0200
-+++ buildbot-0.7.8-patch/buildbot/status/web/baseweb.py	2008-09-04 11:52:38.000000000 +0200
+diff -r --unified buildbot-0.7.9-orig/buildbot/status/web/baseweb.py buildbot-0.7.9-patched/buildbot/status/web/baseweb.py
+--- buildbot-0.7.9-orig/buildbot/status/web/baseweb.py	2008-09-16 18:02:34.000000000 +0200
++++ buildbot-0.7.9-patched/buildbot/status/web/baseweb.py	2008-09-17 11:15:54.000000000 +0200
 @@ -20,6 +20,7 @@
  from buildbot.status.web.slaves import BuildSlavesResource
  from buildbot.status.web.xmlrpc import XMLRPCServer
@@ -284,9 +181,9 @@ diff -r --unified -N buildbot-0.7.8-orig/buildbot/status/web/baseweb.py buildbot
  
  # this class contains the status services (WebStatus and the older Waterfall)
  # which can be put in c['status']. It also contains some of the resources
-diff -r --unified -N buildbot-0.7.8-orig/buildbot/status/web/builder.py buildbot-0.7.8-patch/buildbot/status/web/builder.py
---- buildbot-0.7.8-orig/buildbot/status/web/builder.py	2008-07-25 01:36:28.000000000 +0200
-+++ buildbot-0.7.8-patch/buildbot/status/web/builder.py	2008-09-04 13:00:32.000000000 +0200
+diff -r --unified buildbot-0.7.9-orig/buildbot/status/web/builder.py buildbot-0.7.9-patched/buildbot/status/web/builder.py
+--- buildbot-0.7.9-orig/buildbot/status/web/builder.py	2008-09-16 18:02:33.000000000 +0200
++++ buildbot-0.7.9-patched/buildbot/status/web/builder.py	2008-09-17 11:16:25.000000000 +0200
 @@ -9,6 +9,7 @@
  from buildbot.status.web.base import HtmlResource, make_row, \
       make_force_build_form, OneLineMixin
@@ -359,9 +256,9 @@ diff -r --unified -N buildbot-0.7.8-orig/buildbot/status/web/builder.py buildbot
          try:
              self.builder_control.requestBuildSoon(req)
          except interfaces.NoSlaveError:
-diff -r --unified -N buildbot-0.7.8-orig/buildbot/status/web/build.py buildbot-0.7.8-patch/buildbot/status/web/build.py
---- buildbot-0.7.8-orig/buildbot/status/web/build.py	2008-07-25 01:36:29.000000000 +0200
-+++ buildbot-0.7.8-patch/buildbot/status/web/build.py	2008-09-04 13:27:58.000000000 +0200
+diff -r --unified buildbot-0.7.9-orig/buildbot/status/web/build.py buildbot-0.7.9-patched/buildbot/status/web/build.py
+--- buildbot-0.7.9-orig/buildbot/status/web/build.py	2008-09-16 18:02:34.000000000 +0200
++++ buildbot-0.7.9-patched/buildbot/status/web/build.py	2008-09-17 11:16:59.000000000 +0200
 @@ -11,6 +11,7 @@
  from buildbot.status.web.tests import TestsResource
  from buildbot.status.web.step import StepsResource
@@ -381,7 +278,7 @@ diff -r --unified -N buildbot-0.7.8-orig/buildbot/status/web/build.py buildbot-0
              if b.getTestResults():
                  url = req.childLink("tests")
                  data += "<h3><a href=\"%s\">test results</a></h3>\n" % url
-@@ -284,6 +285,9 @@
+@@ -294,6 +295,9 @@
                      build_control = None
                  return StatusResourceBuild(build_status, build_control,
                                             self.builder_control)
@@ -391,7 +288,28 @@ diff -r --unified -N buildbot-0.7.8-orig/buildbot/status/web/build.py buildbot-0
  
          return HtmlResource.getChild(self, path, req)
  
-diff -r --unified -N buildbot-0.7.8-orig/buildbot/status/web/queue.py buildbot-0.7.8-patch/buildbot/status/web/queue.py
+diff -r --unified buildbot-0.7.9-orig/buildbot/status/web/waterfall.py buildbot-0.7.9-patched/buildbot/status/web/waterfall.py
+--- buildbot-0.7.9-orig/buildbot/status/web/waterfall.py	2008-09-16 18:02:34.000000000 +0200
++++ buildbot-0.7.9-patched/buildbot/status/web/waterfall.py	2008-09-17 11:17:37.000000000 +0200
+@@ -129,8 +129,15 @@
+         number = b.getNumber()
+         url = path_to_build(req, b)
+         reason = b.getReason()
+-        text = ('<a title="Reason: %s" href="%s">Build %d</a>'
+-                % (html.escape(reason), url, number))
++        if reason == None:
++            reason = "No specific reason"
++            
++        branch = b.getProperty('branch')
++        if branch == None:
++            branch = "ERROR: No CWS/MWS provided!"
++            
++        text = ('<a title="Reason: %s | CWS: %s" href="%s">Build %d<br/>CWS/MWS: %s</a>'
++                % (html.escape(reason), html.escape(branch), url, number, html.escape(branch)))
+         color = "yellow"
+         class_ = "start"
+         if b.isFinished() and not b.getSteps():
+diff -r --unified -N buildbot-0.7.9-orig/buildbot/status/web/queue.py buildbot-0.7.9-patched/buildbot/status/web/queue.py
 --- buildbot-0.7.8-orig/buildbot/status/web/queue.py	1970-01-01 01:00:00.000000000 +0100
 +++ buildbot-0.7.8-patch/buildbot/status/web/queue.py	2008-09-04 13:29:38.000000000 +0200
 @@ -0,0 +1,39 @@
@@ -435,24 +353,3 @@ diff -r --unified -N buildbot-0.7.8-orig/buildbot/status/web/queue.py buildbot-0
 +            return HtmlResource.getChild(self, path, req)
 +        
 \ Kein Zeilenumbruch am Dateiende.
-diff -r --unified -N buildbot-0.7.8-orig/buildbot/status/web/waterfall.py buildbot-0.7.8-patch/buildbot/status/web/waterfall.py
---- buildbot-0.7.8-orig/buildbot/status/web/waterfall.py	2008-07-25 01:36:29.000000000 +0200
-+++ buildbot-0.7.8-patch/buildbot/status/web/waterfall.py	2008-08-26 12:19:35.000000000 +0200
-@@ -129,8 +129,15 @@
-         number = b.getNumber()
-         url = path_to_build(req, b)
-         reason = b.getReason()
--        text = ('<a title="Reason: %s" href="%s">Build %d</a>'
--                % (html.escape(reason), url, number))
-+        if reason == None:
-+            reason = "No specific reason"
-+            
-+        branch = b.getProperty('branch')
-+        if branch == None:
-+            branch = "ERROR: No CWS/MWS provided!"
-+            
-+        text = ('<a title="Reason: %s | CWS: %s" href="%s">Build %d<br/>CWS/MWS: %s</a>'
-+                % (html.escape(reason), html.escape(branch), url, number, html.escape(branch)))
-         color = "yellow"
-         class_ = "start"
-         if b.isFinished() and not b.getSteps():
