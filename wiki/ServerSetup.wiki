@@ -9,12 +9,12 @@ In our setup, we run the buildbot process under the buildmaster user.  This user
 
 == Setup ==
 The process for recreating the buildbot setup is more or less as follows:
- # Patch and install buildbot (see buildbot docs and patch)
+ # Patch and install buildbot (see buildbot docs and patch). The ootermite patch can be found in buildbot/buildmaster/OO-changes.diff
  # Create the buildmaster
 {{{
 buildbot create-master buildmaster
 }}}
- # Checkout the buildmaster parts from svn. Please not that _trunk_ is work in progress! For the more stable version use a branch (e.g. /branches/0.1_buildbot0.7.5/) instead.
+ # Checkout the buildmaster parts from svn. Please note that _trunk_ is work in progress! For the more stable version use a branch (e.g. /branches/0.1_buildbot0.7.5/) instead.
 {{{
 svn co http://ootermite.googlecode.com/svn/trunk/buildbot/buildmaster/ buildmaster
 }}}
