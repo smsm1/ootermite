@@ -1,0 +1,4 @@
+Stuff in here:
+
+reporter/   a ruby on rails app that forms the reporting engine
+buildbot/   stuff relating to the buildbot app

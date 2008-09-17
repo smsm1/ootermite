@@ -1,0 +1,82 @@
+#!/usr/bin/python
+
+import getopt
+import sys
+import shutil
+import os
+import os.path
+import re
+from subprocess import *
+
+SVN_ROOT = "svn://svn.services.openoffice.org/ooo"
+
+def printHelp():
+    print "Usage: " + sys.argv[0] + " [--branch=CWS/MWS] [--help]"
+
+# Moves workdir to workdir.old
+def cleanUpDirectories():
+    print "Remove workdir.old if existing..."
+    if os.path.exists("workdir.old"):
+        shutil.rmtree("workdir.old", True) # Ignore errors
+
+    print "Save a copy of the workdir to workdir.old..."
+    if os.path.exists("workdir"):
+        shutil.move("workdir", "workdir.old")
+    
+    return
+
+def isSubversionLocalCopy(path):
+    return os.path.exists(path + "/.svn/")
+
+def svnSwitch(svnurl):
+    print "Switch workdir to " + svnurl
+    p = Popen("svn" + " switch " + SVN_ROOT + svnurl + " workdir", shell=True)
+    return os.waitpid(p.pid, 0)[1]
+
+def svnExport(svnurl):
+    print "Export branch " + svnurl
+    p = Popen("svn" + " export " + SVN_ROOT + svnurl + " workdir", shell=True)
+    return os.waitpid(p.pid, 0)[1]
+
+def main():
+    branch = '' # If no branch parameter given, checkout HEAD
+    
+    opts, args = getopt.getopt(sys.argv[1:], "hbnNsrli", ["help", "branch=", "buildername=", "buildnumber=", "slavename=", "revision=", "languages=", "install_set="])
+        
+
+    for opt, arg in opts:
+        if opt in ("-h", "--help"):
+            printHelp()
+            return 1
+        elif opt in ("-b", "--branch"):
+            branch = arg
+
+    # First, create directory structure...
+    cleanUpDirectories();
+
+    # Create regex pattern to match MWS
+    regex = "[A-Z]{3}[0-9]{3}_\s*"
+    pattern = re.compile(regex)    
+
+    if branch == '':
+        print "Getting trunk..."
+        status = svnExport("/trunk/")
+    elif pattern.match(branch) != None:
+        print "Getting MWS named '" + branch + "'"
+        status = svnExport("/tags/" + branch)
+    else:
+        print "Getting CWS branch named '" + branch + "'"
+        status = svnExport("/cws/" + branch)
+
+    print "Subversion exited with status %u" % status
+
+    # If the CWS/MWS cannot be found in Subversion or an error has occurred,
+    # we try to checkout the source from CVS    
+    if status != 0 or not os.path.exists("workdir"):
+        p = Popen("../cws_get --branch=%s" % branch, shell=True)
+        status = os.waitpid(p.pid, 0)[1]
+
+    sys.exit(status)
+
+main()
+
