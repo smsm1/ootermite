@@ -23,7 +23,7 @@ exit
 
 = Details =
 
-  # Grab a copy of buildbot 0.7.8 [https://sourceforge.net/project/showfiles.php?group_id=73177 source]
+  # Grab a copy of [https://sourceforge.net/project/showfiles.php?group_id=73177 Buildbot 0.7.9]
   # Unpack the source
   # Build the buildbot [http://buildbot.net/repos/release/docs/buildbot.html#Installing-the-code the buildbot manual]
   # Create the build-slave
