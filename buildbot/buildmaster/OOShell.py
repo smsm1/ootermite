@@ -30,7 +30,7 @@ class OOShellCommand(ShellCommand):
     def evaluateCommand(self, cmd):
     
         # This shows the build as skipped, but internally it is broken due to a failure
-        if cmd.rc == 65:
+        if cmd.rc == 65 and self.describe(False) == ['CWS']:
             self.build.buildFinished(['Slave rejected %s' % self.describe, 'Rejected by slave'], 'grey', SKIPPED)
             self.step_status.setColor("grey")
             return SKIPPED
