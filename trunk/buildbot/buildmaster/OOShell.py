@@ -42,7 +42,7 @@ class OOShellCommand(ShellCommand):
             return SKIPPED
 
         if cmd.rc != 0:
-            if self.describe(False) == ['Smoketest']:
+            if self.describe(False) == ['Smoketest'] or self.describe(False) == ['Bundle']:
                 return SKIPPED
 
         return ShellCommand.evaluateCommand(self, cmd)
