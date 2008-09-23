@@ -1,5 +1,30 @@
 #!/usr/bin/python
 
+#*************************************************************************
+# 
+# Copyright 2008 by Sun Microsystems, Inc.
+#
+# OpenOffice.org - a multi-platform office productivity suite
+#
+# This file is part of OpenOffice.org/ootermite.
+#
+# OpenOffice.org is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License version 3
+# only, as published by the Free Software Foundation.
+#
+# OpenOffice.org is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License version 3 for more details
+# (a copy is included in the LICENSE file that accompanied this code).
+#
+# You should have received a copy of the GNU Lesser General Public License
+# version 3 along with OpenOffice.org.  If not, see
+# <http://www.openoffice.org/license.html>
+# for a copy of the LGPLv3 License.
+#
+#*************************************************************************
+
 import getopt
 import sys
 import shutil
@@ -9,19 +34,24 @@ import re
 from subprocess import *
 
 SVN_ROOT = "svn://svn.services.openoffice.org/ooo"
+WORKDIR  = "workdir"
 
 def printHelp():
-    print "Usage: " + sys.argv[0] + " [--branch=CWS/MWS] [--help]"
+    print "Usage: " + sys.argv[0] + " [--branch=CWS/MWS] [--help] [--workdir]"
+    print "The following parameters are recognized by this script:"
+    print "--branch\tSpecifies which CWS/MWS should be retrieved (default, if omitted: trunk HEAD)"
+    print "--help\t\tPrints this messages"
+    print "--workdir\tSpecifies a custom work dir (default: workdir). Useful for debugging builds."
 
 # Moves workdir to workdir.old
 def cleanUpDirectories():
     print "Remove workdir.old if existing..."
-    if os.path.exists("workdir.old"):
-        shutil.rmtree("workdir.old", True) # Ignore errors
+    if os.path.exists(WORKDIR + ".old"):
+        shutil.rmtree(WORKDIR + ".old", True) # True means: Ignore errors
 
-    print "Save a copy of the workdir to workdir.old..."
-    if os.path.exists("workdir"):
-        shutil.move("workdir", "workdir.old")
+    print "Save a copy of the %s to %s.old..." % (WORKDIR, WORKDIR)
+    if os.path.exists(WORKDIR):
+        shutil.move(WORKDIR, WORKDIR + ".old")
     
     return
 
@@ -30,19 +60,30 @@ def isSubversionLocalCopy(path):
 
 def svnSwitch(svnurl):
     print "Switch workdir to " + svnurl
-    p = Popen("svn" + " switch " + SVN_ROOT + svnurl + " workdir", shell=True)
+    p = Popen("svn" + " switch " + SVN_ROOT + svnurl + " " + WORKDIR, shell=True)
     return os.waitpid(p.pid, 0)[1]
 
-def svnExport(svnurl):
-    print "Export branch " + svnurl
-    p = Popen("svn" + " export " + SVN_ROOT + svnurl + " workdir", shell=True)
+def svnCheckout(svnurl):
+    print "Checking out " + svnurl
+    p = Popen("svn" + " co " + SVN_ROOT + svnurl + " " + WORKDIR, shell=True)
     return os.waitpid(p.pid, 0)[1]
+
+# If there is an existing Subversion working copy, we switch
+# this workdir to the given repository path (Heiner said this is *fast*).
+# If no working copy is available (or only a CVS checkout), we
+# perform a clean SVN checkout.
+def checkAndGet(path):
+    if isSubversionLocalCopy(WORKDIR):
+        status = svnSwitch(path)
+    else:
+        cleanUpDirectories()
+        status = svnCheckout(path)
+    return status
 
 def main():
-    branch = '' # If no branch parameter given, checkout HEAD
+    branch = '' # If no branch parameter given, checkout trunk HEAD
     
-    opts, args = getopt.getopt(sys.argv[1:], "hbnNsrli", ["help", "branch=", "buildername=", "buildnumber=", "slavename=", "revision=", "languages=", "install_set="])
-        
+    opts, args = getopt.getopt(sys.argv[1:], "hbnNsrliw", ["help", "branch=", "buildername=", "buildnumber=", "slavename=", "revision=", "languages=", "install_set=", "workdir="])
 
     for opt, arg in opts:
         if opt in ("-h", "--help"):
@@ -50,32 +91,35 @@ def main():
             return 1
         elif opt in ("-b", "--branch"):
             branch = arg
-
-    # First, create directory structure...
-    cleanUpDirectories();
+        elif opt in ("-w", "--workdir"):
+            global WORKDIR
+            WORKDIR = arg        
 
     # Create regex pattern to match MWS
     regex = "[A-Z]{3}[0-9]{3}_\s*"
     pattern = re.compile(regex)    
 
+    # If no branch is given we should build trunk, which seldom happens.
     if branch == '':
         print "Getting trunk..."
-        status = svnExport("/trunk/")
+        status = checkAndGet("/trunk/")
+    # Check if it's a Master Workspace
     elif pattern.match(branch) != None:
         print "Getting MWS named '" + branch + "'"
-        status = svnExport("/tags/" + branch)
+        status = checkAndGet("/tags/" + branch)
+    # Otherwise it must be a Child Workspace
     else:
         print "Getting CWS branch named '" + branch + "'"
-        status = svnExport("/cws/" + branch)
+        status = checkAndGet("/cws/" + branch)
 
     print "Subversion exited with status %u" % status
 
     # If the CWS/MWS cannot be found in Subversion or an error has occurred,
     # we try to checkout the source from CVS    
     if status != 0 or not os.path.exists("workdir"):
-        p = Popen("../cws_get --branch=%s" % branch, shell=True)
-        status = os.waitpid(p.pid, 0)[1]
+        status = os.system("../cws_get --branch=%s" % branch)
 
+    print "cws_get_svn exited with status %u" % status
     sys.exit(status)
 
 main()
