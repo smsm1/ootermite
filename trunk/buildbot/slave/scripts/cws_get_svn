@@ -75,6 +75,8 @@ def svnCheckout(svnurl):
 # perform a clean SVN checkout.
 def checkAndGet(path):
     if isSubversionLocalCopy(WORKDIR):
+        # Wipe out all unversioned files first 
+        os.system("../svn-clean %s" % WORKDIR)
         status = svnSwitch(path)
     else:
         cleanUpDirectories()
@@ -86,7 +88,7 @@ def loadConfig():
     global WORKDIR
 
     cfgp = ConfigParser() 
-    cfgp.read([sys.argv[0] + ".cfg", "cws_get_svn.cfg"]) # Errors are silently ignored
+    cfgp.read([sys.argv[0] + ".cfg", "cws_get_svn.cfg", "cws_get_svn.cfg.sample"]) # Errors are silently ignored
 
     try:
         svnRoot = cfgp.get("Subversion", "Root")
