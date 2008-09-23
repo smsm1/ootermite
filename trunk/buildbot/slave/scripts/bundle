@@ -1,5 +1,6 @@
 #!/bin/bash -x
 
+# TODO: Using parameter 7 is *very* unsafe!!
 if [ $7 != "--install_set=on" ]; then
     exit 65
 fi
