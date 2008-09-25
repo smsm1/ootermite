@@ -1,3 +1,27 @@
+diff -r --unified buildbot-0.7.9-orig/buildbot/steps/shell.py buildbot-0.7.9-patched/buildbot/steps/shell.py
+--- buildbot-0.7.9-orig/buildbot/steps/shell.py	2008-09-17 11:36:01.000000000 -0700
++++ buildbot-0.7.9-patched/buildbot/steps/shell.py	2008-09-17 11:36:01.000000000 -0700
+@@ -116,9 +116,9 @@
+         """
+ 
+         if done and self.descriptionDone is not None:
+-            return self.descriptionDone
++            return list(self.descriptionDone)
+         if self.description is not None:
+-            return self.description
++            return list(self.description)
+ 
+         properties = self.build.getProperties()
+         words = self.command
+@@ -401,8 +401,6 @@
+                     description.append('%d warnings' % warnings)
+                 if failed:
+                     description.append('%d failed' % failed)
+-            else:
+-                description.append("no test results")
+         return description
+ 
+ class PerlModuleTest(Test):
 diff -r --unified buildbot-0.7.9-orig/buildbot/changes/bonsaipoller.py buildbot-0.7.9-patched/buildbot/changes/bonsaipoller.py
 --- buildbot-0.7.9-orig/buildbot/changes/bonsaipoller.py	2008-09-16 18:02:30.000000000 +0200
 +++ buildbot-0.7.9-patched/buildbot/changes/bonsaipoller.py	2008-09-17 11:06:09.000000000 +0200
