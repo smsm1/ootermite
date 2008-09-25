@@ -334,8 +334,8 @@ diff -r --unified buildbot-0.7.9-orig/buildbot/status/web/waterfall.py buildbot-
          class_ = "start"
          if b.isFinished() and not b.getSteps():
 diff -r --unified -N buildbot-0.7.9-orig/buildbot/status/web/queue.py buildbot-0.7.9-patched/buildbot/status/web/queue.py
---- buildbot-0.7.8-orig/buildbot/status/web/queue.py	1970-01-01 01:00:00.000000000 +0100
-+++ buildbot-0.7.8-patch/buildbot/status/web/queue.py	2008-09-04 13:29:38.000000000 +0200
+--- buildbot-0.7.9-orig/buildbot/status/web/queue.py	1970-01-01 01:00:00.000000000 +0100
++++ buildbot-0.7.9-patch/buildbot/status/web/queue.py	2008-09-04 13:29:38.000000000 +0200
 @@ -0,0 +1,39 @@
 +from twisted.web.util import Redirect, DeferredResource
 +from twisted.internet import defer, reactor
