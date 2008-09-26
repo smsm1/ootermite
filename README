@@ -1,4 +1,7 @@
 Stuff in here:
 
-reporter/   a ruby on rails app that forms the reporting engine
-buildbot/   stuff relating to the buildbot app
+botbooster/            tool that can initiate ready-for-qa builds 
+                       (accessing EIS via SOAP)
+buildbot/              stuff relating to the buildbot app
+buildbotqanotifier/    tool that can initiate ready-for-qa builds
+                       (accessing EIS via XML/RSS-Feed)
