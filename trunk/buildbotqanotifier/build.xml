@@ -40,7 +40,7 @@
         </java>
     </target>
     <target name="jar">
-        <jar destfile="${dist}/${projname}.jar>
+        <jar destfile="${dist}/${projname}.jar">
         </jar>
     </target>
 </project>
