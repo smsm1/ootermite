@@ -1,6 +1,7 @@
 ##
 # ootermite - OpenOffice.org automated building/reporting system
 # Copyright (C) ?
+# Copyright (C) 2008 by Sun Microsystems, Inc.
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -21,15 +22,15 @@ import os
 from buildbot.steps.shell import ShellCommand
 from buildbot.slave.registry import registerSlaveCommand
 from buildbot.process.buildstep import LoggedRemoteCommand
+from buildbot.steps.transfer import FileUpload
 from OOShell import OOShellCommand
 
 class OOCompile(OOShellCommand):
-      def createSummary(self, log):
+    def createSummary(self, log):
         try:
             logFileName = self.step_status.logs[0].getFilename()
 
             command = "./create_logs.pl " + logFileName
-	   
 
             result = os.popen(command).read()
 
@@ -57,18 +58,26 @@ class OOCompile(OOShellCommand):
                 self.addCompleteLog('tail',tail)
 
         except:
-            #log.msg("Exception: Cannot open logFile")
             print "cannot execute createSummary after OOCompile"
-
-#       def getText(self, cmd, results):
-#           cb = ["Clean Build"]
-#           ticked = self.getProperty('check_box')
-#           if ticked == 'on':
-#                 cb.append('Yes')
-#           else:
-#                 cb.append('No')
-#           return cb
     
-      def __init__(self, **kwargs):
-          ShellCommand.__init__(self, **kwargs)   # always upcall!
-          
+        def __init__(self, **kwargs):
+            OOShellCommand.__init__(self, **kwargs)   # always upcall!
+
+        def remote_updates(self, updates):
+            OOShellCommand.remote_updates(self, updates)
+
+            # Here is probably a good point to reload the platform specific
+            # HTML-logfile that was created using build --html
+
+            # Problem: how can we retrieve this log file from the slave?
+            # Solution: There is a FileUpload step that can transmit a file from
+            # the slave to the master. But that's real BuildStep. Is it possible to
+            # misuse this class here?
+            # Problem: how do we determine the name of the HTML log file on the slave?
+            # Problem: how do we determine an available name for log file in the public_html dir?
+            fileUpload = FileUpload(slavesrc="docs/reference.html", masterdest="~/public_html/ref.html")
+            
+            # Problem: how to we store this content on the Master?
+            # Solution: we store the file in the master's public_html dir with an unique
+            # file name and add a link to the waterfall page.
+
