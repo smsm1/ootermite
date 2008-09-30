@@ -76,7 +76,7 @@ def svnCheckout(svnurl):
 def checkAndGet(path):
     if isSubversionLocalCopy(WORKDIR):
         # Wipe out all unversioned files first 
-        os.system("../svn-clean %s" % WORKDIR)
+        os.system("../svn-clean --quiet %s" % WORKDIR) # If we do not use quiet we get HUGE logs
         status = svnSwitch(path)
     else:
         cleanUpDirectories()
