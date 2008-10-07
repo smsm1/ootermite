@@ -46,7 +46,10 @@ def main():
         sys.exit(65) # Skipping install set
     
     # Delete old install_set.zip
-    os.remove(installSetFile)
+    try:
+        os.remove(installSetFile)
+    except:
+        print "File %s does not exist, so we cannot delete it." % installSetFile
     
     # Bundle the install_set, preferably as bz2, but due to compatibility issues
     # we still use ZIP
