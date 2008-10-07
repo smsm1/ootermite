@@ -50,24 +50,47 @@ def main():
     
     # Bundle the install_set, preferably as bz2, but due to compatibility issues
     # we still use ZIP
+    dircmd  = "cd instsetoo_native/*.pro"
+    zipcmd  = "zip -9 ../../%s -@" % installSetFile
+    findcmd = "_nofile_"
     
-    # MacOS 10
+    # MacOS
     if os.path.exists("MacOSXX86Env.Set.sh"):
-        proc = os.system("cd instsetoo_native/unxmacxi.pro ; find . -name \*.dmg -print | zip -9 ../../%s -@" % installSetFile)
-        sys.exit(proc)
-    
+        findcmd = "find . -name \*.dmg -print"
+        dircmd  = "cd instsetoo_native/unxmacxi.pro"
+           
     # Debian/GNU Linux AMD64
     elif os.path.exists("LinuxX86-64Env.Set.sh"):
-        proc = os.system("cd instsetoo_native/unxlngx6.pro ; find . -name \*.deb -print | zip -9 ../../%s -@" % installSetFile)
-        sys.exit(proc)
+        findcmd = "find . -name \*.deb -print"
+        dircmd  = "cd instsetoo_native/unxlngx6.pro"
+                
+    # Debian/GNU Linux x86
+    elif os.path.exists("LinuxX86Env.Set.sh"):
+        findcmd = "find . -name \*.deb -print"
+        dircmd  = "cd instsetoo_native/unxlngi6.pro"
         
     # Solaris 10 Intel
     elif os.path.exists("SolarisX86Env.Set.sh"):
-        proc = os.system("cd instsetoo_native/unxsoli4.pro ; find . -name \*.")
+        findcmd = "find . -name \*.exe" # TODO: Which extension?
+        dircmd  = "cd instsetoo_native/unxsoli4.pro"
+        
+    # Solaris 10 SPARC
+    elif os.path.exists("SolarisSparcEnv.Set.sh"):
+        proc = os.system("./bundle.sols")
         sys.exit(proc)
+    
+    # Windows
+    elif os.path.exists("winenv.set.sh"):
+        proc = os.system("./bundle.win")
+        sys.exit(proc)
+        
     else:
         print "Bundling for this platform is currently not supported!"
         sys.exit(65)
+        
+    # Execute the command
+    proc = os.system("%s ; %s | %s" % (dircmd, findcmd, zipcmd))
+    sys.exit(proc)
     
 # Call entrypoint method
 main()
