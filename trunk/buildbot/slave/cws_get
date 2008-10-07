@@ -262,7 +262,7 @@ sub latest_milestone($)
 sub is_milestone($)
 {
     my $name= shift;
-    return 1 if ($name =~ /\w+(300)|(310)_m\d+/);
+    return 1 if ($name =~ /\w+(300)|(680)_m\d+/);
     return 0;
 }
 
@@ -441,7 +441,7 @@ foreach my $known_broken (@brokenlist)
 ensure_workdir();
 
 my $vcs= "cvs";      #default for now
-$vcs= "svn" if ( $milestone =~ "(DEV300_m999)|(DEV310.*)" );
+#$vcs= "svn" if ( $milestone =~ "(DEV300_m999)|(DEV310.*)" );
 
 if (milestone_in_cache($config, $milestone))
 {
