@@ -34,6 +34,10 @@ class OOShellCommand(ShellCommand):
             self.build.buildFinished(['Slave rejected %s' % self.describe, 'Rejected by slave'], 'grey', SKIPPED)
             self.step_status.setColor("grey")
             return SKIPPED
+            
+        if cmd.rc == 65:
+            self.step_status.setColor("grey")
+            return SUCCESS
 
         if cmd.rc == 255:
             if self.describe(False) == ['Everything']:
