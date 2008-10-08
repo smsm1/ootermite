@@ -72,10 +72,10 @@ def main():
         findcmd = "find . -name \*.deb -print"
         dircmd  = "cd instsetoo_native/unxlngi6.pro"
         
-    # Solaris 10 Intel
+    # Solaris 10 Intel (unxsoli4.pro)
     elif os.path.exists("SolarisX86Env.Set.sh"):
-        findcmd = "find . -name \*.exe" # TODO: Which extension?
-        dircmd  = "cd instsetoo_native/unxsoli4.pro"
+        proc = os.system("./bundle.soli")
+        sys.exit(proc)
         
     # Solaris 10 SPARC
     elif os.path.exists("SolarisSparcEnv.Set.sh"):
