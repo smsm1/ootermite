@@ -141,8 +141,13 @@ def main():
 
     # If the CWS/MWS cannot be found in Subversion or an error has occurred,
     # we try to checkout the source from CVS    
-    if status != 0 or not os.path.exists("workdir"):
+    if status != 0 or not os.path.exists(WORKDIR):
         status = os.system("../cws_get --branch=%s" % branch)
+
+    # Write milestone file for buildprep script
+    mfile = open("%s/milestone" % WORKDIR, "w")
+    mfile.write(branch) # TODO: This works only for MWS :(
+    mfile.close()
 
     print "cws_get_svn exited with status %u" % status
     sys.exit(status)
