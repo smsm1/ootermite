@@ -1,0 +1,27 @@
+#!/bin/bash -x
+
+export zipname=install_set.zip
+
+rm $zipname
+
+[ -f winenv.set.sh ] && source winenv.set.sh
+
+cd instsetoo_native/wntmsci11.pro/
+
+if [ -z $WITH_LANG ]; then
+        WITH_LANG=en-US
+fi
+
+
+for lang in $WITH_LANG ; do
+        if [ -d OpenOffice ]; then
+                 find OpenOffice/msi/install/$lang -print | zip -0 ../../$zipname -@;
+        fi
+        if [ -d URE ]; then
+                 find URE/msi/install/$lang -print | zip -0 ../../$zipname -@;
+        fi
+done
+
+ls -l ../../$zipname
+md5sum ../../$zipname
+
