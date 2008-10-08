@@ -28,6 +28,7 @@
 import getopt
 import sys
 import shutil
+import SOAPpy
 import os
 import os.path
 import re
@@ -43,6 +44,27 @@ def printHelp():
     print "--branch\tSpecifies which CWS/MWS should be retrieved (default, if omitted: trunk HEAD)"
     print "--help\t\tPrints this messages"
     print "--workdir\tSpecifies a custom work dir (default: workdir). Useful for debugging builds."
+
+def getSOAP():
+    soap = SOAPpy.SOAPProxy("http://tools.services.openoffice.org/soap/servlet/rpcrouter")
+    return soap._ns("urn:ChildWorkspaceDataService")
+
+def getMasterForCWS(cws_name):
+    masters = getSOAP().getMastersForCWS(cws_name)
+    for master in masters:
+        return master
+    
+def getChildWorkspaceID(mws, cws):
+    return getSOAP().getChildWorkspaceId(mws, cws)
+
+def getMilestone(cws_id):
+    return getSOAP().getMilestone(cws_id)
+    
+def getMasterMile(cws_name):
+    master = getMasterForCWS(cws_name)
+    cws_id = getChildWorkspaceID(master, cws_name)
+    mstone = getMilestone(cws_id)
+    return "%s_%s" % (master, mstone)
 
 # Moves workdir to workdir.old
 def cleanUpDirectories():
@@ -124,6 +146,8 @@ def main():
     regex = "[A-Z]{3}[0-9]{3}_\s*"
     pattern = re.compile(regex)    
 
+    masterstone = ""
+
     # If no branch is given we should build trunk, which seldom happens.
     if branch == '':
         print "Getting trunk..."
@@ -132,10 +156,12 @@ def main():
     elif pattern.match(branch) != None:
         print "Getting MWS named '" + branch + "'"
         status = checkAndGet("/tags/" + branch)
+        masterstone = branch
     # Otherwise it must be a Child Workspace
     else:
         print "Getting CWS branch named '" + branch + "'"
         status = checkAndGet("/cws/" + branch)
+        masterstone = getMasterMile(branch)
 
     print "Subversion exited with status %u" % status
 
@@ -146,7 +172,7 @@ def main():
 
     # Write milestone file for buildprep script
     mfile = open("%s/milestone" % WORKDIR, "w")
-    mfile.write(branch) # TODO: This works only for MWS :(
+    mfile.write(masterstone)
     mfile.close()
 
     print "cws_get_svn exited with status %u" % status
