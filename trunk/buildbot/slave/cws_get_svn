@@ -172,7 +172,7 @@ def main():
 
     # Write milestone file for buildprep script
     mfile = open("%s/milestone" % WORKDIR, "w")
-    mfile.write(masterstone)
+    mfile.write("export fetched_milestone='%s'" % masterstone)
     mfile.close()
 
     print "cws_get_svn exited with status %u" % status
