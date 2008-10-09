@@ -146,7 +146,8 @@ def main():
     regex = "[A-Z]{3}[0-9]{3}_\s*"
     pattern = re.compile(regex)    
 
-    masterstone = ""
+    workstamp = "DEV300"
+    milestone = "32"
 
     # If no branch is given we should build trunk, which seldom happens.
     if branch == '':
@@ -156,12 +157,15 @@ def main():
     elif pattern.match(branch) != None:
         print "Getting MWS named '" + branch + "'"
         status = checkAndGet("/tags/" + branch)
-        masterstone = branch
+        workstamp = branch[:6]
+        milestone = branch[8:]
     # Otherwise it must be a Child Workspace
     else:
         print "Getting CWS branch named '" + branch + "'"
         status = checkAndGet("/cws/" + branch)
-        masterstone = getMasterMile(branch)
+        mmile = getMasterMile(branch)
+        workstamp = mmile[:6]
+        milestone = mmile[8:]
 
     print "Subversion exited with status %u" % status
 
@@ -172,7 +176,8 @@ def main():
 
     # Write milestone file for buildprep script
     mfile = open("%s/milestone" % WORKDIR, "w")
-    mfile.write("export fetched_milestone='%s'" % masterstone)
+    mfile.write("export fetched_workstamp='%s'\n" % workstamp)
+    mfile.write("export fetched_milestone='%s'\n" % milestone)
     mfile.close()
 
     print "cws_get_svn exited with status %u" % status
