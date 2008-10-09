@@ -63,21 +63,12 @@ class OOCompile(OOShellCommand):
         def __init__(self, **kwargs):
             OOShellCommand.__init__(self, **kwargs)   # always upcall!
 
-        def remote_updates(self, updates):
-            OOShellCommand.remote_updates(self, updates)
-
-            # Here is probably a good point to reload the platform specific
-            # HTML-logfile that was created using build --html
-
-            # Problem: how can we retrieve this log file from the slave?
-            # Solution: There is a FileUpload step that can transmit a file from
-            # the slave to the master. But that's real BuildStep. Is it possible to
-            # misuse this class here?
-            # Problem: how do we determine the name of the HTML log file on the slave?
-            # Problem: how do we determine an available name for log file in the public_html dir?
-            fileUpload = FileUpload(slavesrc="docs/reference.html", masterdest="~/public_html/ref.html")
-            
-            # Problem: how to we store this content on the Master?
-            # Solution: we store the file in the master's public_html dir with an unique
-            # file name and add a link to the waterfall page.
+        # Overwritten method to allow HTML-Log-Files
+        def setupLogfiles(self, cmd, logfiles):
+            for logname,remotefilename in logfiles.items():
+                if remotefilename.endswith(".html"):
+                    # tell the BuildStepStatus to add a LogFile
+                    newlog = self.addHTMLLog(logname)
+                    # and tell the LoggedRemoteCommand to feed it
+                    cmd.useLog(newlog, True)
 
