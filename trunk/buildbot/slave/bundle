@@ -74,17 +74,17 @@ def main():
         
     # Solaris 10 Intel (unxsoli4.pro)
     elif os.path.exists("SolarisX86Env.Set.sh"):
-        proc = os.system("./bundle.soli")
+        proc = os.system("../../bundle.soli")
         sys.exit(proc)
         
     # Solaris 10 SPARC
     elif os.path.exists("SolarisSparcEnv.Set.sh"):
-        proc = os.system("./bundle.sols")
+        proc = os.system("../../bundle.sols")
         sys.exit(proc)
     
     # Windows
     elif os.path.exists("winenv.set.sh"):
-        proc = os.system("./bundle.win")
+        proc = os.system("../../bundle.win")
         sys.exit(proc)
         
     else:
