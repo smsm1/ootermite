@@ -37,7 +37,7 @@ class OOShellCommand(ShellCommand):
             
         if cmd.rc == 65:
             self.step_status.setColor("grey")
-            return SUCCESS
+            return SKIPPED
 
         if cmd.rc == 255:
             if self.describe(False) == ['Everything']:
