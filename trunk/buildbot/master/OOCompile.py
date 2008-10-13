@@ -65,6 +65,7 @@ class OOCompile(OOShellCommand):
 
         # Overwritten method to allow HTML-Log-Files
         def setupLogfiles(self, cmd, logfiles):
+            print "setupLogfiles"
             for logname,remotefilename in logfiles.items():
                 if remotefilename.endswith(".html"):
                     # tell the BuildStepStatus to add a LogFile
