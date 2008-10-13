@@ -19,8 +19,10 @@ fi
 # Copy necessary files and directories
 $copyrecursive $BUILDCOPY_DIR/Common/* .
 $copyrecursive $BUILDCOPY_DIR/${fetched_workstamp}_m$fetched_milestone/* .
+$copyrecursive $BUILDCOPY_DIR/${fetched_workstamp}/m${fetched_milestone}/* .
 
-for name in $BUILDCOPY_DIR/${fetched_workstamp}_m$fetched_milestone/*.patch $BUILDCOPY_DIR/${fetched_workstamp}_m$fetched_milestone/*.diff
+#for name in $BUILDCOPY_DIR/${fetched_workstamp}_m$fetched_milestone/*.patch $BUILDCOPY_DIR/${fetched_workstamp}_m$fetched_milestone/*.diff
+for name in *.patch *.diff
 do echo patching $name
    $patch -f -p0 -F4 -N -i $name
 done
