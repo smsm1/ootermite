@@ -90,6 +90,11 @@ def svnCheckout(svnurl):
     print "Checking out " + svnurl
     p = Popen("svn" + " co " + SVN_ROOT + svnurl + " " + WORKDIR, shell=True)
     return os.waitpid(p.pid, 0)[1]
+    
+def svnExport(svnurl):
+    print "Exporting patches from " + svnurl
+    p = Popen("svn" + " export " + SVN_ROOT + svnurl + " " + WORKDIR, shell=True)
+    return os.waitpid(p.pid, 0)[1]
 
 # If there is an existing Subversion working copy, we switch
 # this workdir to the given repository path (Heiner said this is *fast*).
@@ -173,12 +178,15 @@ def main():
     # we try to checkout the source from CVS    
     if status != 0 or not os.path.exists(WORKDIR):
         status = os.system("../cws_get --branch=%s" % branch)
-
-    # Write milestone file for buildprep script
-    mfile = open("%s/milestone" % WORKDIR, "w")
-    mfile.write("export fetched_workstamp='%s'\n" % workstamp)
-    mfile.write("export fetched_milestone='%s'\n" % milestone)
-    mfile.close()
+    else:
+        # Write milestone file for buildprep script
+        mfile = open("%s/milestone" % WORKDIR, "w")
+        mfile.write("export fetched_workstamp='%s'\n" % workstamp)
+        mfile.write("export fetched_milestone='%s'\n" % milestone)
+        mfile.close()
+        
+        # Export milestone patches from Subversion
+        svnExport("/patches/buildbot/%s/m%s" % (workstamp, milestone))
 
     print "cws_get_svn exited with status %u" % status
     sys.exit(status)
