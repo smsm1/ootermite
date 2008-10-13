@@ -1,9 +1,0 @@
-# This is a sample configuration file for cws_get_svn
-# You can customize some values here, but cws_get_svn
-# will also work without config file.
-
-[General]
-Workdir = "workdir"
-
-[Subversion]
-Root = "svn://svn.services.openoffice.org/ooo"
