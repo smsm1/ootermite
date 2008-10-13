@@ -3,5 +3,3 @@ Stuff in here:
 botbooster/            tool that can initiate ready-for-qa builds 
                        (accessing EIS via SOAP)
 buildbot/              stuff relating to the buildbot app
-buildbotqanotifier/    tool that can initiate ready-for-qa builds
-                       (accessing EIS via XML/RSS-Feed)
