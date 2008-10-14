@@ -10,8 +10,8 @@ This page is for the status of the buildbot system.
 The CVS column tells you whether the bot is building whenever there is a CVS commit.
 
 || *Botname* || *_Builder_* || *Owner* || *CVS*|| *[http://termite.go-oo.org/install_sets/ Install Sets]* || *Status* ||
-|| breon1 || [http://termite.go-oo.org/buildbot/etch-gij etch-gij] || Michael Leibowitz || No || No || Using the wrong builder, so not doing the right thing. Needs to be updated client side. ||
-|| breon2 || [http://termite.go-oo.org/buildbot/etch-gij etch-gij] || Michael Leibowitz || No || No || Using the wrong builder, so not doing the right thing. Needs to be updated client side. ||
+|| breon1 || [http://termite.go-oo.org/buildbot/etch-gij etch-gij] || Michael Leibowitz || No || No || Offline ||
+|| breon2 || [http://termite.go-oo.org/buildbot/etch-gij etch-gij] || Michael Leibowitz || No || No || Offline ||
 || !MacPort1  || [http://termite.go-oo.org/buildbot/Mac-x86 Mac-x86] || Shaun !McDonald || Yes || Yes || Currently offline. Smoketest is skipped. ||
 || openoffice3 || [http://termite.go-oo.org/buildbot/edgy-jdk edgy-jdk] || Michael Leibowitz || Yes || Yes || Useless just now due to missing dependency mikeleib informed ||
 || manu_ppc_bot || [http://termite.go-oo.org/buildbot/Mac-PPC Mac-PPC] || Manuel Naudin || No || No || Needs scripts update. Offline ||
