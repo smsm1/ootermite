@@ -1,6 +1,8 @@
 #summary All the buildbots and their current status are listed on this page. The status of other parts of the system is also listed
 #labels buildbot,slave,Featured
 
+This page is outdated! Please use the [http://termite.go-oo.org/buildbot/waterfall Buildbot waterfall page] for more recent information!
+
 = Introduction =
 
 This page is for the status of the buildbot system.
