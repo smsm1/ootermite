@@ -14,5 +14,5 @@ configureswitches="--disable-mozilla --disable-cups --disable-headless --disable
 ### compile
 ccdatapath=/buildbot/buildslave
 # --html: for nice HTML log files
-custom_buildflags="nodep=TRUE -P2 -- -P2 --html"
+custom_buildflags="nodep=TRUE -P2 -- -P2 --dontgraboutput --html"
 
