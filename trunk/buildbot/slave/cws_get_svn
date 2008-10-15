@@ -95,6 +95,11 @@ def svnExport(svnurl):
     print "Exporting patches from " + svnurl
     p = Popen("svn" + " export --force " + SVN_ROOT + svnurl + " " + WORKDIR, shell=True)
     return os.waitpid(p.pid, 0)[1]
+    
+def svnRevert():
+    print "Reverting changes from local working copy (e.g. Patches)"
+    p = Popen("svn" + " revert --depth=infinity " + WORKDIR, shell=True)
+    return os.waitpid(p.pid, 0)[1]
 
 # If there is an existing Subversion working copy, we switch
 # this workdir to the given repository path (Heiner said this is *fast*).
@@ -104,6 +109,10 @@ def checkAndGet(path):
     if isSubversionLocalCopy(WORKDIR):
         # Wipe out all unversioned files first 
         os.system("../svn-clean --force --quiet %s" % WORKDIR) # If we do not use quiet we get HUGE logs
+        
+        # Revert all local changes, e.g. Patches
+        svnRevert()
+        
         status = svnSwitch(path)
     else:
         cleanUpDirectories()
