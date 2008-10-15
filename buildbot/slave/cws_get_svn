@@ -98,7 +98,7 @@ def svnExport(svnurl):
     
 def svnRevert():
     print "Reverting changes from local working copy (e.g. Patches)"
-    p = Popen("svn" + " revert --depth=infinity " + WORKDIR, shell=True)
+    p = Popen("svn revert -R " + WORKDIR, shell=True) # --depth is supported since SVN 1.5
     return os.waitpid(p.pid, 0)[1]
 
 # If there is an existing Subversion working copy, we switch
