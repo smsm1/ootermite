@@ -62,6 +62,10 @@ class OOCompile(OOShellCommand):
     
         def __init__(self, **kwargs):
             OOShellCommand.__init__(self, **kwargs)   # always upcall!
+            
+        def start(self):
+            OOShellCommand.start(self)
+            self.addHTMLLog("enh.html", "hallo\nwelt")
 
         # Overwritten method to allow HTML-Log-Files
         def setupLogfiles(self, cmd, logfiles):
