@@ -61,10 +61,14 @@ def getMilestone(cws_id):
     return getSOAP().getMilestone(cws_id)
     
 def getMasterMile(cws_name):
-    master = getMasterForCWS(cws_name)
-    cws_id = getChildWorkspaceID(master, cws_name)
-    mstone = getMilestone(cws_id)
-    return "%s_%s" % (master, mstone)
+    try:
+        master = getMasterForCWS(cws_name)
+        cws_id = getChildWorkspaceID(master, cws_name)
+        mstone = getMilestone(cws_id)
+        return "%s_%s" % (master, mstone)
+    except Error:
+        print "Error while getting infos from EIS!"
+        return None
 
 # Moves workdir to workdir.old
 def cleanUpDirectories():
@@ -178,8 +182,12 @@ def main():
         print "Getting CWS branch named '" + branch + "'"
         status = checkAndGet("/cws/" + branch)
         mmile = getMasterMile(branch)
-        workstamp = mmile[:6]
-        milestone = mmile[8:]
+        if mmile != None:
+            workstamp = mmile[:6]
+            milestone = mmile[8:]
+        else:
+            print "Internal error: is the CWS still valid?"
+            sys.exit(1)
 
     print "Subversion exited with status %u" % status
 
