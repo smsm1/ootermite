@@ -204,7 +204,9 @@ def main():
         
         # Export milestone patches from Subversion
         svnExport("/patches/buildbot/%s/m%s" % (workstamp, milestone))
-
+    
+    if status > 255:
+        status = status >> 8
     print "cws_get_svn exited with status %u" % status
     sys.exit(status)
 
