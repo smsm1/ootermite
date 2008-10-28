@@ -228,7 +228,9 @@ sub grab_tag_list()
     {
 	unless (/\#.*/)
 	{
-	    (my $name, my $base, my $tag, my $dirs, my $newdirs) = split / : /, $_;
+            my $dirs = '';
+            my $newdirs = '';
+	    (my $name, my $base, my $tag, $dirs, $newdirs) = split / : /, $_;
 	    
 	    $h{$name}= 
 	    {
