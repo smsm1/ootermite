@@ -43,7 +43,7 @@ class OOShellCommand(ShellCommand):
             if self.describe(False) == ['Everything']:
                 # This is returned when the CWS script has a problem
                 self.build.buildFinished(['slave rejected CWS', 'CWS problem'], 'grey', SKIPPED)
-            return SKIPPED
+            	return SKIPPED
 
         if cmd.rc != 0:
             if self.describe(False) == ['Smoketest'] or self.describe(False) == ['Bundle']:
