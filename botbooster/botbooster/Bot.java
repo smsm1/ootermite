@@ -29,7 +29,7 @@ import java.net.URL;
 public class Bot 
 {
   public static final String DEFAULT_BUILDERS = "Win-XP2,Ubuntu,Solaris-Sparc,Solaris-Intel";
-  public static final String MASTER_URL       = "http://termite.go-oo.org/buildbot/";
+  public static final String MASTER_URL       = "http://ttermite.go-oo.org/buildbot/";
   
   public static boolean forceBuild(String builder, String build)
     throws MalformedURLException

@@ -20,6 +20,7 @@ package botbooster;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,10 +31,12 @@ import java.util.List;
 public class Main
 {
   public static final String DEFAULT_CWS_LIST_FILE = "CWS_List";
-  public static final String VERSION               = "botbooster/0.4.1";
+  public static final String VERSION               = "botbooster/0.5";
   
-  static final String GET_CWS_METHOD = "getCWSWithState";
-  static final String GET_MWS_METHOD = "getMasterWorkspaces";
+  static final String IS_PUBLIC_METHOD  = "isPublic";
+  static final String GET_CWS_ID_METHOD = "getChildWorkspaceId";
+  static final String GET_CWS_METHOD    = "getCWSWithState";
+  static final String GET_MWS_METHOD    = "getMasterWorkspaces";
   static final String SERVICE_URL = "http://tools.services.openoffice.org/soap/servlet/rpcrouter";
   static final String SERVICE_URN = "urn:ChildWorkspaceDataService";
   
@@ -81,14 +84,36 @@ public class Main
           SoapRequest cwsRec = new SoapRequest(SERVICE_URL, SERVICE_URN, GET_CWS_METHOD);
           Object      cwsObj = cwsRec.doRequest(
             new Object[] {String.class, mwsLst.get(n), String.class, args[0]});
-          List        cwsLst = ListUtils.soapObjectToList(cwsObj);
-
+          List        cwsAll = ListUtils.soapObjectToList(cwsObj);
+          List        cwsLst = new ArrayList();
+          
+          // Remove all CWS from this list that are not public
+          for(Object obj : cwsAll)
+          {
+            cwsRec = new SoapRequest(SERVICE_URL, SERVICE_URN, GET_CWS_ID_METHOD);
+            cwsObj = cwsRec.doRequest(
+              new Object[] {String.class, mwsLst.get(n), String.class, obj});
+            
+            int cwsID = (Integer)cwsObj;
+            
+            cwsRec = new SoapRequest(SERVICE_URL, SERVICE_URN, IS_PUBLIC_METHOD);
+            cwsObj = cwsRec.doRequest(new Object[] {Integer.class, cwsID});
+            
+            if(cwsObj != null && cwsObj.toString().equalsIgnoreCase("true"))
+            {
+              cwsLst.add(obj);
+              Debug.log("Found CWS " + obj);
+            }
+            else
+              Debug.log("Skipping private CWS " + obj);
+          }
+          
           // Add the retaining elements to the list of new CWSs
           cwsNew.addAll(cwsLst);
         }
         catch(Exception ex)
         {
-          Debug.out.println("Exception catched: ");
+          Debug.log("Exception catched: ");
           ex.printStackTrace(Debug.out);
         }
       }
