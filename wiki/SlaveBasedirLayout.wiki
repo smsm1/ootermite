@@ -10,8 +10,9 @@ The following files/scripts should reside within the ootermite slave basedir:
   * configure: Runs configure, you supply configure line
   * cws_get: For getting CWS's from CVS
   * cws_get.config: cws_get config file
+  * steps.config: Several configuration values, e.g. for configure
   * sloccount
-  * smoketestoo
+  * smoketestoo: Runs the smoketest
 
 These files can be obtained through Subversion (trunk/buildbot/buildslave/scripts/).
 
@@ -21,6 +22,7 @@ The file _buildbot.tac_ is created through the buildbot create-slave command. If
   * info/host: Contains information about the host machine the slave is running on. Should be customized.
 
 The buildprep step needs a build_copy/ directory which is currently not automatically created.
+Within build_copy there can be one Common/ directory that contains files that are copyied into the source tree (e.g. unowinreg.dll). Additionally there are per workstamp dirs (e.g. DEV300_m35) that contain milestone specific patches that will be applied onto the source tree before building (buildprep step).
 
 While running there are two additional files:
   * twistd.log: Output of the slave.
