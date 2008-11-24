@@ -1,43 +1,4 @@
 #summary All the buildbots and their current status are listed on this page. The status of other parts of the system is also listed
 #labels buildbot,slave,Featured
 
-This page is outdated! Please use the [http://termite.go-oo.org/buildbot/waterfall Buildbot waterfall page] for more recent information!
-
-= Introduction =
-
-This page is for the status of the buildbot system.
-
-== Buildbots ==
-
-The CVS column tells you whether the bot is building whenever there is a CVS commit.
-
-|| *Botname* || *_Builder_* || *Owner* || *CVS*|| *[http://termite.go-oo.org/install_sets/ Install Sets]* || *Status* ||
-|| breon1 || [http://termite.go-oo.org/buildbot/etch-gij etch-gij] || Michael Leibowitz || No || No || Offline ||
-|| breon2 || [http://termite.go-oo.org/buildbot/etch-gij etch-gij] || Michael Leibowitz || No || No || Offline ||
-|| !MacPort1  || [http://termite.go-oo.org/buildbot/Mac-x86 Mac-x86] || Shaun !McDonald || Yes || Yes || Currently offline. Smoketest is skipped. ||
-|| openoffice3 || [http://termite.go-oo.org/buildbot/edgy-jdk edgy-jdk] || Michael Leibowitz || Yes || Yes || Useless just now due to missing dependency mikeleib informed ||
-|| manu_ppc_bot || [http://termite.go-oo.org/buildbot/Mac-PPC Mac-PPC] || Manuel Naudin || No || No || Needs scripts update. Offline ||
-|| glacial_g3 || [http://termite.go-oo.org/buildbot/Mac-PPC Mac-PPC] || Hisashi T Fujinaka || No || No || Currently Offline. Takes around a day or more to complete builds as it is a 400MHz G4 ||
-|| sun-buildbot-soli1 || [http://termite.go-oo.org/buildbot/Solaris-Intel Solaris-Intel] || ause || No || No || Bug with uploading the installsets due to a hang ||
-|| pumbaa-etch || [http://termite.go-oo.org/buildbot/O3-build O3-build] || Christian Lohmaier || No || No || Reliably building. Builds are initiated by buildbot owner based on the tinderbox status ||
-|| sun-buildbot-win1 || [http://termite.go-oo.org/buildbot/Win-XP Win-XP] || ause || No || Yes || ||
-|| sun-buildbot-win2 || [http://termite.go-oo.org/buildbot/Win-XP2 Win-XP2] || Gregor Hartmann || No || Yes || ||
-|| WinXP-OOoDeV || [http://termite.go-oo.org/buildbot/Win-XP3 Win-XP3] || ??? || No || Yes || Offline due to connectivity issues ||
-|| win2003bot || [http://termite.go-oo.org/buildbot/Win-2003 Win-2003] || baohonglin || No || Yes || ||
-|| sun-buildbot-mingw1 || [http://termite.go-oo.org/buildbot/MinGW MinGW] || Vladimir Glazounov || No || Yes || ||
-|| sun-buildbot-sols1 || [http://termite.go-oo.org/buildbot/Solaris-Sparc Solaris-Sparc] || ause || No || No || Installsets are not produced due to a hang on completion of upload ||
-|| sd-buildbot-lngi1 || [http://termite.go-oo.org/buildbot/Ubuntu Ubuntu] || Gregor Hartmann || No || Yes || ||
-|| redflagbot || [http://termite.go-oo.org/buildbot/RedFlag RedFlag] || baohonglin || No || Yes || ||
-|| sourcebot || [http://termite.go-oo.org/buildbot/Source Source] || Michael Leibowitz || Yes || N/A || This bot just does source code statistics, which isn't working ||
-== EIS/Tinderbox ==
-
-Mails appear to be going across to the tinderbox fine. Large logs occasionally cause a problem.
-
-== Build Master ==
-
-Running as expected, occasional restarts while debugging to fix bugs, thus the loss of some currently running builds.
-
-Most development is currently on the [http://140.211.166.227:8010/ development server]
-
-== Installset Serving ==
-Working as expected. All install sets are served from http://termite.go-oo.org/install_sets/. They currently need to be specifically requested through the web pages. Not all bots are uploading them.
+This page is outdated! Please use the [http://termite.go-oo.org/ OOo Buildbot page] for more recent information!
