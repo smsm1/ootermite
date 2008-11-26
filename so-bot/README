@@ -1,6 +1,11 @@
+This branch contains the scripts specially designed for Sun's
+inhouse buildbots that build agains a baseline.
+For people outside Sun this is of little interest, but we have
+to respect the GPL and have to publish our changes to Buildbot.
+
 master				buildmaster related config files/code.
-slave/scripts			scripts needed for a build slave, 
+slave/				scripts needed for a build slave, 
 				these may need to be customised to the 
 				specific buildslave environment.
-slave/scripts/OO-changes.diff	hacks to buildbot to introduce OOo 
+master/OO-changes.diff		hacks to buildbot to introduce OOo 
 				specific features.

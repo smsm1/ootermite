@@ -1,0 +1,28 @@
+#!/usr/bin/bash
+echo "Setting solar environment..."
+
+export PATH=$PATH:/so/env/etools
+export VCSID=christianlins
+export ENV_ROOT=/so/env
+export OSTYPE=solaris
+
+# define setsolar
+
+function setsolar
+{
+    perl $ENV_ROOT/etools/setsolar.pl -file /buildbot/solar.env -shell bash "$@"
+    . /buildbot/solar.env
+}
+
+function setcws
+{
+    #perl $ENV_ROOT/etools/setcws.pl /buildbot/solar.env "$@"
+    perl $ENV_ROOT/etools/setcws.pl /buildbot/solar.env "$@" -- -shell bash
+    . /buildbot/solar.env
+}
+
+# Determine milestone of given CWS
+#setsolar -DEV300 -ver m33 -jdk15 unxsoli4
+export SOURCE_ROOT=/cws/so-cwsserv02/$1
+setcws $1 $2
+

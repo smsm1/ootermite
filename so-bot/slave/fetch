@@ -1,0 +1,6 @@
+#!/usr/bin/bash
+echo "Fetching source to slave..."
+. ~/.solar.env.tmp
+#cws fetch -c $1
+exit 65
+
