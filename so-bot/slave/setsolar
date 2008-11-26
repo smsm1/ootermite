@@ -33,7 +33,7 @@ mkdir -p $SOURCE_ROOT/DEV300/$PLATFORM
 echo $(pwd) | egrep .pro\$ > /dev/null
 
 # Set environment to CWS
-if [ $? ]; then
+if [ $? -eq 0 ]; then
 echo "Product build"
 setcws $1 $2 -pro
 else
