@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 echo "Building..."
-. /buildbot/solar.env
+. ./solar.env
 cd $SRC_ROOT/instsetoo_native
 $PERL $SOLARENV/bin/build.pl --all -P2 -- -P2
 cd $SRC_ROOT/instset_native

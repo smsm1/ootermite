@@ -6,18 +6,20 @@ export VCSID=christianlins
 export ENV_ROOT=/so/env
 export OSTYPE=solaris
 
+SOLARFILE=./solar.env
+
 # define setsolar
 
 function setsolar
 {
-    perl $ENV_ROOT/etools/setsolar.pl -file /buildbot/solar.env -shell bash "$@"
+    perl $ENV_ROOT/etools/setsolar.pl -file $SOLARFILE -shell bash "$@"
     . /buildbot/solar.env
 }
 
 function setcws
 {
     #perl $ENV_ROOT/etools/setcws.pl /buildbot/solar.env "$@"
-    perl $ENV_ROOT/etools/setcws.pl /buildbot/solar.env "$@" -- -shell bash
+    perl $ENV_ROOT/etools/setcws.pl $SOLARFILE "$@" -- -shell bash
     . /buildbot/solar.env
 }
 
