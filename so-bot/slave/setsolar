@@ -30,7 +30,7 @@ export SOURCE_ROOT=/cws/so-cwsserv02/$1
 mkdir -p $SOURCE_ROOT/DEV300/$PLATFORM
 
 # Check if a pro build is forced
-echo $(pwd) | egrep -q .pro\$
+echo $(pwd) | egrep .pro\$ > /dev/null
 
 # Set environment to CWS
 if [ $? ] then
