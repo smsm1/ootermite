@@ -13,14 +13,14 @@ PLATFORM=$(basename $(pwd))
 function setsolar
 {
     perl $ENV_ROOT/etools/setsolar.pl -file $SOLARFILE -shell bash "$@"
-    . /buildbot/solar.env
+    . $SOLARFILE
 }
 
 function setcws
 {
     #perl $ENV_ROOT/etools/setcws.pl /buildbot/solar.env "$@"
     perl $ENV_ROOT/etools/setcws.pl $SOLARFILE "$@" -- -shell bash
-    . /buildbot/solar.env
+    . $SOLARFILE
 }
 
 # Determine milestone of given CWS
