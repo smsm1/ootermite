@@ -33,7 +33,6 @@ class SOShellCommand(ShellCommand):
             self.step_status.setColor("grey")
             return SKIPPED
 
-        # Here is a good point to send status mails to the CWS owner
         return ShellCommand.evaluateCommand(self, cmd)
 
     def getText(self, cmd, results):

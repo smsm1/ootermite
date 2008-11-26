@@ -1,7 +1,16 @@
-#!/usr/bin/bash
+#!/usr/bin/bash -x
 echo "Building..."
 . ./solar.env
 cd $SRC_ROOT/instsetoo_native
 $PERL $SOLARENV/bin/build.pl --all -P2 -- -P2
-cd $SRC_ROOT/instset_native
-$PERL $SOLARENV/bin/build.pl --all -P2 -- P2
+
+if [ $? -eq 0 ]; then
+  cd $SRC_ROOT/instset_native
+  $PERL $SOLARENV/bin/build.pl --all -P2 -- -P2
+fi
+
+RETVAL=$?
+
+echo "Send mail to cws owner..."
+
+exit $RETVAL
