@@ -1,0 +1,6 @@
+master				buildmaster related config files/code.
+slave/scripts			scripts needed for a build slave, 
+				these may need to be customised to the 
+				specific buildslave environment.
+slave/scripts/OO-changes.diff	hacks to buildbot to introduce OOo 
+				specific features.

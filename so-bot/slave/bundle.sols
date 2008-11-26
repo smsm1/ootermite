@@ -1,0 +1,28 @@
+#! /bin/bash -x
+
+export zipname=install_set.zip
+
+rm $zipname
+
+[ -f SolarisSparcEnv.Set.sh ] && source SolarisSparcEnv.Set.sh
+
+cd instsetoo_native/unxsols4.pro/
+
+if [ -z $WITH_LANG ]; then
+	WITH_LANG=en-US
+fi
+
+
+for lang in $WITH_LANG ; do
+	if [ -d OpenOffice ]; then
+		 find OpenOffice/pkg/install/$lang -print | zip -0 ../../$zipname -@;
+	fi
+	if [ -d URE ]; then
+		 find URE/pkg/install/$lang -print | zip -0 ../../$zipname -@;
+	fi
+done
+
+ls -l ../../$zipname
+md5sum ../../$zipname
+
+
