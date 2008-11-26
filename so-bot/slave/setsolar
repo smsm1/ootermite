@@ -7,9 +7,9 @@ export ENV_ROOT=/so/env
 export OSTYPE=solaris
 
 SOLARFILE=./solar.env
+PLATFORM=$(basename $(pwd))
 
 # define setsolar
-
 function setsolar
 {
     perl $ENV_ROOT/etools/setsolar.pl -file $SOLARFILE -shell bash "$@"
@@ -24,7 +24,19 @@ function setcws
 }
 
 # Determine milestone of given CWS
-#setsolar -DEV300 -ver m33 -jdk15 unxsoli4
 export SOURCE_ROOT=/cws/so-cwsserv02/$1
-setcws $1 $2
 
+# Create output dir and ignore result if existing
+mkdir -p $SOURCE_ROOT/DEV300/$PLATFORM
+
+# Check if a pro build is forced
+echo $(pwd) | egrep -q .pro\$
+
+# Set environment to CWS
+if [ $? ] then
+echo "Product build"
+setcws $1 $2 -pro
+else
+echo "Non-Product build"
+setcws $1 $2
+fi
