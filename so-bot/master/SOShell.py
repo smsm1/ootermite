@@ -22,6 +22,7 @@ from buildbot.process.buildstep import BuildStep
 from buildbot.status.builder import SUCCESS, WARNINGS, FAILURE, SKIPPED
 from buildbot.status.builder import BuildStepStatus
 import sys
+import SOMailNotifier
 
 class SOShellCommand(ShellCommand):
     def __init__(self, **kwargs):

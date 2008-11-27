@@ -33,7 +33,7 @@ from buildbot.status import builder, base
 
 import zlib, bz2, base64, time, StringIO, gzip, re
 
-class OOTinderboxMailNotifier(tinderbox.TinderboxMailNotifier):
+class SOMailNotifier(MailNotifier):
       def __init__(self, fromaddr, extraRecipients,
                  categories=None, builders=None, relayhost="localhost",
                  subject="buildbot %(result)s in %(builder)s for the CWS %(branch)s", binaryURL="",
