@@ -6,7 +6,7 @@ $PERL $SOLARENV/bin/build.pl --all -P2 -- -P2
 
 if [ $? -eq 0 ]; then
   cd $SRC_ROOT/instset_native
-  $PERL $SOLARENV/bin/build.pl --all -P2 -- -P2
+  $PERL $SOLARENV/bin/build.pl --stoponerror --all nodep=true -P2 -- -P2
 fi
 
 RETVAL=$?
