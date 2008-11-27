@@ -28,10 +28,15 @@ class SOShellCommand(ShellCommand):
         ShellCommand.__init__(self, **kwargs)   # always upcall!
 
     def evaluateCommand(self, cmd):
-    
-        if cmd.rc == 65:
+        if cmd.rc = 65:    
             self.step_status.setColor("grey")
             return SKIPPED
+        
+        if cmd.describe(True) == "Build":
+        # Good place to write a status mail to the CWS owner.
+        # Owner E-Mail = username
+        # CWS          = branch
+            print "Sending Mail to CWS owner..."
 
         return ShellCommand.evaluateCommand(self, cmd)
 
