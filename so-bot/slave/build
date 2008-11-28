@@ -1,4 +1,9 @@
 #!/usr/bin/bash -x
+CWSNAME=$1
+USERNAME=$2
+BUILDER=$3
+BUILDNO=$4
+
 echo "Building..."
 . ./solar.env
 cd $SRC_ROOT/instsetoo_native
@@ -10,5 +15,15 @@ if [ $? -eq 0 ]; then
   $PERL $SOLARENV/bin/build.pl --all -P4 -- -P2
   RETVAL=$?
 fi
+
+# Sending mail to CWS owner
+$MACHINE=$(uname -a)
+echo "Subject: StarOffice Buildbot $MACHINE: build of $CWSNAME finished" > mail.tmp
+echo "$MACHINE ($BUILDER) has finished build of your CWS $CWSNAME with exit code $RETVAL\n\n" >> mail.tmp
+echo "Visit http://so-berlin:8080/builders/$BUILDER/builds/$BUILDNO for output logs.\n\n" >> mail.tmp
+echo "If you discover any problems with the Buildbot machines contact Team Tools & RelEng.\n\n" >> mail.tmp
+echo "Thank you for using our StarOffice Buildbots :-)" >> mail.tmp
+
+mail $USERNAME < mail.tmp
 
 exit $RETVAL
