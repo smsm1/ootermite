@@ -1,8 +1,7 @@
 #!/usr/bin/bash -x
 CWSNAME=$1
-USERNAME=$2
-BUILDER=$3
-BUILDNO=$4
+BUILDER=$2
+BUILDNO=$3
 
 echo "Building..."
 . ./solar.env
@@ -17,6 +16,7 @@ if [ $? -eq 0 ]; then
 fi
 
 # Sending mail to CWS owner
+USERNAME=$(cws query owner | tail -1)
 MACHINE=$(uname -a)
 echo "Subject: StarOffice Buildbot $MACHINE: build of $CWSNAME finished" > mail.tmp
 echo "$MACHINE ($BUILDER) has finished build of your CWS $CWSNAME with exit code $RETVAL\n\n" >> mail.tmp
