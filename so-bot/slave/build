@@ -18,10 +18,10 @@ fi
 # Sending mail to CWS owner
 USERNAME=$(cws query owner | tail -1)
 MACHINE=$(uname -a)
-echo "Subject: StarOffice Buildbot $MACHINE: build of $CWSNAME finished" > mail.tmp
-echo "$MACHINE ($BUILDER) has finished build of your CWS $CWSNAME with exit code $RETVAL\n\n" >> mail.tmp
-echo "Visit http://so-berlin:8080/builders/$BUILDER/builds/$BUILDNO for output logs.\n\n" >> mail.tmp
-echo "If you discover any problems with the Buildbot machines contact Team Tools & RelEng.\n\n" >> mail.tmp
+echo "Subject: StarOffice Buildbot: build of $CWSNAME finished" > mail.tmp
+echo "$MACHINE ($BUILDER) has finished build of your CWS $CWSNAME with exit code $RETVAL" >> mail.tmp
+echo "Visit http://so-berlin:8080/builders/$BUILDER/builds/$BUILDNO for output logs." >> mail.tmp
+echo "If you discover any problems with the Buildbot machines contact Team Tools & RelEng." >> mail.tmp
 echo "Thank you for using our StarOffice Buildbots :-)" >> mail.tmp
 
 mail $USERNAME < mail.tmp
