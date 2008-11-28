@@ -17,7 +17,7 @@ if [ $? -eq 0 ]; then
 fi
 
 # Sending mail to CWS owner
-$MACHINE=$(uname -a)
+MACHINE=$(uname -a)
 echo "Subject: StarOffice Buildbot $MACHINE: build of $CWSNAME finished" > mail.tmp
 echo "$MACHINE ($BUILDER) has finished build of your CWS $CWSNAME with exit code $RETVAL\n\n" >> mail.tmp
 echo "Visit http://so-berlin:8080/builders/$BUILDER/builds/$BUILDNO for output logs.\n\n" >> mail.tmp
