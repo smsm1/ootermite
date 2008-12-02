@@ -41,7 +41,7 @@ echo "Non-Product build"
 setcws $1 $2
 fi
 
-if [ "$CWS_WORK_STAMP" -eq "$1" ]; then
+if [ "$CWS_WORK_STAMP" = "$1" ]; then
   exit 0
 else
   exit 1
