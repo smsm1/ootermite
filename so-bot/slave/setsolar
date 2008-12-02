@@ -40,3 +40,5 @@ else
 echo "Non-Product build"
 setcws $1 $2
 fi
+
+exit $?
