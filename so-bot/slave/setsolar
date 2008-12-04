@@ -27,7 +27,7 @@ function setcws
 export SOURCE_ROOT=/cws/so-cwsserv02/$1
 
 # Create output dir and ignore result if existing
-mkdir -p $SOURCE_ROOT/$WORK_STAMP/$PLATFORM
+mkdir -p $SOURCE_ROOT/$(basename $SOURCE_ROOT/*)/$PLATFORM
 
 # Check if a pro build is forced
 echo $(pwd) | egrep .pro\$ > /dev/null
