@@ -2,7 +2,7 @@
 CWSNAME=$1
 BUILDER=$2
 BUILDNO=$3
-
+cd ..
 echo "Building..."
 . ./solar.env
 
