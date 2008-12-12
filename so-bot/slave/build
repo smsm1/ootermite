@@ -1,4 +1,5 @@
 #!/usr/bin/bash -x
+umask 2
 CWSNAME=$1
 BUILDER=$2
 BUILDNO=$3
