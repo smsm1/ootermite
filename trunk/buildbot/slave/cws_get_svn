@@ -35,8 +35,10 @@ import re
 from subprocess import *
 from ConfigParser import *
 
-SVN_ROOT = "svn://svn.services.openoffice.org/ooo"
-WORKDIR  = "workdir"
+# Some global variables
+BLACKLIST = []
+SVN_ROOT  = "svn://svn.services.openoffice.org/ooo"
+WORKDIR   = "workdir"
 
 def printHelp():
     print "Usage: " + sys.argv[0] + " [--branch=CWS/MWS] [--help] [--workdir]"
@@ -71,6 +73,7 @@ def getMasterMile(cws_name):
         return None
 
 # Moves workdir to workdir.old
+# This is only be done if the existing workdir is not a svn working copy
 def cleanUpDirectories():
     print "Remove workdir.old if existing..."
     if os.path.exists(WORKDIR + ".old"):
@@ -124,6 +127,7 @@ def checkAndGet(path):
     return status
 
 def loadConfig():
+    global BLACKLIST
     global SVN_ROOT
     global WORKDIR
 
@@ -133,15 +137,26 @@ def loadConfig():
     try:
         svnRoot = cfgp.get("Subversion", "Root")
         if not svnRoot == None and not svnRoot == '':
-            SVN_ROOT = svnRoot 
+            SVN_ROOT = svnRoot
 
         workdir = cfgp.get("General", "Workdir")
         if not workdir == None and not workdir == '':
-            WORKDIR = workdir    
+            WORKDIR = workdir
+
+        # There may be milestones or specific CWSs that are known to be broken
+        # and should be rejected by this slave
+        blacklist = cfgp.get("General", "Blacklist")
+        if not blacklist == None and not blacklist == '':
+            BLACKLIST = string.split(blacklist, ' ')
     except:
         print "Config error handled %s" % sys.exc_info()[0]
 
     return
+
+def checkWithBlacklist(mmile):
+    for blacklisted in BLACKLIST:
+        if mmile == blacklisted:
+            sys.exit(65) # Skip the build
 
 def main():
     branch = '' # If no branch parameter given, checkout trunk HEAD
@@ -180,14 +195,15 @@ def main():
     # Otherwise it must be a Child Workspace
     else:
         print "Getting CWS branch named '" + branch + "'"
-        status = checkAndGet("/cws/" + branch)
         mmile = getMasterMile(branch)
         if mmile != None:
             workstamp = mmile[:6]
             milestone = mmile[8:]
+            checkWithBlacklist(mmile)
+            status = checkAndGet("/cws/" + branch)
         else:
             print "Internal error: is the CWS still valid?"
-            sys.exit(1)
+            sys.exit(65)
 
     print "Subversion exited with status %u" % status
 

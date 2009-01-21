@@ -5,5 +5,11 @@
 [General]
 Workdir = "workdir"
 
+# Space-separated list of cws/mws that are known to be broken.
+# Note: the current implementation of the cws_get_svn script only
+# skipps CWSses. You can still try to build a milestone that is in this
+# list. That's a feature, not a bug ;-)
+Blacklist = DEV300_m39 OOH680
+
 [Subversion]
 Root = "svn://svn.services.openoffice.org/ooo"
