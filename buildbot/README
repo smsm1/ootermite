@@ -1,6 +1,12 @@
-master				buildmaster related config files/code.
-slave/scripts			scripts needed for a build slave, 
-				these may need to be customised to the 
-				specific buildslave environment.
-slave/scripts/OO-changes.diff	hacks to buildbot to introduce OOo 
-				specific features.
+master                   Buildmaster related config files/code.
+
+master/OO-changes.diff   Hacks to buildbot to introduce OOo 
+                         specific features. Apply this patch to the
+                         original Buildbot source. You only need this patch if
+                         you are about to set up a ootermite MASTER.
+
+slave/scripts            Scripts needed for a build slave, 
+                         these may need to be customised to the 
+                         specific buildslave environment.
+
+
