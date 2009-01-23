@@ -1,4 +1,4 @@
-#!bash -x
+#!/usr/bin/bash -x
 echo "Setting solar environment..."
 umask 2
 export PATH=$PATH:/so/env/etools
