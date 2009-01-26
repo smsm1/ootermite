@@ -3,7 +3,7 @@
 # will also work without config file.
 
 [General]
-Workdir = "workdir"
+Workdir = workdir
 
 # Space-separated list of cws/mws that are known to be broken.
 # Note: the current implementation of the cws_get_svn script only
@@ -12,4 +12,4 @@ Workdir = "workdir"
 Blacklist = DEV300_m39 OOH680
 
 [Subversion]
-Root = "svn://svn.services.openoffice.org/ooo"
+Root = svn://svn.services.openoffice.org/ooo
