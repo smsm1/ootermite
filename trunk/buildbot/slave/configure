@@ -3,15 +3,16 @@
 # read config
 . ../../steps.config
 
+echo $configureswitches
+
 if [ ! -e "configure" ] ; then
   cd config_office
   OLDCONF=../
+  ./configure $configureswitches || exit $?
+  cd ..
+else
+  ./configure $configureswitches || exit $?
 fi
-
-echo $configureswitches
-./configure --enable-werror $configureswitches || exit $?
-
-cd ..
 
 #put name of OOo config file created by configure in $envname
 . $OLDCONF../getOOoEnv
