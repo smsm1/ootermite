@@ -3,7 +3,10 @@
 # read config
 . ../../steps.config
 
+if [! -e "configure" ] ; then
 cd config_office
+fi
+
 echo $configureswitches
 ./configure --enable-werror $configureswitches || exit $?
 
