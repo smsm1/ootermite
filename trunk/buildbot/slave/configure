@@ -4,7 +4,8 @@
 . ../../steps.config
 
 if [! -e "configure" ] ; then
-cd config_office
+  cd config_office
+  OLDCONF=../
 fi
 
 echo $configureswitches
@@ -13,7 +14,7 @@ echo $configureswitches
 cd ..
 
 #put name of OOo config file created by configure in $envname
-. ../../getOOoEnv
+. $OLDCONF../getOOoEnv
 
 if [ -z "$envname" ] ; then
   echo Cannot determine configuration file name
