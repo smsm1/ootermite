@@ -16,6 +16,7 @@ fi
 
 # put name of OOo config file created by configure in $envname
 [ -f LinuxX86Env.Set.sh ] && envname=LinuxX86Env.Set.sh
+[ -f LinuxX86-64Env.Set.sh] && envname=LinuxX86-64Env.Set.sh
 [ -f LinuxIntelEnv.Set.sh ] && envname=LinuxIntelEnv.Set.sh
 [ -f MacOSXX86Env.Set.sh ] && envname=MacOSXX86Env.Set.sh
 [ -f MacOSXPPCEnv.Set.sh ] && envname=MacOSXPPCEnv.Set.sh
