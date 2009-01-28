@@ -9,9 +9,8 @@ then
     XStarted=Yes
 fi
 
-#put name of OOo config file created by configure in $envname
-. ../../getOOoEnv
-. $envname
+# Source the file created by configure
+. *.sh
 
 # hack to survive build.pl "feature" :(
 export TMP=/tmp
