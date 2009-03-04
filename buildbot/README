@@ -8,5 +8,3 @@ master/OO-changes.diff   Hacks to buildbot to introduce OOo
 slave/scripts            Scripts needed for a build slave, 
                          these may need to be customised to the 
                          specific buildslave environment.
-
-
