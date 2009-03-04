@@ -1,0 +1,25 @@
+#!/bin/bash -x
+
+# for those requiring X
+if [ -f LinuxX86Env.Set.sh -o -f LinuxIntelEnv.Set.sh -o -f SolarisX86Env.Set.sh -o -f SolarisSparcEnv.Set.sh -o -f MacOSXX86Env.Set.sh -o -f MacOSXPPCEnv.Set.sh ]
+then
+    /usr/bin/Xvfb :2 &
+    export DISPLAY=:2
+    export EXTERNAL_WARNINGS_NOT_ERRORS="TRUE"
+    XStarted=Yes
+fi
+
+# Source the file created by configure
+. *.sh
+
+# hack to survive build.pl "feature" :(
+export TMP=/tmp
+
+export TEMP="/tmp"
+cd smoketestoo_native && perl ../solenv/bin/build.pl
+export rcode=$?
+
+[ "$XStarted" ] && ../../../Xvfb_stop.sh
+
+exit $rcode
+
