@@ -35,7 +35,7 @@ import re
 from subprocess import *
 
 # Load the config file
-execfile("cws_get_svn.cfg")
+execfile("../cws_get_svn.cfg") # TODO: Determine script root properly
 
 def printHelp():
     print "Usage: " + sys.argv[0] + " [--branch=CWS/MWS] [--help] [--workdir]"
