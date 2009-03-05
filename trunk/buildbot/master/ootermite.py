@@ -18,5 +18,5 @@
 ##
 
 class ootermite:
-    version = "0.2.0_buildbot0.7.8"
+    version = "0.3.0_buildbot0.7.10"
     name    = "ootermite"
