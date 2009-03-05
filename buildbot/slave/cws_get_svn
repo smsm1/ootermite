@@ -2,7 +2,7 @@
 
 #*************************************************************************
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright (C) 2008, 2009 by Sun Microsystems, Inc.
 #
 # OpenOffice.org - a multi-platform office productivity suite
 #
@@ -33,12 +33,9 @@ import os
 import os.path
 import re
 from subprocess import *
-from ConfigParser import *
 
-# Some global variables
-BLACKLIST = []
-SVN_ROOT  = "svn://svn.services.openoffice.org/ooo"
-WORKDIR   = "workdir"
+# Load the config file
+execfile("cws_get_svn.cfg")
 
 def printHelp():
     print "Usage: " + sys.argv[0] + " [--branch=CWS/MWS] [--help] [--workdir]"
@@ -125,33 +122,6 @@ def checkAndGet(path):
         cleanUpDirectories()
         status = svnCheckout(path)
     return status
-
-def loadConfig():
-    global BLACKLIST
-    global SVN_ROOT
-    global WORKDIR
-
-    cfgp = ConfigParser() 
-    cfgp.read([sys.argv[0] + ".cfg", "cws_get_svn.cfg", "cws_get_svn.cfg.sample"]) # Errors are silently ignored
-
-    try:
-        svnRoot = cfgp.get("Subversion", "Root")
-        if not svnRoot == None and not svnRoot == '':
-            SVN_ROOT = svnRoot
-
-        workdir = cfgp.get("General", "Workdir")
-        if not workdir == None and not workdir == '':
-            WORKDIR = workdir
-
-        # There may be milestones or specific CWSs that are known to be broken
-        # and should be rejected by this slave
-        blacklist = cfgp.get("General", "Blacklist")
-        if not blacklist == None and not blacklist == '':
-            BLACKLIST = string.split(blacklist, ' ')
-    except:
-        print "Config error handled %s" % sys.exc_info()[0]
-
-    return
 
 def checkWithBlacklist(mmile):
     for blacklisted in BLACKLIST:
