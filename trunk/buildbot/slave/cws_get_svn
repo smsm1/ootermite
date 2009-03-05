@@ -126,6 +126,7 @@ def checkAndGet(path):
 def checkWithBlacklist(mmile):
     for blacklisted in BLACKLIST:
         if mmile == blacklisted:
+            print("Milestone: %s" % mmile)
             print("This CWS uses a milestone that is too old or known to be broken on this Buildbot.")
             print("Please resync to a working milestone!")
             sys.exit(65) # Skip the build
