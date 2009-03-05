@@ -1,50 +1,47 @@
-diff -r -N --unified buildbot-0.7.9-orig/buildbot/changes/bonsaipoller.py buildbot-0.7.9-patched/buildbot/changes/bonsaipoller.py
---- buildbot-0.7.9-orig/buildbot/changes/bonsaipoller.py	2008-09-16 09:02:30.000000000 +0200
-+++ buildbot-0.7.9-patched/buildbot/changes/bonsaipoller.py	2008-09-17 11:06:09.000000000 +0200
-@@ -48,7 +48,7 @@
-         return 0
+Binärdateien buildbot-0.7.10-orig/buildbot/__init__.pyc and buildbot-0.7.10-patched/buildbot/__init__.pyc sind verschieden.
+diff -Nur buildbot-0.7.10-orig/buildbot/interfaces.py buildbot-0.7.10-patched/buildbot/interfaces.py
+--- buildbot-0.7.10-orig/buildbot/interfaces.py	2009-02-26 17:29:09.000000000 +0100
++++ buildbot-0.7.10-patched/buildbot/interfaces.py	2009-03-04 11:09:53.000000000 +0100
+@@ -1022,6 +1022,10 @@
+         to a scarcity of build slaves). These upcoming builds can be canceled
+         through the control object."""
  
- class CiNode:
--    """I hold information baout one <ci> node, including a list of files"""
-+    """I hold information about one <ci> node, including a list of files"""
-     def __init__(self, log="", who="", date=0, files=[]):
-         self.log = log
-         self.who = who
-diff -r -N --unified buildbot-0.7.9-orig/buildbot/process/base.py buildbot-0.7.9-patched/buildbot/process/base.py
---- buildbot-0.7.9-orig/buildbot/process/base.py	2008-09-16 09:02:34.000000000 +0200
-+++ buildbot-0.7.9-patched/buildbot/process/base.py	2008-09-17 11:08:57.000000000 +0200
-@@ -70,6 +70,22 @@
-         self.start_watchers = []
++    def cancelBuildRequest(self, request_number):
++        """If there is a build request with the given number on the builder's queue,
++        cancel the request"""
++
+     def getBuild(number):
+         """Attempt to return an IBuildControl object for the given build.
+         Returns None if no such object is available. This will only work for
+diff -Nur buildbot-0.7.10-orig/buildbot/process/base.py buildbot-0.7.10-patched/buildbot/process/base.py
+--- buildbot-0.7.10-orig/buildbot/process/base.py	2009-02-26 17:29:09.000000000 +0100
++++ buildbot-0.7.10-patched/buildbot/process/base.py	2009-03-04 13:24:54.000000000 +0100
+@@ -74,6 +74,11 @@
          self.finish_watchers = []
          self.status = BuildRequestStatus(source, builderName)
-+    
+ 
 +    # This method is necessary to remove equal builds from the
 +    # queue.
 +    def __eq__(self, other):
-+        # properties contains our custom build properties (e.g. languages and install_set)
-+        # The branch and revision must be obtained through the SourceStamp
-+        #if canBeMergedWith(other):
-+        #    # Compare the custom build properties
-+        #    for key in self.properties.keys():
-+        #        value = self.properties[key]
-+        #        if not other.properties.hasKey(key) and other.properties[key] != value:
-+        #            return False
-+        #    return True
-+        #else:
-+        #    return False
 +        return self.canBeMergedWith(other)
- 
++
      def canBeMergedWith(self, other):
          return self.source.canBeMergedWith(other.source)
-diff -r -N --unified buildbot-0.7.9-orig/buildbot/process/builder.py buildbot-0.7.9-patched/buildbot/process/builder.py
---- buildbot-0.7.9-orig/buildbot/process/builder.py	2008-09-16 09:02:30.000000000 +0200
-+++ buildbot-0.7.9-patched/buildbot/process/builder.py	2008-09-17 11:10:31.000000000 +0200
-@@ -333,8 +333,27 @@
-     def __repr__(self):
-         return "<Builder '%s' at %d>" % (self.name, id(self))
  
--
-+    # Is this the method to cancel double queued builds?
+@@ -136,6 +141,7 @@
+         not yet been started.
+ 
+         @return: a boolean indicating if the cancel was successful."""
++        log.msg("Cancelling %r" % self)
+         if self.builder:
+             return self.builder.cancelBuildRequest(self)
+         return False
+diff -Nur buildbot-0.7.10-orig/buildbot/process/builder.py buildbot-0.7.10-patched/buildbot/process/builder.py
+--- buildbot-0.7.10-orig/buildbot/process/builder.py	2009-02-26 17:29:09.000000000 +0100
++++ buildbot-0.7.10-patched/buildbot/process/builder.py	2009-03-04 13:28:44.000000000 +0100
+@@ -436,6 +436,24 @@
+             return None
+ 
      def submitBuildRequest(self, req):
 +        for breq in self.buildable:
 +            if breq == req:
@@ -64,1028 +61,119 @@ diff -r -N --unified buildbot-0.7.9-orig/buildbot/process/builder.py buildbot-0.
 +                else:
 +                    print "DEBUG: Build %s skipped!" % req
 +                    return
-+        
-         req.submittedAt = now()
+         req.setSubmitTime(now())
          self.buildable.append(req)
          req.requestSubmitted(self)
-@@ -714,12 +733,18 @@
+@@ -844,12 +862,18 @@
              return
  
          ss = bs.getSourceStamp(absolute=True)
 -        req = base.BuildRequest(reason, ss, self.original.name)
 +        # The properties need to be passed again
-+        log.msg("Resubmit build #%s" % bs.getNumber())
-+        log.msg("Resubmit build %s" % bs.getProperties())
 +        req = base.BuildRequest(reason, ss, self.original.name, bs.getProperties())
          self.requestBuild(req)
  
      def getPendingBuilds(self):
--        # return IBuildRequestControl objects
--        raise NotImplementedError
-+        """Return a list of L{IBuildRequestControl} objects for this Builder.
-+        Each one corresponds to a pending build that has not yet started (due
-+        to a scarcity of build slaves). These upcoming builds can be canceled
-+        through the control object."""
-+        return self.original.buildable
+         # return IBuildRequestControl objects
+         raise NotImplementedError
++#        """Return a list of L{IBuildRequestControl} objects for this Builder.
++#        Each one corresponds to a pending build that has not yet started (due
++#        to a scarcity of build slaves). These upcoming builds can be canceled
++#        through the control object."""
++#        return self.original.buildable
  
      def getBuild(self, number):
          return self.original.getBuild(number)
-diff -r -N --unified buildbot-0.7.9-orig/buildbot/process/properties.py buildbot-0.7.9-patched/buildbot/process/properties.py
---- buildbot-0.7.9-orig/buildbot/process/properties.py	2008-09-16 09:02:34.000000000 +0200
-+++ buildbot-0.7.9-patched/buildbot/process/properties.py	2008-09-17 11:12:33.000000000 +0200
-@@ -39,8 +39,13 @@
+@@ -865,6 +889,12 @@
+         d.addCallback(self._gatherPingResults)
+         return d
+ 
++    def cancelBuildRequest(self, request_number):
++        # Delete the build request from queue
++        for br in self.original.buildable:
++            if br.status.getNumber() == request_number:
++                br.cancel()
++
+     def _gatherPingResults(self, res):
+         for ignored,success in res:
+             if not success:
+diff -Nur buildbot-0.7.10-orig/buildbot/process/properties.py buildbot-0.7.10-patched/buildbot/process/properties.py
+--- buildbot-0.7.10-orig/buildbot/process/properties.py	2009-02-26 17:29:09.000000000 +0100
++++ buildbot-0.7.10-patched/buildbot/process/properties.py	2009-03-04 13:29:27.000000000 +0100
+@@ -39,8 +39,10 @@
  
      def __getitem__(self, name):
          """Just get the value for this property."""
 -        rv = self.properties[name][0]
 -        return rv
-+        if self.has_key(name):
-+            return self.properties[name][0]
-+        else:
-+            return None
++        return self.properties[name][0]
 +        
 +    def __setitem__(self, key, value):
 +        self.properties[key] = (value, "Merged")
  
      def has_key(self, name):
          return self.properties.has_key(name)
-diff -r -N --unified buildbot-0.7.9-orig/buildbot/scripts/runner.py.orig buildbot-0.7.9-patched/buildbot/scripts/runner.py.orig
---- buildbot-0.7.9-orig/buildbot/scripts/runner.py.orig	1970-01-01 01:00:00.000000000 +0100
-+++ buildbot-0.7.9-patched/buildbot/scripts/runner.py.orig	2008-09-16 18:02:34.000000000 +0200
-@@ -0,0 +1,970 @@
-+# -*- test-case-name: buildbot.test.test_runner -*-
-+
-+# N.B.: don't import anything that might pull in a reactor yet. Some of our
-+# subcommands want to load modules that need the gtk reactor.
-+import os, sys, stat, re, time
-+import traceback
-+from twisted.python import usage, util, runtime
-+
-+from buildbot.interfaces import BuildbotNotRunningError
-+
-+# this is mostly just a front-end for mktap, twistd, and kill(1), but in the
-+# future it will also provide an interface to some developer tools that talk
-+# directly to a remote buildmaster (like 'try' and a status client)
-+
-+# the create/start/stop commands should all be run as the same user,
-+# preferably a separate 'buildbot' account.
-+
-+class MakerBase(usage.Options):
-+    optFlags = [
-+        ['help', 'h', "Display this message"],
-+        ["quiet", "q", "Do not emit the commands being run"],
-+        ]
-+
-+    #["basedir", "d", None, "Base directory for the buildmaster"],
-+    opt_h = usage.Options.opt_help
-+
-+    def parseArgs(self, *args):
-+        if len(args) > 0:
-+            self['basedir'] = args[0]
-+        else:
-+            self['basedir'] = None
-+        if len(args) > 1:
-+            raise usage.UsageError("I wasn't expecting so many arguments")
-+
-+    def postOptions(self):
-+        if self['basedir'] is None:
-+            raise usage.UsageError("<basedir> parameter is required")
-+        self['basedir'] = os.path.abspath(self['basedir'])
-+
-+makefile_sample = """# -*- makefile -*-
-+
-+# This is a simple makefile which lives in a buildmaster/buildslave
-+# directory (next to the buildbot.tac file). It allows you to start/stop the
-+# master or slave by doing 'make start' or 'make stop'.
-+
-+# The 'reconfig' target will tell a buildmaster to reload its config file.
-+
-+start:
-+	twistd --no_save -y buildbot.tac
-+
-+stop:
-+	kill `cat twistd.pid`
-+
-+reconfig:
-+	kill -HUP `cat twistd.pid`
-+
-+log:
-+	tail -f twistd.log
-+"""
-+
-+class Maker:
-+    def __init__(self, config):
-+        self.config = config
-+        self.basedir = config['basedir']
-+        self.force = config.get('force', False)
-+        self.quiet = config['quiet']
-+
-+    def mkdir(self):
-+        if os.path.exists(self.basedir):
-+            if not self.quiet:
-+                print "updating existing installation"
-+            return
-+        if not self.quiet: print "mkdir", self.basedir
-+        os.mkdir(self.basedir)
-+
-+    def mkinfo(self):
-+        path = os.path.join(self.basedir, "info")
-+        if not os.path.exists(path):
-+            if not self.quiet: print "mkdir", path
-+            os.mkdir(path)
-+        created = False
-+        admin = os.path.join(path, "admin")
-+        if not os.path.exists(admin):
-+            if not self.quiet:
-+                print "Creating info/admin, you need to edit it appropriately"
-+            f = open(admin, "wt")
-+            f.write("Your Name Here <admin@youraddress.invalid>\n")
-+            f.close()
-+            created = True
-+        host = os.path.join(path, "host")
-+        if not os.path.exists(host):
-+            if not self.quiet:
-+                print "Creating info/host, you need to edit it appropriately"
-+            f = open(host, "wt")
-+            f.write("Please put a description of this build host here\n")
-+            f.close()
-+            created = True
-+        if created and not self.quiet:
-+            print "Please edit the files in %s appropriately." % path
-+
-+    def chdir(self):
-+        if not self.quiet: print "chdir", self.basedir
-+        os.chdir(self.basedir)
-+
-+    def makeTAC(self, contents, secret=False):
-+        tacfile = "buildbot.tac"
-+        if os.path.exists(tacfile):
-+            oldcontents = open(tacfile, "rt").read()
-+            if oldcontents == contents:
-+                if not self.quiet:
-+                    print "buildbot.tac already exists and is correct"
-+                return
-+            if not self.quiet:
-+                print "not touching existing buildbot.tac"
-+                print "creating buildbot.tac.new instead"
-+            tacfile = "buildbot.tac.new"
-+        f = open(tacfile, "wt")
-+        f.write(contents)
-+        f.close()
-+        if secret:
-+            os.chmod(tacfile, 0600)
-+
-+    def makefile(self):
-+        target = "Makefile.sample"
-+        if os.path.exists(target):
-+            oldcontents = open(target, "rt").read()
-+            if oldcontents == makefile_sample:
-+                if not self.quiet:
-+                    print "Makefile.sample already exists and is correct"
-+                return
-+            if not self.quiet:
-+                print "replacing Makefile.sample"
-+        else:
-+            if not self.quiet:
-+                print "creating Makefile.sample"
-+        f = open(target, "wt")
-+        f.write(makefile_sample)
-+        f.close()
-+
-+    def sampleconfig(self, source):
-+        target = "master.cfg.sample"
-+        config_sample = open(source, "rt").read()
-+        if os.path.exists(target):
-+            oldcontents = open(target, "rt").read()
-+            if oldcontents == config_sample:
-+                if not self.quiet:
-+                    print "master.cfg.sample already exists and is up-to-date"
-+                return
-+            if not self.quiet:
-+                print "replacing master.cfg.sample"
-+        else:
-+            if not self.quiet:
-+                print "creating master.cfg.sample"
-+        f = open(target, "wt")
-+        f.write(config_sample)
-+        f.close()
-+        os.chmod(target, 0600)
-+
-+    def public_html(self, index_html, buildbot_css, robots_txt):
-+        webdir = os.path.join(self.basedir, "public_html")
-+        if os.path.exists(webdir):
-+            if not self.quiet:
-+                print "public_html/ already exists: not replacing"
-+            return
-+        else:
-+            os.mkdir(webdir)
-+        if not self.quiet:
-+            print "populating public_html/"
-+        target = os.path.join(webdir, "index.html")
-+        f = open(target, "wt")
-+        f.write(open(index_html, "rt").read())
-+        f.close()
-+
-+        target = os.path.join(webdir, "buildbot.css")
-+        f = open(target, "wt")
-+        f.write(open(buildbot_css, "rt").read())
-+        f.close()
-+
-+        target = os.path.join(webdir, "robots.txt")
-+        f = open(target, "wt")
-+        f.write(open(robots_txt, "rt").read())
-+        f.close()
-+
-+    def populate_if_missing(self, target, source, overwrite=False):
-+        new_contents = open(source, "rt").read()
-+        if os.path.exists(target):
-+            old_contents = open(target, "rt").read()
-+            if old_contents != new_contents:
-+                if overwrite:
-+                    if not self.quiet:
-+                        print "%s has old/modified contents" % target
-+                        print " overwriting it with new contents"
-+                    open(target, "wt").write(new_contents)
-+                else:
-+                    if not self.quiet:
-+                        print "%s has old/modified contents" % target
-+                        print " writing new contents to %s.new" % target
-+                    open(target + ".new", "wt").write(new_contents)
-+            # otherwise, it's up to date
-+        else:
-+            if not self.quiet:
-+                print "populating %s" % target
-+            open(target, "wt").write(new_contents)
-+
-+    def upgrade_public_html(self, index_html, buildbot_css, robots_txt):
-+        webdir = os.path.join(self.basedir, "public_html")
-+        if not os.path.exists(webdir):
-+            if not self.quiet:
-+                print "populating public_html/"
-+            os.mkdir(webdir)
-+        self.populate_if_missing(os.path.join(webdir, "index.html"),
-+                                 index_html)
-+        self.populate_if_missing(os.path.join(webdir, "buildbot.css"),
-+                                 buildbot_css)
-+        self.populate_if_missing(os.path.join(webdir, "robots.txt"),
-+                                 robots_txt)
-+
-+    def check_master_cfg(self):
-+        from buildbot.master import BuildMaster
-+        from twisted.python import log, failure
-+
-+        master_cfg = os.path.join(self.basedir, "master.cfg")
-+        if not os.path.exists(master_cfg):
-+            if not self.quiet:
-+                print "No master.cfg found"
-+            return 1
-+
-+        # side-effects of loading the config file:
-+
-+        #  for each Builder defined in c['builders'], if the status directory
-+        #  didn't already exist, it will be created, and the
-+        #  $BUILDERNAME/builder pickle might be created (with a single
-+        #  "builder created" event).
-+
-+        # we put basedir in front of sys.path, because that's how the
-+        # buildmaster itself will run, and it is quite common to have the
-+        # buildmaster import helper classes from other .py files in its
-+        # basedir.
-+
-+        if sys.path[0] != self.basedir:
-+            sys.path.insert(0, self.basedir)
-+
-+        m = BuildMaster(self.basedir)
-+        # we need to route log.msg to stdout, so any problems can be seen
-+        # there. But if everything goes well, I'd rather not clutter stdout
-+        # with log messages. So instead we add a logObserver which gathers
-+        # messages and only displays them if something goes wrong.
-+        messages = []
-+        log.addObserver(messages.append)
-+        try:
-+            # this will raise an exception if there's something wrong with
-+            # the config file. Note that this BuildMaster instance is never
-+            # started, so it won't actually do anything with the
-+            # configuration.
-+            m.loadConfig(open(master_cfg, "r"))
-+        except:
-+            f = failure.Failure()
-+            if not self.quiet:
-+                print
-+                for m in messages:
-+                    print "".join(m['message'])
-+                print f
-+                print
-+                print "An error was detected in the master.cfg file."
-+                print "Please correct the problem and run 'buildbot upgrade-master' again."
-+                print
-+            return 1
-+        return 0
-+
-+class UpgradeMasterOptions(MakerBase):
-+    optFlags = [
-+        ["replace", "r", "Replace any modified files without confirmation."],
-+        ]
-+
-+    def getSynopsis(self):
-+        return "Usage:    buildbot upgrade-master [options] <basedir>"
-+
-+    longdesc = """
-+    This command takes an existing buildmaster working directory and
-+    adds/modifies the files there to work with the current version of
-+    buildbot. When this command is finished, the buildmaster directory should
-+    look much like a brand-new one created by the 'create-master' command.
-+
-+    Use this after you've upgraded your buildbot installation and before you
-+    restart the buildmaster to use the new version.
-+
-+    If you have modified the files in your working directory, this command
-+    will leave them untouched, but will put the new recommended contents in a
-+    .new file (for example, if index.html has been modified, this command
-+    will create index.html.new). You can then look at the new version and
-+    decide how to merge its contents into your modified file.
-+    """
-+
-+def upgradeMaster(config):
-+    basedir = config['basedir']
-+    m = Maker(config)
-+    # TODO: check Makefile
-+    # TODO: check TAC file
-+    # check web files: index.html, classic.css, robots.txt
-+    webdir = os.path.join(basedir, "public_html")
-+    m.upgrade_public_html(util.sibpath(__file__, "../status/web/index.html"),
-+                          util.sibpath(__file__, "../status/web/classic.css"),
-+                          util.sibpath(__file__, "../status/web/robots.txt"),
-+                          )
-+    m.populate_if_missing(os.path.join(basedir, "master.cfg.sample"),
-+                          util.sibpath(__file__, "sample.cfg"),
-+                          overwrite=True)
-+    rc = m.check_master_cfg()
-+    if rc:
-+        return rc
-+    if not config['quiet']:
-+        print "upgrade complete"
-+
-+
-+class MasterOptions(MakerBase):
-+    optFlags = [
-+        ["force", "f",
-+         "Re-use an existing directory (will not overwrite master.cfg file)"],
-+        ]
-+    optParameters = [
-+        ["config", "c", "master.cfg", "name of the buildmaster config file"],
-+        ]
-+    def getSynopsis(self):
-+        return "Usage:    buildbot create-master [options] <basedir>"
-+
-+    longdesc = """
-+    This command creates a buildmaster working directory and buildbot.tac
-+    file. The master will live in <dir> and create various files there.
-+
-+    At runtime, the master will read a configuration file (named
-+    'master.cfg' by default) in its basedir. This file should contain python
-+    code which eventually defines a dictionary named 'BuildmasterConfig'.
-+    The elements of this dictionary are used to configure the Buildmaster.
-+    See doc/config.xhtml for details about what can be controlled through
-+    this interface."""
-+
-+masterTAC = """
-+from twisted.application import service
-+from buildbot.master import BuildMaster
-+
-+basedir = r'%(basedir)s'
-+configfile = r'%(config)s'
-+
-+application = service.Application('buildmaster')
-+BuildMaster(basedir, configfile).setServiceParent(application)
-+
-+"""
-+
-+def createMaster(config):
-+    m = Maker(config)
-+    m.mkdir()
-+    m.chdir()
-+    contents = masterTAC % config
-+    m.makeTAC(contents)
-+    m.sampleconfig(util.sibpath(__file__, "sample.cfg"))
-+    m.public_html(util.sibpath(__file__, "../status/web/index.html"),
-+                  util.sibpath(__file__, "../status/web/classic.css"),
-+                  util.sibpath(__file__, "../status/web/robots.txt"),
-+                  )
-+    m.makefile()
-+
-+    if not m.quiet: print "buildmaster configured in %s" % m.basedir
-+
-+class SlaveOptions(MakerBase):
-+    optFlags = [
-+        ["force", "f", "Re-use an existing directory"],
-+        ]
-+    optParameters = [
-+#        ["name", "n", None, "Name for this build slave"],
-+#        ["passwd", "p", None, "Password for this build slave"],
-+#        ["basedir", "d", ".", "Base directory to use"],
-+#        ["master", "m", "localhost:8007",
-+#         "Location of the buildmaster (host:port)"],
-+
-+        ["keepalive", "k", 600,
-+         "Interval at which keepalives should be sent (in seconds)"],
-+        ["usepty", None, 1,
-+         "(1 or 0) child processes should be run in a pty"],
-+        ["umask", None, "None",
-+         "controls permissions of generated files. Use --umask=022 to be world-readable"],
-+        ]
-+    
-+    longdesc = """
-+    This command creates a buildslave working directory and buildbot.tac
-+    file. The bot will use the <name> and <passwd> arguments to authenticate
-+    itself when connecting to the master. All commands are run in a
-+    build-specific subdirectory of <basedir>. <master> is a string of the
-+    form 'hostname:port', and specifies where the buildmaster can be reached.
-+
-+    <name>, <passwd>, and <master> will be provided by the buildmaster
-+    administrator for your bot. You must choose <basedir> yourself.
-+    """
-+
-+    def getSynopsis(self):
-+        return "Usage:    buildbot create-slave [options] <basedir> <master> <name> <passwd>"
-+
-+    def parseArgs(self, *args):
-+        if len(args) < 4:
-+            raise usage.UsageError("command needs more arguments")
-+        basedir, master, name, passwd = args
-+        self['basedir'] = basedir
-+        self['master'] = master
-+        self['name'] = name
-+        self['passwd'] = passwd
-+
-+    def postOptions(self):
-+        MakerBase.postOptions(self)
-+        self['usepty'] = int(self['usepty'])
-+        self['keepalive'] = int(self['keepalive'])
-+        if self['master'].find(":") == -1:
-+            raise usage.UsageError("--master must be in the form host:portnum")
-+
-+slaveTAC = """
-+from twisted.application import service
-+from buildbot.slave.bot import BuildSlave
-+
-+basedir = r'%(basedir)s'
-+buildmaster_host = '%(host)s'
-+port = %(port)d
-+slavename = '%(name)s'
-+passwd = '%(passwd)s'
-+keepalive = %(keepalive)d
-+usepty = %(usepty)d
-+umask = %(umask)s
-+
-+application = service.Application('buildslave')
-+s = BuildSlave(buildmaster_host, port, slavename, passwd, basedir,
-+               keepalive, usepty, umask=umask)
-+s.setServiceParent(application)
-+
-+"""
-+
-+def createSlave(config):
-+    m = Maker(config)
-+    m.mkdir()
-+    m.chdir()
-+    try:
-+        master = config['master']
-+        host, port = re.search(r'(.+):(\d+)', master).groups()
-+        config['host'] = host
-+        config['port'] = int(port)
-+    except:
-+        print "unparseable master location '%s'" % master
-+        print " expecting something more like localhost:8007"
-+        raise
-+    contents = slaveTAC % config
-+
-+    m.makeTAC(contents, secret=True)
-+
-+    m.makefile()
-+    m.mkinfo()
-+
-+    if not m.quiet: print "buildslave configured in %s" % m.basedir
-+
-+
-+
-+def stop(config, signame="TERM", wait=False):
-+    import signal
-+    basedir = config['basedir']
-+    quiet = config['quiet']
-+    os.chdir(basedir)
-+    try:
-+        f = open("twistd.pid", "rt")
-+    except:
-+        raise BuildbotNotRunningError
-+    pid = int(f.read().strip())
-+    signum = getattr(signal, "SIG"+signame)
-+    timer = 0
-+    os.kill(pid, signum)
-+    if not wait:
-+        if not quiet:
-+            print "sent SIG%s to process" % signame
-+        return
-+    time.sleep(0.1)
-+    while timer < 10:
-+        # poll once per second until twistd.pid goes away, up to 10 seconds
-+        try:
-+            os.kill(pid, 0)
-+        except OSError:
-+            if not quiet:
-+                print "buildbot process %d is dead" % pid
-+            return
-+        timer += 1
-+        time.sleep(1)
-+    if not quiet:
-+        print "never saw process go away"
-+
-+def restart(config):
-+    quiet = config['quiet']
-+    from buildbot.scripts.startup import start
-+    try:
-+        stop(config, wait=True)
-+    except BuildbotNotRunningError:
-+        pass
-+    if not quiet:
-+        print "now restarting buildbot process.."
-+    start(config)
-+
-+
-+def loadOptions(filename="options", here=None, home=None):
-+    """Find the .buildbot/FILENAME file. Crawl from the current directory up
-+    towards the root, and also look in ~/.buildbot . The first directory
-+    that's owned by the user and has the file we're looking for wins. Windows
-+    skips the owned-by-user test.
-+    
-+    @rtype:  dict
-+    @return: a dictionary of names defined in the options file. If no options
-+             file was found, return an empty dict.
-+    """
-+
-+    if here is None:
-+        here = os.getcwd()
-+    here = os.path.abspath(here)
-+
-+    if home is None:
-+        if runtime.platformType == 'win32':
-+            home = os.path.join(os.environ['APPDATA'], "buildbot")
-+        else:
-+            home = os.path.expanduser("~/.buildbot")
-+
-+    searchpath = []
-+    toomany = 20
-+    while True:
-+        searchpath.append(os.path.join(here, ".buildbot"))
-+        next = os.path.dirname(here)
-+        if next == here:
-+            break # we've hit the root
-+        here = next
-+        toomany -= 1 # just in case
-+        if toomany == 0:
-+            raise ValueError("Hey, I seem to have wandered up into the "
-+                             "infinite glories of the heavens. Oops.")
-+    searchpath.append(home)
-+
-+    localDict = {}
-+
-+    for d in searchpath:
-+        if os.path.isdir(d):
-+            if runtime.platformType != 'win32':
-+                if os.stat(d)[stat.ST_UID] != os.getuid():
-+                    print "skipping %s because you don't own it" % d
-+                    continue # security, skip other people's directories
-+            optfile = os.path.join(d, filename)
-+            if os.path.exists(optfile):
-+                try:
-+                    f = open(optfile, "r")
-+                    options = f.read()
-+                    exec options in localDict
-+                except:
-+                    print "error while reading %s" % optfile
-+                    raise
-+                break
-+
-+    for k in localDict.keys():
-+        if k.startswith("__"):
-+            del localDict[k]
-+    return localDict
-+
-+class StartOptions(MakerBase):
-+    optFlags = [
-+        ['quiet', 'q', "Don't display startup log messages"],
-+        ]
-+    def getSynopsis(self):
-+        return "Usage:    buildbot start <basedir>"
-+
-+class StopOptions(MakerBase):
-+    def getSynopsis(self):
-+        return "Usage:    buildbot stop <basedir>"
-+
-+class ReconfigOptions(MakerBase):
-+    optFlags = [
-+        ['quiet', 'q', "Don't display log messages about reconfiguration"],
-+        ]
-+    def getSynopsis(self):
-+        return "Usage:    buildbot reconfig <basedir>"
-+
-+
-+
-+class RestartOptions(MakerBase):
-+    optFlags = [
-+        ['quiet', 'q', "Don't display startup log messages"],
-+        ]
-+    def getSynopsis(self):
-+        return "Usage:    buildbot restart <basedir>"
-+
-+class DebugClientOptions(usage.Options):
-+    optFlags = [
-+        ['help', 'h', "Display this message"],
-+        ]
-+    optParameters = [
-+        ["master", "m", None,
-+         "Location of the buildmaster's slaveport (host:port)"],
-+        ["passwd", "p", None, "Debug password to use"],
-+        ]
-+
-+    def parseArgs(self, *args):
-+        if len(args) > 0:
-+            self['master'] = args[0]
-+        if len(args) > 1:
-+            self['passwd'] = args[1]
-+        if len(args) > 2:
-+            raise usage.UsageError("I wasn't expecting so many arguments")
-+
-+def debugclient(config):
-+    from buildbot.clients import debug
-+    opts = loadOptions()
-+
-+    master = config.get('master')
-+    if not master:
-+        master = opts.get('master')
-+    if master is None:
-+        raise usage.UsageError("master must be specified: on the command "
-+                               "line or in ~/.buildbot/options")
-+
-+    passwd = config.get('passwd')
-+    if not passwd:
-+        passwd = opts.get('debugPassword')
-+    if passwd is None:
-+        raise usage.UsageError("passwd must be specified: on the command "
-+                               "line or in ~/.buildbot/options")
-+
-+    d = debug.DebugWidget(master, passwd)
-+    d.run()
-+
-+class StatusClientOptions(usage.Options):
-+    optFlags = [
-+        ['help', 'h', "Display this message"],
-+        ]
-+    optParameters = [
-+        ["master", "m", None,
-+         "Location of the buildmaster's status port (host:port)"],
-+        ]
-+
-+    def parseArgs(self, *args):
-+        if len(args) > 0:
-+            self['master'] = args[0]
-+        if len(args) > 1:
-+            raise usage.UsageError("I wasn't expecting so many arguments")
-+
-+def statuslog(config):
-+    from buildbot.clients import base
-+    opts = loadOptions()
-+    master = config.get('master')
-+    if not master:
-+        master = opts.get('masterstatus')
-+    if master is None:
-+        raise usage.UsageError("master must be specified: on the command "
-+                               "line or in ~/.buildbot/options")
-+    c = base.TextClient(master)
-+    c.run()
-+
-+def statusgui(config):
-+    from buildbot.clients import gtkPanes
-+    opts = loadOptions()
-+    master = config.get('master')
-+    if not master:
-+        master = opts.get('masterstatus')
-+    if master is None:
-+        raise usage.UsageError("master must be specified: on the command "
-+                               "line or in ~/.buildbot/options")
-+    c = gtkPanes.GtkClient(master)
-+    c.run()
-+
-+class SendChangeOptions(usage.Options):
-+    optParameters = [
-+        ("master", "m", None,
-+         "Location of the buildmaster's PBListener (host:port)"),
-+        ("username", "u", None, "Username performing the commit"),
-+        ("branch", "b", None, "Branch specifier"),
-+        ("revision", "r", None, "Revision specifier (string)"),
-+        ("revision_number", "n", None, "Revision specifier (integer)"),
-+        ("revision_file", None, None, "Filename containing revision spec"),
-+        ("comments", "m", None, "log message"),
-+        ("logfile", "F", None,
-+         "Read the log messages from this file (- for stdin)"),
-+        ]
-+    def getSynopsis(self):
-+        return "Usage:    buildbot sendchange [options] filenames.."
-+    def parseArgs(self, *args):
-+        self['files'] = args
-+
-+
-+def sendchange(config, runReactor=False):
-+    """Send a single change to the buildmaster's PBChangeSource. The
-+    connection will be drpoped as soon as the Change has been sent."""
-+    from buildbot.clients.sendchange import Sender
-+
-+    opts = loadOptions()
-+    user = config.get('username', opts.get('username'))
-+    master = config.get('master', opts.get('master'))
-+    branch = config.get('branch', opts.get('branch'))
-+    revision = config.get('revision')
-+    # SVN and P4 use numeric revisions
-+    if config.get("revision_number"):
-+        revision = int(config['revision_number'])
-+    if config.get("revision_file"):
-+        revision = open(config["revision_file"],"r").read()
-+
-+    comments = config.get('comments')
-+    if not comments and config.get('logfile'):
-+        if config['logfile'] == "-":
-+            f = sys.stdin
-+        else:
-+            f = open(config['logfile'], "rt")
-+        comments = f.read()
-+    if comments is None:
-+        comments = ""
-+
-+    files = config.get('files', [])
-+
-+    assert user, "you must provide a username"
-+    assert master, "you must provide the master location"
-+
-+    s = Sender(master, user)
-+    d = s.send(branch, revision, comments, files)
-+    if runReactor:
-+        d.addCallbacks(s.printSuccess, s.printFailure)
-+        d.addBoth(s.stop)
-+        s.run()
-+    return d
-+
-+
-+class ForceOptions(usage.Options):
-+    optParameters = [
-+        ["builder", None, None, "which Builder to start"],
-+        ["branch", None, None, "which branch to build"],
-+        ["revision", None, None, "which revision to build"],
-+        ["reason", None, None, "the reason for starting the build"],
-+        ]
-+
-+    def parseArgs(self, *args):
-+        args = list(args)
-+        if len(args) > 0:
-+            if self['builder'] is not None:
-+                raise usage.UsageError("--builder provided in two ways")
-+            self['builder'] = args.pop(0)
-+        if len(args) > 0:
-+            if self['reason'] is not None:
-+                raise usage.UsageError("--reason provided in two ways")
-+            self['reason'] = " ".join(args)
-+
-+
-+class TryOptions(usage.Options):
-+    optParameters = [
-+        ["connect", "c", None,
-+         "how to reach the buildmaster, either 'ssh' or 'pb'"],
-+        # for ssh, use --tryhost, --username, and --trydir
-+        ["tryhost", None, None,
-+         "the hostname (used by ssh) for the buildmaster"],
-+        ["trydir", None, None,
-+         "the directory (on the tryhost) where tryjobs are deposited"],
-+        ["username", "u", None, "Username performing the trial build"],
-+        # for PB, use --master, --username, and --passwd
-+        ["master", "m", None,
-+         "Location of the buildmaster's PBListener (host:port)"],
-+        ["passwd", None, None, "password for PB authentication"],
-+
-+        ["diff", None, None,
-+         "Filename of a patch to use instead of scanning a local tree. Use '-' for stdin."],
-+        ["patchlevel", "p", 0,
-+         "Number of slashes to remove from patch pathnames, like the -p option to 'patch'"],
-+
-+        ["baserev", None, None,
-+         "Base revision to use instead of scanning a local tree."],
-+
-+        ["vc", None, None,
-+         "The VC system in use, one of: cvs,svn,tla,baz,darcs"],
-+        ["branch", None, None,
-+         "The branch in use, for VC systems that can't figure it out"
-+         " themselves"],
-+
-+        ["builder", "b", None,
-+         "Run the trial build on this Builder. Can be used multiple times."],
-+        ["properties", None, None,
-+         "A set of properties made available in the build environment, format:prop=value,propb=valueb..."],
-+        ]
-+
-+    optFlags = [
-+        ["wait", None, "wait until the builds have finished"],
-+        ]
-+
-+    def __init__(self):
-+        super(TryOptions, self).__init__()
-+        self['builders'] = []
-+        self['properties'] = {}
-+
-+    def opt_builder(self, option):
-+        self['builders'].append(option)
-+
-+    def opt_properties(self, option):
-+        # We need to split the value of this option into a dictionary of properties
-+        properties = {}
-+        propertylist = option.split(",")
-+        for i in range(0,len(propertylist)):
-+            print propertylist[i]
-+            splitproperty = propertylist[i].split("=")
-+            properties[splitproperty[0]] = splitproperty[1]
-+        self['properties'] = properties
-+
-+    def opt_patchlevel(self, option):
-+        self['patchlevel'] = int(option)
-+
-+    def getSynopsis(self):
-+        return "Usage:    buildbot try [options]"
-+
-+def doTry(config):
-+    from buildbot.scripts import tryclient
-+    t = tryclient.Try(config)
-+    t.run()
-+
-+class TryServerOptions(usage.Options):
-+    optParameters = [
-+        ["jobdir", None, None, "the jobdir (maildir) for submitting jobs"],
-+        ]
-+
-+def doTryServer(config):
-+    import md5
-+    jobdir = os.path.expanduser(config["jobdir"])
-+    job = sys.stdin.read()
-+    # now do a 'safecat'-style write to jobdir/tmp, then move atomically to
-+    # jobdir/new . Rather than come up with a unique name randomly, I'm just
-+    # going to MD5 the contents and prepend a timestamp.
-+    timestring = "%d" % time.time()
-+    jobhash = md5.new(job).hexdigest()
-+    fn = "%s-%s" % (timestring, jobhash)
-+    tmpfile = os.path.join(jobdir, "tmp", fn)
-+    newfile = os.path.join(jobdir, "new", fn)
-+    f = open(tmpfile, "w")
-+    f.write(job)
-+    f.close()
-+    os.rename(tmpfile, newfile)
-+
-+
-+class CheckConfigOptions(usage.Options):
-+    optFlags = [
-+        ['quiet', 'q', "Don't display error messages or tracebacks"],
-+    ]
-+
-+    def getSynopsis(self):
-+        return "Usage		:buildbot checkconfig [configFile]\n" + \
-+         "		If not specified, 'master.cfg' will be used as 'configFile'"
-+
-+    def parseArgs(self, *args):
-+        if len(args) >= 1:
-+            self['configFile'] = args[0]
-+        else:
-+            self['configFile'] = 'master.cfg'
-+
-+
-+def doCheckConfig(config):
-+    quiet = config.get('quiet')
-+    configFile = config.get('configFile')
-+    try:
-+        from buildbot.scripts.checkconfig import ConfigLoader
-+        ConfigLoader(configFile)
-+    except:
-+        if not quiet:
-+            # Print out the traceback in a nice format
-+            t, v, tb = sys.exc_info()
-+            traceback.print_exception(t, v, tb)
-+        sys.exit(1)
-+
-+    if not quiet:
-+        print "Config file is good!"
-+
-+
-+class Options(usage.Options):
-+    synopsis = "Usage:    buildbot <command> [command options]"
-+
-+    subCommands = [
-+        # the following are all admin commands
-+        ['create-master', None, MasterOptions,
-+         "Create and populate a directory for a new buildmaster"],
-+        ['upgrade-master', None, UpgradeMasterOptions,
-+         "Upgrade an existing buildmaster directory for the current version"],
-+        ['create-slave', None, SlaveOptions,
-+         "Create and populate a directory for a new buildslave"],
-+        ['start', None, StartOptions, "Start a buildmaster or buildslave"],
-+        ['stop', None, StopOptions, "Stop a buildmaster or buildslave"],
-+        ['restart', None, RestartOptions,
-+         "Restart a buildmaster or buildslave"],
-+
-+        ['reconfig', None, ReconfigOptions,
-+         "SIGHUP a buildmaster to make it re-read the config file"],
-+        ['sighup', None, ReconfigOptions,
-+         "SIGHUP a buildmaster to make it re-read the config file"],
-+
-+        ['sendchange', None, SendChangeOptions,
-+         "Send a change to the buildmaster"],
-+
-+        ['debugclient', None, DebugClientOptions,
-+         "Launch a small debug panel GUI"],
-+
-+        ['statuslog', None, StatusClientOptions,
-+         "Emit current builder status to stdout"],
-+        ['statusgui', None, StatusClientOptions,
-+         "Display a small window showing current builder status"],
-+
-+        #['force', None, ForceOptions, "Run a build"],
-+        ['try', None, TryOptions, "Run a build with your local changes"],
-+
-+        ['tryserver', None, TryServerOptions,
-+         "buildmaster-side 'try' support function, not for users"],
-+
-+        ['checkconfig', None, CheckConfigOptions,
-+         "test the validity of a master.cfg config file"],
-+
-+        # TODO: 'watch'
-+        ]
-+
-+    def opt_version(self):
-+        import buildbot
-+        print "Buildbot version: %s" % buildbot.version
-+        usage.Options.opt_version(self)
-+
-+    def opt_verbose(self):
-+        from twisted.python import log
-+        log.startLogging(sys.stderr)
-+
-+    def postOptions(self):
-+        if not hasattr(self, 'subOptions'):
-+            raise usage.UsageError("must specify a command")
-+
-+
-+def run():
-+    config = Options()
-+    try:
-+        config.parseOptions()
-+    except usage.error, e:
-+        print "%s:  %s" % (sys.argv[0], e)
-+        print
-+        c = getattr(config, 'subOptions', config)
-+        print str(c)
-+        sys.exit(1)
-+
-+    command = config.subCommand
-+    so = config.subOptions
-+
-+    if command == "create-master":
-+        createMaster(so)
-+    elif command == "upgrade-master":
-+        upgradeMaster(so)
-+    elif command == "create-slave":
-+        createSlave(so)
-+    elif command == "start":
-+        from buildbot.scripts.startup import start
-+        start(so)
-+    elif command == "stop":
-+        stop(so, wait=True)
-+    elif command == "restart":
-+        restart(so)
-+    elif command == "reconfig" or command == "sighup":
-+        from buildbot.scripts.reconfig import Reconfigurator
-+        Reconfigurator().run(so)
-+    elif command == "sendchange":
-+        sendchange(so, True)
-+    elif command == "debugclient":
-+        debugclient(so)
-+    elif command == "statuslog":
-+        statuslog(so)
-+    elif command == "statusgui":
-+        statusgui(so)
-+    elif command == "try":
-+        doTry(so)
-+    elif command == "tryserver":
-+        doTryServer(so)
-+    elif command == "checkconfig":
-+        doCheckConfig(so)
-+
-+
-diff -r -N --unified buildbot-0.7.9-orig/buildbot/status/web/about.py buildbot-0.7.9-patched/buildbot/status/web/about.py
---- buildbot-0.7.9-orig/buildbot/status/web/about.py	2008-09-16 09:02:28.000000000 +0200
-+++ buildbot-0.7.9-patched/buildbot/status/web/about.py	2008-09-17 11:14:42.000000000 +0200
+diff -Nur buildbot-0.7.10-orig/buildbot/status/builder.py buildbot-0.7.10-patched/buildbot/status/builder.py
+--- buildbot-0.7.10-orig/buildbot/status/builder.py	2009-02-26 17:29:09.000000000 +0100
++++ buildbot-0.7.10-patched/buildbot/status/builder.py	2009-03-04 11:26:52.000000000 +0100
+@@ -671,6 +671,7 @@
+         self.builds = [] # list of BuildStatus objects
+         self.observers = []
+         self.submittedAt = None
++        self.number = None
+ 
+     def buildStarted(self, build):
+         self.builds.append(build)
+@@ -692,6 +693,11 @@
+     def unsubscribe(self, observer):
+         self.observers.remove(observer)
+ 
++    def setNumber(self, number):
++        self.number = number
++    def getNumber(self):
++        return self.number
++
+     def getSubmitTime(self):
+         return self.submittedAt
+     def setSubmitTime(self, t):
+@@ -1439,6 +1445,7 @@
+         self.watchers = []
+         self.buildCache = [] # TODO: age builds out of the cache
+         self.logCompressionLimit = False # default to no compression for tests
++        self.nextRequestNumber = 0
+ 
+     # persistence
+ 
+@@ -1459,6 +1466,7 @@
+         del d['basedir']
+         del d['status']
+         del d['nextBuildNumber']
++        del d['nextRequestNumber']
+         return d
+ 
+     def __setstate__(self, d):
+@@ -1470,6 +1478,7 @@
+         self.pendingBuilds = []
+         self.watchers = []
+         self.slavenames = []
++        self.nextRequestNumber = 0
+         # self.basedir must be filled in by our parent
+         # self.status must be filled in by our parent
+ 
+@@ -1730,6 +1739,10 @@
+         return s
+ 
+     def addBuildRequest(self, brstatus):
++        req_number = self.nextRequestNumber
++        self.nextRequestNumber += 1
++        brstatus.setNumber(req_number)
++        log.msg("Adding build request %u" % req_number)
+         self.pendingBuilds.append(brstatus)
+         for w in self.watchers:
+             w.requestSubmitted(brstatus)
+diff -Nur buildbot-0.7.10-orig/buildbot/status/web/about.py buildbot-0.7.10-patched/buildbot/status/web/about.py
+--- buildbot-0.7.10-orig/buildbot/status/web/about.py	2009-02-25 00:20:54.000000000 +0100
++++ buildbot-0.7.10-patched/buildbot/status/web/about.py	2009-03-04 13:30:57.000000000 +0100
 @@ -5,6 +5,8 @@
  import twisted
  import sys
@@ -1106,27 +194,10 @@ diff -r -N --unified buildbot-0.7.9-orig/buildbot/status/web/about.py buildbot-0
          data += '''
  <h2>Source code</h2>
  
-diff -r -N --unified buildbot-0.7.9-orig/buildbot/status/web/base.py buildbot-0.7.9-patched/buildbot/status/web/base.py
---- buildbot-0.7.9-orig/buildbot/status/web/base.py	2008-09-16 09:02:30.000000000 +0200
-+++ buildbot-0.7.9-patched/buildbot/status/web/base.py	2008-09-17 11:15:06.000000000 +0200
-@@ -3,7 +3,7 @@
- from zope.interface import Interface
- from twisted.web import html, resource
- from buildbot.status import builder
--from buildbot.status.builder import SUCCESS, WARNINGS, FAILURE, EXCEPTION
-+from buildbot.status.builder import SUCCESS, WARNINGS, FAILURE, SKIPPED, EXCEPTION
- 
- 
- class ITopBox(Interface):
-@@ -32,6 +32,7 @@
- css_classes = {SUCCESS: "success",
-                WARNINGS: "warnings",
-                FAILURE: "failure",
-+               SKIPPED: "skipped",
-                EXCEPTION: "exception",
-                }
- 
-@@ -83,10 +84,14 @@
+diff -Nur buildbot-0.7.10-orig/buildbot/status/web/base.py buildbot-0.7.10-patched/buildbot/status/web/base.py
+--- buildbot-0.7.10-orig/buildbot/status/web/base.py	2009-02-26 17:29:10.000000000 +0100
++++ buildbot-0.7.10-patched/buildbot/status/web/base.py	2009-03-04 13:34:29.000000000 +0100
+@@ -84,10 +84,12 @@
                   "<input type='text' name='username' />")
        + make_row("Reason for build:",
                   "<input type='text' name='comments' />")
@@ -1135,98 +206,56 @@ diff -r -N --unified buildbot-0.7.9-orig/buildbot/status/web/base.py buildbot-0.
                   "<input type='text' name='branch' />")
 -      + make_row("Revision to build:",
 -                 "<input type='text' name='revision' />")
-+      #+ make_row("Revision to build:",
-+      #           "<input type='text' name='revision' />")
 +      + make_row("Install Set?:",
 +                 "<input type='checkbox' name='install_set' />")
 +      + make_row("Additional languages:",
 +                 "<input type='text' name='languages' />")
        + '<input type="submit" value="Force Build" /></form>\n')
  
- colormap = {
-diff -r -N --unified buildbot-0.7.9-orig/buildbot/status/web/baseweb.py buildbot-0.7.9-patched/buildbot/status/web/baseweb.py
---- buildbot-0.7.9-orig/buildbot/status/web/baseweb.py	2008-09-16 09:02:34.000000000 +0200
-+++ buildbot-0.7.9-patched/buildbot/status/web/baseweb.py	2008-09-30 15:18:55.000000000 +0200
-@@ -20,6 +20,7 @@
+ def td(text="", parms={}, **props):
+diff -Nur buildbot-0.7.10-orig/buildbot/status/web/baseweb.py buildbot-0.7.10-patched/buildbot/status/web/baseweb.py
+--- buildbot-0.7.10-orig/buildbot/status/web/baseweb.py	2009-02-26 17:29:10.000000000 +0100
++++ buildbot-0.7.10-patched/buildbot/status/web/baseweb.py	2009-03-04 11:28:28.000000000 +0100
+@@ -22,6 +22,7 @@
  from buildbot.status.web.slaves import BuildSlavesResource
  from buildbot.status.web.xmlrpc import XMLRPCServer
  from buildbot.status.web.about import AboutBuildbot
-+from buildbot.status.web.queue import QueueStatusResource
++from buildbot.status.web.build import QueueStatusResource
  
  # this class contains the status services (WebStatus and the older Waterfall)
  # which can be put in c['status']. It also contains some of the resources
-@@ -509,7 +510,11 @@
-         return service.MultiService.stopService(self)
- 
-     def getStatus(self):
--        return self.parent.getStatus()
-+        if self.parent == None:
-+            return ""
-+        else:
-+            return self.parent.getStatus()
-+    
-     def getControl(self):
-         if self.allowForce:
-             return IControl(self.parent)
-diff -r -N --unified buildbot-0.7.9-orig/buildbot/status/web/build.py buildbot-0.7.9-patched/buildbot/status/web/build.py
---- buildbot-0.7.9-orig/buildbot/status/web/build.py	2008-09-16 09:02:34.000000000 +0200
-+++ buildbot-0.7.9-patched/buildbot/status/web/build.py	2008-09-17 11:16:59.000000000 +0200
-@@ -11,6 +11,7 @@
- from buildbot.status.web.tests import TestsResource
- from buildbot.status.web.step import StepsResource
- from buildbot import version, util
-+from buildbot.status.web.queue import QueueStatusResource
- 
- # /builders/$builder/builds/$buildnum
- class StatusResourceBuild(HtmlResource):
-@@ -56,8 +57,8 @@
-             results = b.getResults()
-             data += "<h2>Results:</h2>\n"
-             text = " ".join(b.getText())
--            data += '<span class="%s">%s</span>\n' % (css_classes[results],
--                                                      text)
-+            if results != None:
-+                data += '<span class="%s">%s</span>\n' % (css_classes[results], text)
-             if b.getTestResults():
-                 url = req.childLink("tests")
-                 data += "<h3><a href=\"%s\">test results</a></h3>\n" % url
-@@ -294,6 +295,9 @@
-                     build_control = None
-                 return StatusResourceBuild(build_status, build_control,
-                                            self.builder_control)
-+            else:
-+                # Probably a build that was not started yet
-+                return QueueStatusResource(path, req, num, self.builder_status, self.builder_control)
- 
-         return HtmlResource.getChild(self, path, req)
- 
-diff -r -N --unified buildbot-0.7.9-orig/buildbot/status/web/builder.py buildbot-0.7.9-patched/buildbot/status/web/builder.py
---- buildbot-0.7.9-orig/buildbot/status/web/builder.py	2008-09-16 09:02:32.000000000 +0200
-+++ buildbot-0.7.9-patched/buildbot/status/web/builder.py	2008-09-17 11:16:25.000000000 +0200
-@@ -9,6 +9,7 @@
+diff -Nur buildbot-0.7.10-orig/buildbot/status/web/builder.py buildbot-0.7.10-patched/buildbot/status/web/builder.py
+--- buildbot-0.7.10-orig/buildbot/status/web/builder.py	2009-02-26 17:29:10.000000000 +0100
++++ buildbot-0.7.10-patched/buildbot/status/web/builder.py	2009-03-05 13:19:52.000000000 +0100
+@@ -9,9 +9,10 @@
  from buildbot.status.web.base import HtmlResource, make_row, \
-      make_force_build_form, OneLineMixin
+      make_force_build_form, OneLineMixin, path_to_build, path_to_slave, path_to_builder
  from buildbot.process.base import BuildRequest
 +from buildbot.process.properties import Properties
  from buildbot.sourcestamp import SourceStamp
- from buildbot import version, util
  
-@@ -50,6 +51,14 @@
-   <input type="submit" value="Stop Build" />
+-from buildbot.status.web.build import BuildsResource, StatusResourceBuild
++from buildbot.status.web.build import BuildsResource, StatusResourceBuild, QueueStatusResource
+ 
+ # /builders/$builder
+ class StatusResourceBuilder(HtmlResource, OneLineMixin):
+@@ -50,6 +51,15 @@
  </form>''' % stopURL
          return data
+ 
 +    
-+    def makeRemoveFromQueueButton(self, req, buildnum):
-+        stopURL = urllib.quote(req.childLink("builds/%d/remove" % buildnum))
++    def makeRemoveFromQueueButton(self, req, req_num):
++        stopURL = urllib.quote(req.childLink("queue/%d/remove" % req_num))
 +        data = '''
 +<form action="%s" class="command stopbuild" style="display:inline">
 +  <input type="submit" value="Remove Build" />
 +</form>''' % stopURL
 +        return data
- 
++
      def body(self, req):
          b = self.builder_status
-@@ -76,6 +85,28 @@
+         control = self.builder_control
+@@ -75,6 +85,27 @@
              data += "</ul>\n"
          else:
              data += "<h2>no current builds</h2>\n"
@@ -1239,23 +268,22 @@ diff -r -N --unified buildbot-0.7.9-orig/buildbot/status/web/builder.py buildbot
 +            # Determine the build numbers of the queue builds.
 +            # Sadly we cannot remove the build from the queue with this
 +            # number as it is not valid yet.
-+            nextBuildNumber = b.nextBuildNumber
 +            data += "<ul>\n"
 +            for buildRequestStatus in pendingBuilds:
 +                sourceStamp = buildRequestStatus.getSourceStamp()
-+                data += "<li>#%u " % nextBuildNumber
++                req_number = buildRequestStatus.getNumber()
++                data += "<li>#%u " % req_number
 +                data += "Branch: %s " % sourceStamp.branch
 +                data += "[rev=%s]" % sourceStamp.revision
-+                data += self.makeRemoveFromQueueButton(req, nextBuildNumber)
++                data += self.makeRemoveFromQueueButton(req, req_number)
 +                data += "</li>"
-+                nextBuildNumber += 1
 +            data += "</ul>\n"
 +        else:
 +            data += "No pending builds"
  
          # Then a section with the last 5 builds, with the most recent build
          # distinguished from the rest.
-@@ -190,11 +221,18 @@
+@@ -167,11 +198,18 @@
          if not revision:
              revision = None
  
@@ -1275,16 +303,77 @@ diff -r -N --unified buildbot-0.7.9-orig/buildbot/status/web/builder.py buildbot
          try:
              self.builder_control.requestBuildSoon(req)
          except interfaces.NoSlaveError:
-diff -r -N --unified buildbot-0.7.9-orig/buildbot/status/web/queue.py buildbot-0.7.9-patched/buildbot/status/web/queue.py
---- buildbot-0.7.9-orig/buildbot/status/web/queue.py	1970-01-01 01:00:00.000000000 +0100
-+++ buildbot-0.7.9-patched/buildbot/status/web/queue.py	2008-09-04 13:29:38.000000000 +0200
-@@ -0,0 +1,39 @@
+@@ -214,6 +252,8 @@
+             return file
+         if path == "builds":
+             return BuildsResource(self.builder_status, self.builder_control)
++        if path == "queue":
++            return QueueStatusResource(self.builder_status, self.builder_control)
+ 
+         return HtmlResource.getChild(self, path, req)
+ 
+diff -Nur buildbot-0.7.10-orig/buildbot/status/web/build.py buildbot-0.7.10-patched/buildbot/status/web/build.py
+--- buildbot-0.7.10-orig/buildbot/status/web/build.py	2009-02-26 17:29:10.000000000 +0100
++++ buildbot-0.7.10-patched/buildbot/status/web/build.py	2009-03-04 12:15:16.000000000 +0100
+@@ -11,6 +11,7 @@
+ from buildbot.status.web.tests import TestsResource
+ from buildbot.status.web.step import StepsResource
+ from buildbot import version, util
++from buildbot.status.web.queue import QueueEntryStatusResource
+ 
+ # /builders/$builder/builds/$buildnum
+ class StatusResourceBuild(HtmlResource):
+@@ -55,8 +56,8 @@
+             results = b.getResults()
+             data += "<h2>Results:</h2>\n"
+             text = " ".join(b.getText())
+-            data += '<span class="%s">%s</span>\n' % (css_classes[results],
+-                                                      text)
++            if results != None:
++                data += '<span class="%s">%s</span>\n' % (css_classes[results], text)
+             if b.getTestResults():
+                 url = req.childLink("tests")
+                 data += "<h3><a href=\"%s\">test results</a></h3>\n" % url
+@@ -298,5 +299,28 @@
+                 return StatusResourceBuild(build_status, build_control,
+                                            self.builder_control)
+ 
++            else:
++                # Probably a build that was not started yet
++                return QueueEntryStatusResource(path, req, num, self.builder_status, self.builder_control)
++
++        return HtmlResource.getChild(self, path, req)
++
++# /builders/$builder/queue
++class QueueStatusResource(HtmlResource):
++    addSlash = True
++
++    def __init__(self, builder_status, builder_control):
++        HtmlResource.__init__(self)
++        self.builder_status = builder_status
++        self.builder_control = builder_control
++
++    def getChild(self, path, req):
++        try:
++            num = int(path)
++        except ValueError:
++            num = None
++        if num is not None:
++            return QueueEntryStatusResource(path, req, num, self.builder_status, self.builder_control)
++ 
+         return HtmlResource.getChild(self, path, req)
+ 
+diff -Nur buildbot-0.7.10-orig/buildbot/status/web/queue.py buildbot-0.7.10-patched/buildbot/status/web/queue.py
+--- buildbot-0.7.10-orig/buildbot/status/web/queue.py	1970-01-01 01:00:00.000000000 +0100
++++ buildbot-0.7.10-patched/buildbot/status/web/queue.py	2009-03-04 12:25:44.000000000 +0100
+@@ -0,0 +1,34 @@
 +from twisted.web.util import Redirect, DeferredResource
++from twisted.python import log
 +from twisted.internet import defer, reactor
 +from buildbot.status.web.base import HtmlResource
 +
 +# Shows the queue of a Builder
-+class QueueStatusResource(HtmlResource):
++class QueueEntryStatusResource(HtmlResource):
 +    def __init__(self, path, req, num, builder_status, builder_control):
 +        HtmlResource.__init__(self)
 +        self.path = path
@@ -1298,12 +387,7 @@ diff -r -N --unified buildbot-0.7.9-orig/buildbot/status/web/queue.py buildbot-0
 +    
 +    # Removes a build from a builders queue
 +    def removeFromQueue(self, req):
-+        # Delete the build request from queue
-+        idx = self.builder_status.nextBuildNumber - self.num
-+        
-+        if idx >= 0:
-+            buildables = self.builder_control.getPendingBuilds()
-+            buildables[idx].cancel()
++        self.builder_control.cancelBuildRequest(self.num)
 +
 +        # we're at http://localhost:8080/svn-hello/builds/5/stop?[args] and
 +        # we want to go to: http://localhost:8080/svn-hello
@@ -1317,26 +401,3 @@ diff -r -N --unified buildbot-0.7.9-orig/buildbot/status/web/queue.py buildbot-0
 +            return self.removeFromQueue(req)
 +        else:
 +            return HtmlResource.getChild(self, path, req)
-+        
-\ No newline at end of file
-diff -r -N --unified buildbot-0.7.9-orig/buildbot/status/web/waterfall.py buildbot-0.7.9-patched/buildbot/status/web/waterfall.py
---- buildbot-0.7.9-orig/buildbot/status/web/waterfall.py	2008-09-16 09:02:34.000000000 +0200
-+++ buildbot-0.7.9-patched/buildbot/status/web/waterfall.py	2008-09-17 11:17:37.000000000 +0200
-@@ -129,8 +129,15 @@
-         number = b.getNumber()
-         url = path_to_build(req, b)
-         reason = b.getReason()
--        text = ('<a title="Reason: %s" href="%s">Build %d</a>'
--                % (html.escape(reason), url, number))
-+        if reason == None:
-+            reason = "No specific reason"
-+            
-+        branch = b.getProperty('branch')
-+        if branch == None:
-+            branch = "ERROR: No CWS/MWS provided!"
-+            
-+        text = ('<a title="Reason: %s | CWS: %s" href="%s">Build %d<br/>CWS/MWS: %s</a>'
-+                % (html.escape(reason), html.escape(branch), url, number, html.escape(branch)))
-         color = "yellow"
-         class_ = "start"
-         if b.isFinished() and not b.getSteps():
