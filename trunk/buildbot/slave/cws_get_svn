@@ -129,9 +129,7 @@ def checkWithBlacklist(mmile):
             sys.exit(65) # Skip the build
 
 def main():
-    branch = '' # If no branch parameter given, checkout trunk HEAD
-
-    loadConfig()    
+    branch = '' # If no branch parameter given, checkout trunk HEAD 
 
     opts, args = getopt.getopt(sys.argv[1:], "hbnNsrliw", ["help", "branch=", "buildername=", "buildnumber=", "slavename=", "revision=", "languages=", "install_set=", "workdir="])
 
