@@ -31,7 +31,7 @@ class OOShellCommand(ShellCommand):
     
         # This shows the build as skipped, but internally it is broken due to a failure
         if cmd.rc == 65 and (self.describe(False) == ['CWS'] or self.describe(False) == ['Everything']):
-            self.build.buildFinished(['Slave rejected %s' % self.describe, 'Rejected by slave'], 'grey', SKIPPED)
+            self.build.buildFinished(['Slave rejected %s' % self.describe, 'Rejected by slave'], SKIPPED)
             self.step_status.setColor("grey")
             return SKIPPED
             
@@ -42,7 +42,7 @@ class OOShellCommand(ShellCommand):
         if cmd.rc == 255:
             if self.describe(False) == ['Everything']:
                 # This is returned when the CWS script has a problem
-                self.build.buildFinished(['slave rejected CWS', 'CWS problem'], 'grey', SKIPPED)
+                self.build.buildFinished(['slave rejected CWS', 'CWS problem'], SKIPPED)
             	return SKIPPED
 
         if cmd.rc != 0:
