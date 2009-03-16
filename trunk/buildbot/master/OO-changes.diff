@@ -1,5 +1,5 @@
-Nur in buildbot-0.7.10-patched/buildbot: __init__.pyc.
-diff -ur buildbot-0.7.10-orig/buildbot/interfaces.py buildbot-0.7.10-patched/buildbot/interfaces.py
+Binärdateien buildbot-0.7.10-orig/buildbot/__init__.pyc and buildbot-0.7.10-patched/buildbot/__init__.pyc sind verschieden.
+diff -u -r -N buildbot-0.7.10-orig/buildbot/interfaces.py buildbot-0.7.10-patched/buildbot/interfaces.py
 --- buildbot-0.7.10-orig/buildbot/interfaces.py	2009-02-26 17:29:09.000000000 +0100
 +++ buildbot-0.7.10-patched/buildbot/interfaces.py	2009-03-04 11:09:53.000000000 +0100
 @@ -1022,6 +1022,10 @@
@@ -13,7 +13,7 @@ diff -ur buildbot-0.7.10-orig/buildbot/interfaces.py buildbot-0.7.10-patched/bui
      def getBuild(number):
          """Attempt to return an IBuildControl object for the given build.
          Returns None if no such object is available. This will only work for
-diff -ur buildbot-0.7.10-orig/buildbot/process/base.py buildbot-0.7.10-patched/buildbot/process/base.py
+diff -u -r -N buildbot-0.7.10-orig/buildbot/process/base.py buildbot-0.7.10-patched/buildbot/process/base.py
 --- buildbot-0.7.10-orig/buildbot/process/base.py	2009-02-26 17:29:09.000000000 +0100
 +++ buildbot-0.7.10-patched/buildbot/process/base.py	2009-03-04 13:24:54.000000000 +0100
 @@ -74,6 +74,11 @@
@@ -36,7 +36,7 @@ diff -ur buildbot-0.7.10-orig/buildbot/process/base.py buildbot-0.7.10-patched/b
          if self.builder:
              return self.builder.cancelBuildRequest(self)
          return False
-diff -ur buildbot-0.7.10-orig/buildbot/process/builder.py buildbot-0.7.10-patched/buildbot/process/builder.py
+diff -u -r -N buildbot-0.7.10-orig/buildbot/process/builder.py buildbot-0.7.10-patched/buildbot/process/builder.py
 --- buildbot-0.7.10-orig/buildbot/process/builder.py	2009-02-26 17:29:09.000000000 +0100
 +++ buildbot-0.7.10-patched/buildbot/process/builder.py	2009-03-04 13:28:44.000000000 +0100
 @@ -436,6 +436,24 @@
@@ -97,7 +97,7 @@ diff -ur buildbot-0.7.10-orig/buildbot/process/builder.py buildbot-0.7.10-patche
      def _gatherPingResults(self, res):
          for ignored,success in res:
              if not success:
-diff -ur buildbot-0.7.10-orig/buildbot/process/properties.py buildbot-0.7.10-patched/buildbot/process/properties.py
+diff -u -r -N buildbot-0.7.10-orig/buildbot/process/properties.py buildbot-0.7.10-patched/buildbot/process/properties.py
 --- buildbot-0.7.10-orig/buildbot/process/properties.py	2009-02-26 17:29:09.000000000 +0100
 +++ buildbot-0.7.10-patched/buildbot/process/properties.py	2009-03-04 13:29:27.000000000 +0100
 @@ -39,8 +39,10 @@
@@ -113,7 +113,7 @@ diff -ur buildbot-0.7.10-orig/buildbot/process/properties.py buildbot-0.7.10-pat
  
      def has_key(self, name):
          return self.properties.has_key(name)
-diff -ur buildbot-0.7.10-orig/buildbot/status/builder.py buildbot-0.7.10-patched/buildbot/status/builder.py
+diff -u -r -N buildbot-0.7.10-orig/buildbot/status/builder.py buildbot-0.7.10-patched/buildbot/status/builder.py
 --- buildbot-0.7.10-orig/buildbot/status/builder.py	2009-02-26 17:29:09.000000000 +0100
 +++ buildbot-0.7.10-patched/buildbot/status/builder.py	2009-03-04 11:26:52.000000000 +0100
 @@ -671,6 +671,7 @@
@@ -171,7 +171,7 @@ diff -ur buildbot-0.7.10-orig/buildbot/status/builder.py buildbot-0.7.10-patched
          self.pendingBuilds.append(brstatus)
          for w in self.watchers:
              w.requestSubmitted(brstatus)
-diff -ur buildbot-0.7.10-orig/buildbot/status/web/about.py buildbot-0.7.10-patched/buildbot/status/web/about.py
+diff -u -r -N buildbot-0.7.10-orig/buildbot/status/web/about.py buildbot-0.7.10-patched/buildbot/status/web/about.py
 --- buildbot-0.7.10-orig/buildbot/status/web/about.py	2009-02-25 00:20:54.000000000 +0100
 +++ buildbot-0.7.10-patched/buildbot/status/web/about.py	2009-03-04 13:30:57.000000000 +0100
 @@ -5,6 +5,8 @@
@@ -194,7 +194,7 @@ diff -ur buildbot-0.7.10-orig/buildbot/status/web/about.py buildbot-0.7.10-patch
          data += '''
  <h2>Source code</h2>
  
-diff -ur buildbot-0.7.10-orig/buildbot/status/web/base.py buildbot-0.7.10-patched/buildbot/status/web/base.py
+diff -u -r -N buildbot-0.7.10-orig/buildbot/status/web/base.py buildbot-0.7.10-patched/buildbot/status/web/base.py
 --- buildbot-0.7.10-orig/buildbot/status/web/base.py	2009-02-26 17:29:10.000000000 +0100
 +++ buildbot-0.7.10-patched/buildbot/status/web/base.py	2009-03-04 13:34:29.000000000 +0100
 @@ -84,10 +84,12 @@
@@ -213,7 +213,7 @@ diff -ur buildbot-0.7.10-orig/buildbot/status/web/base.py buildbot-0.7.10-patche
        + '<input type="submit" value="Force Build" /></form>\n')
  
  def td(text="", parms={}, **props):
-diff -ur buildbot-0.7.10-orig/buildbot/status/web/baseweb.py buildbot-0.7.10-patched/buildbot/status/web/baseweb.py
+diff -u -r -N buildbot-0.7.10-orig/buildbot/status/web/baseweb.py buildbot-0.7.10-patched/buildbot/status/web/baseweb.py
 --- buildbot-0.7.10-orig/buildbot/status/web/baseweb.py	2009-02-26 17:29:10.000000000 +0100
 +++ buildbot-0.7.10-patched/buildbot/status/web/baseweb.py	2009-03-04 11:28:28.000000000 +0100
 @@ -22,6 +22,7 @@
@@ -224,7 +224,7 @@ diff -ur buildbot-0.7.10-orig/buildbot/status/web/baseweb.py buildbot-0.7.10-pat
  
  # this class contains the status services (WebStatus and the older Waterfall)
  # which can be put in c['status']. It also contains some of the resources
-diff -ur buildbot-0.7.10-orig/buildbot/status/web/builder.py buildbot-0.7.10-patched/buildbot/status/web/builder.py
+diff -u -r -N buildbot-0.7.10-orig/buildbot/status/web/builder.py buildbot-0.7.10-patched/buildbot/status/web/builder.py
 --- buildbot-0.7.10-orig/buildbot/status/web/builder.py	2009-02-26 17:29:10.000000000 +0100
 +++ buildbot-0.7.10-patched/buildbot/status/web/builder.py	2009-03-13 16:24:31.000000000 +0100
 @@ -9,9 +9,10 @@
@@ -311,7 +311,7 @@ diff -ur buildbot-0.7.10-orig/buildbot/status/web/builder.py buildbot-0.7.10-pat
  
          return HtmlResource.getChild(self, path, req)
  
-diff -ur buildbot-0.7.10-orig/buildbot/status/web/build.py buildbot-0.7.10-patched/buildbot/status/web/build.py
+diff -u -r -N buildbot-0.7.10-orig/buildbot/status/web/build.py buildbot-0.7.10-patched/buildbot/status/web/build.py
 --- buildbot-0.7.10-orig/buildbot/status/web/build.py	2009-02-26 17:29:10.000000000 +0100
 +++ buildbot-0.7.10-patched/buildbot/status/web/build.py	2009-03-04 12:15:16.000000000 +0100
 @@ -11,6 +11,7 @@
@@ -362,8 +362,45 @@ diff -ur buildbot-0.7.10-orig/buildbot/status/web/build.py buildbot-0.7.10-patch
 + 
          return HtmlResource.getChild(self, path, req)
  
-Nur in buildbot-0.7.10-patched/buildbot/status/web: queue.py.
-diff -ur buildbot-0.7.10-orig/buildbot/status/web/waterfall.py buildbot-0.7.10-patched/buildbot/status/web/waterfall.py
+diff -u -r -N buildbot-0.7.10-orig/buildbot/status/web/queue.py buildbot-0.7.10-patched/buildbot/status/web/queue.py
+--- buildbot-0.7.10-orig/buildbot/status/web/queue.py	1970-01-01 01:00:00.000000000 +0100
++++ buildbot-0.7.10-patched/buildbot/status/web/queue.py	2009-03-04 12:25:44.000000000 +0100
+@@ -0,0 +1,34 @@
++from twisted.web.util import Redirect, DeferredResource
++from twisted.python import log
++from twisted.internet import defer, reactor
++from buildbot.status.web.base import HtmlResource
++
++# Shows the queue of a Builder
++class QueueEntryStatusResource(HtmlResource):
++    def __init__(self, path, req, num, builder_status, builder_control):
++        HtmlResource.__init__(self)
++        self.path = path
++        self.req  = req
++        self.num  = num
++        self.builder_status = builder_status
++        self.builder_control = builder_control
++        
++    def body(self, request):    
++        return ""
++    
++    # Removes a build from a builders queue
++    def removeFromQueue(self, req):
++        self.builder_control.cancelBuildRequest(self.num)
++
++        # we're at http://localhost:8080/svn-hello/builds/5/stop?[args] and
++        # we want to go to: http://localhost:8080/svn-hello
++        r = Redirect("../..")
++        d = defer.Deferred()
++        reactor.callLater(1, d.callback, r)
++        return DeferredResource(d)
++        
++    def getChild(self, path, req):
++        if path == "remove":
++            return self.removeFromQueue(req)
++        else:
++            return HtmlResource.getChild(self, path, req)
+diff -u -r -N buildbot-0.7.10-orig/buildbot/status/web/waterfall.py buildbot-0.7.10-patched/buildbot/status/web/waterfall.py
 --- buildbot-0.7.10-orig/buildbot/status/web/waterfall.py	2009-02-26 17:29:10.000000000 +0100
 +++ buildbot-0.7.10-patched/buildbot/status/web/waterfall.py	2009-03-13 14:31:17.000000000 +0100
 @@ -122,8 +122,17 @@
