@@ -24,7 +24,7 @@
 #*************************************************************************
 
 from buildbot.status import base
-from buildbot.status.builder import SUCCESS, FAILED, SKIPPED, WARNINGS
+from buildbot.status.builder import SUCCESS, FAILURE, SKIPPED, WARNINGS
 import SOAPpy
 
 buildboturl = "http://termite.go-oo.org/buildbot/builders"
@@ -45,7 +45,7 @@ class EISStatusReceiver(base.StatusReceiver):
         page = "%s/%s/builds/%s" % (buildboturl, builderName, build.getProperty("buildnumber"))
         if results == SUCCESS or results == WARNINGS:
             res = "success"
-        elif results == FAILED:
+        elif results == FAILURE:
             res = "failed"
         elif results == SKIPPED:
             res = "incomplete"
