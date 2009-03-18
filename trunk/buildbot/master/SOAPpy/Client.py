@@ -40,10 +40,10 @@
 ################################################################################
 """
 
+from __future__ import nested_scopes
+
 ident = '$Id: Client.py,v 1.27 2005/02/21 20:27:09 warnes Exp $'
 from version import __version__
-
-from __future__ import nested_scopes
 
 #import xml.sax
 import urllib
