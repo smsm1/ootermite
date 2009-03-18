@@ -49,7 +49,7 @@ class EISStatusReceiver(base.StatusReceiver):
             res = "failed"
         elif results == SKIPPED:
             res = "incomplete"
-        else
+        else:
             print("Unknown result!")
             res = "failed"
             
