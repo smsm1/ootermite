@@ -72,3 +72,12 @@ class EISStatusReceiver(base.StatusReceiverMultiService):
     def getSOAP():
         soap = SOAPpy.SOAPProxy("http://tools.services.openoffice.org/soap/servlet/rpcrouter")
         return soap._ns("urn:ChildWorkspaceDataService")
+        
+        
+    def setServiceParent(self, parent):
+        base.StatusReceiverMultiService.setServiceParent(self, parent)
+        self.setup()
+        
+    def setup(self):
+        self.status = self.parent.getStatus()
+        self.status.subscribe(self)
