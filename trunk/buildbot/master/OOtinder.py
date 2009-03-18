@@ -1,6 +1,6 @@
 ##
 # ootermite - OpenOffice.org automated building/reporting system
-# Copyright (C) ?
+# Copyright (C) ootermite project
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -99,7 +99,11 @@ class OOTinderboxMailNotifier(tinderbox.TinderboxMailNotifier):
                   except KeyError:
                         if (results == SUCCESS):
                                 text += "TinderboxPrint: No install set was produced\n"
-                                
+                  
+                  # Add link to log
+                  text += "TinderboxPrint: <a href=\"http://termite.go-oo.org/buildbot/builders/%s/builds/%s\">termite</a>" % (build.getProperty("buildername"), build.getProperty("buildnumber"))
+
+
                   # logs will always be appended
                   tinderboxLogs = ""
                   for log in build.getLogs():
