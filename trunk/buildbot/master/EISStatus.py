@@ -29,7 +29,10 @@ import SOAPpy
 
 buildboturl = "http://termite.go-oo.org/buildbot/builders"
 
-class EISStatusReceiver(base.StatusReceiver):
+class EISStatusReceiver(base.StatusReceiverMultiService):
+
+    def __init__(self):
+        base.StatusReceiverMultiService.__init__(self)
 
     def buildStarted(self, builderName, build):
         branch = build.getProperty("branch")
