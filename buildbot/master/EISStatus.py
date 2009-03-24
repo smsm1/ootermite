@@ -75,7 +75,7 @@ class EISStatusReceiver(base.StatusReceiverMultiService):
 
     def submitTestResult(self, branch, builderName, resultPage, statusName):
         try:
-            soap  = getSOAP();
+            soap  = self.getSOAP();
             mws   = self.getMasterForCWS(soap, branch)
             cwsid = soap.getChildWorkspaceId(mws, branch);
             soap.submitTestResult(cwsid, "Buildbot", builderName, resultPage, statusName)
