@@ -64,7 +64,7 @@ class EISStatusReceiver(base.StatusReceiverMultiService):
             print("Unknown result!")
             res = "failed"
             
-        submitTestResult(branch, builderName, page, res)
+        self.submitTestResult(branch, builderName, page, res)
         return
 
     def submitTestResult(self, branch, builderName, resultPage, statusName):
