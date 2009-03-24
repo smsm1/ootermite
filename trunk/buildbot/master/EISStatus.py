@@ -34,6 +34,12 @@ class EISStatusReceiver(base.StatusReceiverMultiService):
     def __init__(self):
         base.StatusReceiverMultiService.__init__(self)
 
+        self.watched = []
+
+    def builderAdded(self, name, builder):
+        self.watched.append(builder)
+        return self # subscribe to this builder
+
     def buildStarted(self, builderName, build):
         print("EISStatusReceiver::buildStarted: %s " % builderName)
         branch = build.getProperty("branch")
