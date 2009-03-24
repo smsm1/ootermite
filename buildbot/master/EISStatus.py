@@ -68,10 +68,15 @@ class EISStatusReceiver(base.StatusReceiverMultiService):
         self.submitTestResult(branch, builderName, page, res)
         return
 
+    def getMasterForCWS(self, soap, cws_name):
+        masters = soap.getMastersForCWS(cws_name)
+        for master in masters:
+            return master
+
     def submitTestResult(self, branch, builderName, resultPage, statusName):
         try:
             soap  = getSOAP();
-            mws   = soap.getMasterForCWS(branch)
+            mws   = self.getMasterForCWS(soap, branch)
             cwsid = soap.getChildWorkspaceId(mws, branch);
             soap.submitTestResult(cwsid, "Buildbot", builderName, resultPage, statusName)
         except:
