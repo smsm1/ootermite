@@ -47,7 +47,7 @@ class EISStatusReceiver(base.StatusReceiverMultiService):
          
         page = "%s/%s/builds/%s" % (buildboturl, builderName, build.getProperty("buildnumber"))
         
-        submitTestResult(branch, builderName, page, "running")
+        self.submitTestResult(branch, builderName, page, "running")
         return
 
     def buildFinished(self, builderName, build, results):
