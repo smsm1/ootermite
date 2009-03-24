@@ -26,6 +26,7 @@
 from buildbot.status import base
 from buildbot.status.builder import SUCCESS, FAILURE, SKIPPED, WARNINGS
 import SOAPpy
+import sys
 
 buildboturl = "http://termite.go-oo.org/buildbot/builders"
 
@@ -74,7 +75,7 @@ class EISStatusReceiver(base.StatusReceiverMultiService):
             cwsid = soap.getChildWorkspaceId(mws, branch);
             soap.submitTestResult(cwsid, "Buildbot", builderName, resultPage, statusName)
         except:
-            print("Exception occurred in submitTestResult")
+            print("Exception occurred in submitTestResult: %s" % sys.exc_info()[0])
         return
 
     def getSOAP():
