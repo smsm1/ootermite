@@ -35,14 +35,16 @@ class EISStatusReceiver(base.StatusReceiverMultiService):
         base.StatusReceiverMultiService.__init__(self)
 
     def buildStarted(self, builderName, build):
+        print("EISStatusReceiver::buildStarted: %s " % builderName)
         branch = build.getProperty("branch")
-        
+         
         page = "%s/%s/builds/%s" % (buildboturl, builderName, build.getProperty("buildnumber"))
         
         submitTestResult(branch, builderName, page, "running")
         return
 
     def buildFinished(self, builderName, build, results):
+        print("EISStatusReceiver::buildFinished: %s" % builderName)
         branch = build.getProperty("branch")
         
         page = "%s/%s/builds/%s" % (buildboturl, builderName, build.getProperty("buildnumber"))
