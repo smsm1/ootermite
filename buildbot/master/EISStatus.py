@@ -83,7 +83,7 @@ class EISStatusReceiver(base.StatusReceiverMultiService):
             print("Exception occurred in submitTestResult: %s" % sys.exc_info()[0])
         return
 
-    def getSOAP():
+    def getSOAP(self):
         soap = SOAPpy.SOAPProxy("http://tools.services.openoffice.org/soap/servlet/rpcrouter")
         return soap._ns("urn:ChildWorkspaceDataService")
         
