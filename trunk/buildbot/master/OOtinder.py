@@ -45,79 +45,60 @@ class OOTinderboxMailNotifier(tinderbox.TinderboxMailNotifier):
                                                      logCompression)
 
       def buildMessage(self, name, build, results):
-            text = ""
-            res = ""
-            # shortform
-            t = "tinderbox:"
-
-            text += "%s tree: %s\n" % (t, build.getProperty("branch"))
-
-            # builddate is deprecated
-            # the start time
-            # getTimes() returns a fractioned time that tinderbox doesn't understand
-            # text += "%s builddate: %s\n" % (t, int(build.getTimes()[0]))
-            text += "%s starttime: %s\n" % (t, int(build.getTimes()[0]))
-            text += "%s timenow: %s\n" % (t, int(time.time()))
-            text += "%s status: " % t
-
+            # map results to tinderbox stati
             if results == "building":
                   res = "building"
-                  text += res
             elif results == SUCCESS:
                   res = "success"
-                  text += res
             elif results == WARNINGS:
                   res = "test_failed"
-                  text += res
             elif results == SKIPPED:
                   res = "fold"
-                  text += res
             else:
                   if re.match(r'slave lost', "\n".join(build.getText())):
                         res = "fold"
                   else:
                         res = "build_failed"
-                  text += res
 
-            text += "\n";
+            # tinderbox administrativa
+            text  = "tinderbox: administrator: %s\n" % self.fromaddr # FIXME to use bot-admin
+            text += "tinderbox: buildname:     %s\n" % name
+            text += "tinderbox: tree:          %s\n" % build.getProperty("branch")
+            text += "tinderbox: errorparser: unix\n" # only unix-errorparser is used by OOo-Tinderbox
+            # getTimes() returns a fractioned time that tinderbox doesn't understand
+            text += "tinderbox: starttime:     %s\n" % int(build.getTimes()[0])
+            text += "tinderbox: timenow:       %s\n" % int(time.time())
+            text += "tinderbox: status:        %s\n" % res
+            text += "tinderbox: END\n\n"
 
-            text += "%s administrator: %s\n" % (t, self.fromaddr)
+            # backlink to termite
+            text += "TinderboxPrint: <a href=\"http://termite.go-oo.org/buildbot/builders/%s/builds/%s\">termite</a>\n" % (build.getProperty("buildername"), build.getProperty("buildnumber"))
 
-
-            text += "%s buildname: %s\n" % (t, name)
-            text += "%s errorparser: unix\n" % t # always use the unix errorparser
-
-            # if the build just started...
+            # if build is building, then we send a plaintext message 
+            # only containing the administrative part & backlink
+            # however, if the build is finished, we send everything
+            # as a gzipp'd MIME attachment
             if results == "building":
-                  text += "%s END\n" % t
-            # if the build finished...
+                  m = Message()
+                  m.add_header('X-tinder', 'cookie')
+                  m.set_payload(text)
             else:
+                  # add link to installset if built
                   try:
-                    if (build.getProperty("install_set")) and (results == SUCCESS):
-                        text += "TinderboxPrint: <a href=\"http://termite.go-oo.org/install_sets/%s-%s-install_set.zip\">Install Set</a>\n" % (build.getProperty("buildername"), build.getProperty("buildnumber"))
+                        if (build.getProperty("install_set")) and (results == SUCCESS):
+                                text += "TinderboxPrint: <a href=\"http://termite.go-oo.org/install_sets/%s-%s-install_set.zip\">Install Set</a>\n" % (build.getProperty("buildername"), build.getProperty("buildnumber"))
                   # Do it slightly differently if we don't have an install_set
                   except KeyError:
                         if (results == SUCCESS):
                                 text += "TinderboxPrint: No install set was produced\n"
                   
-                  # Add link to log
-                  text += "TinderboxPrint: <a href=\"http://termite.go-oo.org/buildbot/builders/%s/builds/%s\">termite</a>" % (build.getProperty("buildername"), build.getProperty("buildnumber"))
-
-
                   # logs will always be appended
-                  tinderboxLogs = ""
                   for log in build.getLogs():
                         logName= log.getName()
-#                   if logName and logName[-1] == '\n':
-#                         logName = logName[:-1]
+                        # tinderbox does the error-parsing/extraction itself, don't duplicate it
                         if (logName != "summary log" and logName != "tail" and logName != "warnings" and logName != "errors"):
-                              tinderboxLogs += "*********************************************** %s ***********************************************\n" % logName
-                              tinderboxLogs += log.getText()
-
-                  text += "%s END\n\n" % t
-                  compressedSummary = text
-                  text += tinderboxLogs
-                  text += "\n"
+                              text += "*********************************************** %s ***********************************************\n" % logName
+                              text += log.getText()
 
                   fakefile= StringIO.StringIO()
                   fakegzip= gzip.GzipFile("bogusfilename.gz", "wb", 9, fakefile)
@@ -125,16 +106,7 @@ class OOTinderboxMailNotifier(tinderbox.TinderboxMailNotifier):
                   fakegzip.close()                                                 
                   compressedText= fakefile.getvalue()
 
-            # if build is building,
-            # then we only send a regular message
-            # however, if it built, we send everything
-            # as a gzipp'd MIME attachment
-
-            if results == "building":
-                  m = Message()
-                  m.add_header('X-tinder', 'cookie')
-                  m.set_payload(text)
-            else:
+                  # the message
                   m = MIMEMultipart()
                   m.add_header('X-Tinder', 'gzookie')
                   msg = MIMEBase('application', 'octet-stream')
@@ -142,10 +114,10 @@ class OOTinderboxMailNotifier(tinderbox.TinderboxMailNotifier):
                   Encoders.encode_base64(msg)
                   msg.add_header('Content-Disposition', 'attachment', filename="bogusfilename.gz")
 
-                  #keep tinderbox parser happy
-                  msg2= MIMEText(compressedSummary) #can use only 1 arg?
-                  msg2.add_header('Content-Disposition', 'inline')
-                  m.attach(msg2)
+                  # gzipped log is expected to be the second part of a multipart message, add dummy
+                  dummy= MIMEText("dummytext")
+                  dummy.add_header('Content-Disposition', 'inline')
+                  m.attach(dummy)
                   m.attach(msg)
                
 
@@ -162,3 +134,4 @@ class OOTinderboxMailNotifier(tinderbox.TinderboxMailNotifier):
             d.addCallback(self._gotRecipients, self.extraRecipients, m)
             return d
 
+# vim: set expandtab sw=6 ts=6: no clue why 6, other files indent by 4... FIXME probably :-)
