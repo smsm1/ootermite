@@ -64,8 +64,16 @@ class EISStatusReceiver(base.StatusReceiverMultiService):
         else:
             print("Unknown result!")
             res = "failed"
-            
-        self.submitTestResult(branch, builderName, page, res)
+        
+        # Create regex pattern to match MWS
+        regex = "[A-Z]{3}[0-9]{3}_\s*"
+        pattern = re.compile(regex)
+
+        # Check if it's a Master Workspace
+        if pattern.match(branch) != None:
+            self.submitMWSTestResult(branch, builderName, page, res)
+        else:    
+            self.submitTestResult(branch, builderName, page, res)
         return
 
     def getMasterForCWS(self, soap, cws_name):
@@ -75,12 +83,19 @@ class EISStatusReceiver(base.StatusReceiverMultiService):
 
     def submitTestResult(self, branch, builderName, resultPage, statusName):
         try:
-            soap  = self.getSOAP();
+            soap  = self.getSOAP()
             mws   = self.getMasterForCWS(soap, branch)
-            cwsid = soap.getChildWorkspaceId(mws, branch);
+            cwsid = soap.getChildWorkspaceId(mws, branch)
             soap.submitTestResult(cwsid, "Buildbot", builderName, resultPage, statusName)
         except:
             print("Exception occurred in submitTestResult: %s" % sys.exc_info()[0])
+        return
+
+    def submitMWSTestResult(self, branch, builderName, resultPage, statusName)
+        try:
+            soap = self.getSOAP()
+        except:
+            print("Exception occurred in submitMWSTestResult: %s" % sys.exc_info()[0])
         return
 
     def getSOAP(self):
