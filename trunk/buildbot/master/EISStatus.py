@@ -27,6 +27,7 @@ from buildbot.status import base
 from buildbot.status.builder import SUCCESS, FAILURE, SKIPPED, WARNINGS
 import SOAPpy
 import sys
+import re
 
 buildboturl = "http://termite.go-oo.org/buildbot/builders"
 
