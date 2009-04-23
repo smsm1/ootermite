@@ -72,8 +72,10 @@ class EISStatusReceiver(base.StatusReceiverMultiService):
 
         # Check if it's a Master Workspace
         if pattern.match(branch) != None:
+            print("EISStatus: build of MWS %s finished" % branch)
             self.submitMWSTestResult(branch, builderName, page, res)
-        else:    
+        else:
+            print("EISStatus: build of CWS %s finished" % branch)
             self.submitTestResult(branch, builderName, page, res)
         return
 
