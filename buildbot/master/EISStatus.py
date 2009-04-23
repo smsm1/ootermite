@@ -92,7 +92,7 @@ class EISStatusReceiver(base.StatusReceiverMultiService):
             print("Exception occurred in submitTestResult: %s" % sys.exc_info()[0])
         return
 
-    def submitMWSTestResult(self, branch, builderName, resultPage, statusName)
+    def submitMWSTestResult(self, branch, builderName, resultPage, statusName):
         try:
             soap = self.getSOAP()
             soap.submitTestResultMWS(branch[:6], branch[7:], "Buildbot", builderName, resultPage, statusName)
