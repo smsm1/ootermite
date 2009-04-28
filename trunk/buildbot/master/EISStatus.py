@@ -48,8 +48,19 @@ class EISStatusReceiver(base.StatusReceiverMultiService):
          
         page = "%s/%s/builds/%s" % (buildboturl, builderName, build.getProperty("buildnumber"))
         
-        self.submitTestResult(branch, builderName, page, "running")
+        # Create regex pattern to match MWS
+        regex = "[A-Z]{3}[0-9]{3}_\s*"
+        pattern = re.compile(regex)
+        
+        # Check if it's a Master Workspace
+        if pattern.match(branch) != None:
+            print("EISStatus: build of MWS %s finished" % branch)
+            self.submitMWSTestResult(branch, builderName, page, "running")
+        else:
+            print("EISStatus: build of CWS %s finished" % branch)
+            self.submitTestResult(branch, builderName, page, "running")
         return
+        
 
     def buildFinished(self, builderName, build, results):
         print("EISStatusReceiver::buildFinished: %s" % builderName)
