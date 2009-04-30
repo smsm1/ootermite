@@ -54,10 +54,10 @@ class EISStatusReceiver(base.StatusReceiverMultiService):
         
         # Check if it's a Master Workspace
         if pattern.match(branch) != None:
-            print("EISStatus: build of MWS %s finished" % branch)
+            print("EISStatus: build of MWS %s started" % branch)
             self.submitMWSTestResult(branch, builderName, page, "running")
         else:
-            print("EISStatus: build of CWS %s finished" % branch)
+            print("EISStatus: build of CWS %s started" % branch)
             self.submitTestResult(branch, builderName, page, "running")
         return
         
@@ -96,21 +96,15 @@ class EISStatusReceiver(base.StatusReceiverMultiService):
             return master
 
     def submitTestResult(self, branch, builderName, resultPage, statusName):
-        try:
-            soap  = self.getSOAP()
-            mws   = self.getMasterForCWS(soap, branch)
-            cwsid = soap.getChildWorkspaceId(mws, branch)
-            soap.submitTestResult(cwsid, "Buildbot", builderName, resultPage, statusName)
-        except:
-            print("Exception occurred in submitTestResult: %s" % sys.exc_info()[0])
+        soap  = self.getSOAP()
+        mws   = self.getMasterForCWS(soap, branch)
+        cwsid = soap.getChildWorkspaceId(mws, branch)
+        soap.submitTestResult(cwsid, "Buildbot", builderName, resultPage, statusName)
         return
 
     def submitMWSTestResult(self, branch, builderName, resultPage, statusName):
-        try:
-            soap = self.getSOAP()
-            soap.submitTestResultMWS(branch[:6], branch[7:], "Buildbot", builderName, resultPage, statusName)
-        except:
-            print("Exception occurred in submitMWSTestResult: %s" % sys.exc_info()[0])
+        soap = self.getSOAP()
+        soap.submitTestResultMWS(branch[:6], branch[7:], "Buildbot", builderName, resultPage, statusName)
         return
 
     def getSOAP(self):
