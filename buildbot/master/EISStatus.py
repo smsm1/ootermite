@@ -68,7 +68,7 @@ class EISStatusReceiver(base.StatusReceiverMultiService):
         
         page = "%s/%s/builds/%s" % (buildboturl, builderName, build.getProperty("buildnumber"))
         if results == SUCCESS or results == WARNINGS:
-            res = "success"
+            res = "ok"
         elif results == FAILURE:
             res = "failed"
         elif results == SKIPPED:
