@@ -39,7 +39,7 @@ def main():
 
     for opt, arg in opts:
         if opt in ("-i", "--install_set"):
-            if arg == "on":
+            if arg == "on" or arg == "true":
                 makeInstallSet = True
                 
     if not makeInstallSet:
