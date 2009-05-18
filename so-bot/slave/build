@@ -13,14 +13,14 @@ export WITH_LANG="en-US de"
 cd $SRC_ROOT/instsetoo_native
 $PERL $SOLARENV/bin/build.pl --all -P4 -- -P2
 RETVAL=$?
-if [ $? -eq 0 ]; then
+if [ $RETVAL -eq 0 ]; then
   $PERL $SOLARENV/bin/deliver.pl
   RETVAL=$?
-  if [ $? -eq 0 ]; then
+  if [ $RETVAL -eq 0 ]; then
     cd $SRC_ROOT/instset_native
     $PERL $SOLARENV/bin/build.pl --all -P4 -- -P2
     RETVAL=$?
-    if [ $? -eq 0 ]; then
+    if [ $RETVAL -eq 0 ]; then
       $PERL $SOLARENV/bin/deliver.pl
       RETVAL=$?
     fi
