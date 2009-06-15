@@ -28,10 +28,16 @@ if [ $RETVAL -eq 0 ]; then
 fi
 
 # Sending mail to CWS owner
+STATUS="[UNKNOWN]"
+if [ $RETVAL -eq 0 ]; then
+  STATUS="[SUCCESS]";
+else
+  STATUS="[FAILED]";
+fi
 USERNAME=$(cws query owner | tail -1)
 MACHINE=$(uname -a)
-echo "Subject: StarOffice Buildbot: build of $CWSNAME finished" > mail.tmp
-echo "$MACHINE ($BUILDER) has finished build of your CWS $CWSNAME with exit code $RETVAL (0: good, 1: bad)" >> mail.tmp
+echo "Subject: StarOffice Buildbot: build of $CWSNAME finished with status $STATUS" > mail.tmp
+echo "$MACHINE ($BUILDER) has finished build of your CWS $CWSNAME with status $STATUS" >> mail.tmp
 echo "" >> mail.tmp
 echo "Visit http://so-berlin:8080/builders/$BUILDER/builds/$BUILDNO for output logs." >> mail.tmp
 echo "" >> mail.tmp
@@ -39,6 +45,10 @@ echo "If you discover any problems with the Buildbot machines contact Team Tools
 echo "" >> mail.tmp
 echo "Thank you for using our StarOffice Buildbots :-)" >> mail.tmp
 
-mail $USERNAME < mail.tmp
+if [ "" != "$USERNAME" ]; then
+  mail $USERNAME < mail.tmp
+else
+  echo "cws query for email address failed!"
+fi
 
 exit $RETVAL
