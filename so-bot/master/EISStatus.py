@@ -99,12 +99,12 @@ class EISStatusReceiver(base.StatusReceiverMultiService):
         soap  = self.getSOAP()
         mws   = self.getMasterForCWS(soap, branch)
         cwsid = soap.getChildWorkspaceId(mws, branch)
-        soap.submitTestResult(cwsid, "Buildbot", builderName, resultPage, statusName)
+        soap.submitTestResult(cwsid, "Internal/SO Buildbot", builderName, resultPage, statusName)
         return
 
     def submitMWSTestResult(self, branch, builderName, resultPage, statusName):
         soap = self.getSOAP()
-        soap.submitTestResultMWS(branch[:6], branch[7:], "SO-Buildbot", builderName, resultPage, statusName)
+        soap.submitTestResultMWS(branch[:6], branch[7:], "Internal/SO Buildbot", builderName, resultPage, statusName)
         return
 
     def getSOAP(self):
