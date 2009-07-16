@@ -1,0 +1,289 @@
+#!/usr/bin/python
+
+#*************************************************************************
+# 
+# Copyright (C) 2008, 2009 by Sun Microsystems, Inc.
+#
+# OpenOffice.org - a multi-platform office productivity suite
+#
+# This file is part of OpenOffice.org/ootermite.
+#
+# OpenOffice.org is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License version 3
+# only, as published by the Free Software Foundation.
+#
+# OpenOffice.org is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License version 3 for more details
+# (a copy is included in the LICENSE file that accompanied this code).
+#
+# You should have received a copy of the GNU Lesser General Public License
+# version 3 along with OpenOffice.org.  If not, see
+# <http://www.openoffice.org/license.html>
+# for a copy of the LGPLv3 License.
+#
+#*************************************************************************
+
+import getopt
+import sys
+import shutil
+import SOAPpy
+import os
+import os.path
+import re
+from subprocess import *
+
+# Load the config file
+execfile("../cws_fetch.cfg") # TODO: Determine script root properly
+
+def printHelp():
+    print "Usage: " + sys.argv[0] + " [--branch=CWS/MWS] [--help] [--workdir]"
+    print "The following parameters are recognized by this script:"
+    print "--branch\tSpecifies which CWS/MWS should be retrieved (default, if omitted: trunk HEAD)"
+    print "--help\t\tPrints this messages"
+    print "--workdir\tSpecifies a custom work dir (default: workdir). Useful for debugging builds."
+
+def getSOAP():
+    soap = SOAPpy.SOAPProxy("http://tools.services.openoffice.org/soap/servlet/rpcrouter")
+    return soap._ns("urn:ChildWorkspaceDataService")
+
+def getMasterForCWS(cws_name):
+    masters = getSOAP().getMastersForCWS(cws_name)
+    for master in masters:
+        return master
+    
+def getChildWorkspaceID(mws, cws):
+    return getSOAP().getChildWorkspaceId(mws, cws)
+
+def getMilestone(cws_id):
+    return getSOAP().getMilestone(cws_id)
+
+def getSCMName(cws_id):
+    return getSOAP().getSCMName(cws_id)
+    
+def getCodeControlName(cws_name):
+    try:
+        master = getMasterForCWS(cws_name)
+        cws_id = getChildWorkspaceID(master, cws_name)
+        scm_name = getSCMName(cws_id)
+        return scm_name
+    except:
+        print "Error while getting infos from EIS!"
+        return None
+
+def getMasterMile(cws_name):
+    try:
+        master = getMasterForCWS(cws_name)
+        cws_id = getChildWorkspaceID(master, cws_name)
+        mstone = getMilestone(cws_id)
+        return "%s_%s" % (master, mstone)
+    except:
+        print "Error while getting infos from EIS!"
+        return None
+
+# Moves workdir to workdir.old
+# This is only be done if the existing workdir is not a svn working copy
+def cleanUpDirectories():
+    if os.path.exists(WORKDIR + ".old"):
+        print "Remove workdir.old..."
+        shutil.rmtree(WORKDIR + ".old", True) # True means: Ignore errors
+    if os.path.exists(WORKDIR):
+        print "Save a copy of the %s to %s.old..." % (WORKDIR, WORKDIR)
+        shutil.move(WORKDIR, WORKDIR + ".old")
+    return
+
+# Handles backups for svn and mercurial
+def SwitchMercurialToSVN():
+    if isMercurialLocalCopy(WORKDIR):
+        if os.path.exists (WORKDIR + ".hg"):
+            shutil.rmtree(WORKDIR + ".hg", True) # True means: Ignore errors
+        shutil.move(WORKDIR, WORKDIR + ".hg")
+    if not isSubversionLocalCopy(WORKDIR) and os.path.exists (WORKDIR + ".svn"):
+        if os.path.exists (WORKDIR):
+            shutil.rmtree(WORKDIR, True) # True means: Ignore errors
+        print "Restore workdir.svn..."
+        shutil.move(WORKDIR + ".svn", WORKDIR)
+    return
+
+def SwitchSVNToMercurial():
+    if isSubversionLocalCopy(WORKDIR):
+        if os.path.exists (WORKDIR + ".svn"):
+            shutil.rmtree(WORKDIR + ".svn", True) # True means: Ignore errors
+        shutil.move(WORKDIR, WORKDIR + ".svn")
+    if not isMercurialLocalCopy(WORKDIR) and os.path.exists (WORKDIR + ".hg"):
+        if os.path.exists (WORKDIR):
+            shutil.rmtree(WORKDIR, True) # True means: Ignore errors
+        print "Restore workdir.hg..."
+        shutil.move(WORKDIR + ".hg", WORKDIR)
+    return
+ 
+def SwitchDirectory():
+    if isMercurial:
+        SwitchSVNToMercurial()
+    else:
+        SwitchMercurialToSVN()
+    return
+
+def isSubversionLocalCopy(path):
+    return os.path.exists(path + "/.svn/")
+
+def isMercurialLocalCopy(path):
+    return os.path.exists(path + "/.hg/")
+
+def svnSwitch(svnurl):
+    print "Switch workdir to " + svnurl
+    p = Popen("svn" + " switch " + SVN_ROOT + svnurl + " " + WORKDIR, shell=True)
+    return os.waitpid(p.pid, 0)[1]
+
+def svnCheckout(svnurl):
+    print "Checking out " + svnurl
+    p = Popen("svn" + " co " + SVN_ROOT + svnurl + " " + WORKDIR, shell=True)
+    return os.waitpid(p.pid, 0)[1]
+    
+def svnExport(svnurl):
+    print "Exporting patches from " + svnurl
+    p = Popen("svn" + " export --force " + SVN_ROOT + svnurl + " " + WORKDIR, shell=True)
+    return os.waitpid(p.pid, 0)[1]
+    
+def svnRevert():
+    print "Reverting changes from local working copy (e.g. Patches)"
+    p = Popen("svn revert -R " + WORKDIR, shell=True) # --depth is supported since SVN 1.5
+    return os.waitpid(p.pid, 0)[1]
+
+### mercurial commands
+
+def mercurialClone(url):
+    print "Clone " + url + " to workdir"
+    p = Popen("hg" + " -q clone -U " + MERCURIAL_ROOT + url + " " + WORKDIR, shell=True)
+    return os.waitpid(p.pid, 0)[1]
+
+def mercurialPull(url):
+    print "Pull " + url + " to workdir"
+    p = Popen("hg" + " -q pull " + MERCURIAL_ROOT + url + " -R " + WORKDIR, shell=True)
+    return os.waitpid(p.pid, 0)[1]
+
+def mercurialUpdate():
+    print "Update workdir"
+    p = Popen("hg" + " up -C tip -R " + WORKDIR, shell=True)
+    return os.waitpid(p.pid, 0)[1]
+
+# If there is an existing Subversion working copy, we switch
+# this workdir to the given repository path (Heiner said this is *fast*).
+# If no working copy is available (or only a CVS checkout), we
+# perform a clean SVN checkout.
+def checkAndGet(path):
+    SwitchDirectory()
+    status = 0
+    if isMercurial:
+        if isMercurialLocalCopy(WORKDIR):
+            status = mercurialPull(path)
+            if status == 0: 
+                status = mercurialUpdate()
+        else:
+            cleanUpDirectories()
+            status = mercurialClone(path) 
+            if status == 0: 
+                status = mercurialPull(path) 
+            if status == 0: 
+                status = mercurialUpdate()
+    else:
+        if isSubversionLocalCopy(WORKDIR):
+            # Wipe out all unversioned files first 
+            os.system("../svn-clean --force --quiet %s" % WORKDIR) # If we do not use quiet we get HUGE logs
+
+            # Revert all local changes, e.g. Patches
+            svnRevert()
+            status = svnSwitch(path)
+        else:
+            cleanUpDirectories()
+            status = svnCheckout(path)
+ 
+    return status
+
+def checkWithBlacklist(mmile):
+    for blacklisted in BLACKLIST:
+        if mmile == blacklisted:
+            print("Milestone: %s" % mmile)
+            print("This CWS uses a milestone that is too old or known to be broken on this Buildbot.")
+            print("Please resync to a working milestone!")
+            sys.exit(65) # Skip the build
+
+def main():
+    branch = '' # If no branch parameter given, checkout trunk HEAD 
+
+    opts, args = getopt.getopt(sys.argv[1:], "hbnNsrliw", ["help", "branch=", "buildername=", "buildnumber=", "slavename=", "revision=", "languages=", "install_set=", "workdir="])
+
+    for opt, arg in opts:
+        if opt in ("-h", "--help"):
+            printHelp()
+            return 1
+        elif opt in ("-b", "--branch"):
+            branch = arg
+        elif opt in ("-w", "--workdir"):
+            global WORKDIR
+            WORKDIR = arg        
+
+    # Create regex pattern to match MWS
+    regex = "[A-Z]{3}[0-9]{3}_\s*"
+    pattern = re.compile(regex)    
+
+    workstamp = "DEV300"
+    milestone = "32"
+    global isMercurial
+
+    # If no branch is given we should build trunk, which seldom happens.
+    if branch == '':
+        print "Getting trunk..."
+        status = checkAndGet("/trunk/")
+    # Check if it's a Master Workspace
+    elif pattern.match(branch) != None:
+        print "Getting MWS named '" + branch + "'"
+        status = checkAndGet("/tags/" + branch)
+        workstamp = branch[:6]
+        milestone = branch[8:]
+    # Otherwise it must be a Child Workspace
+    else:
+        print "Getting CWS branch named '" + branch + "'"
+        mmile = getMasterMile(branch)
+        if mmile != None:
+            workstamp = mmile[:6]
+            milestone = mmile[8:]
+            checkWithBlacklist(mmile)
+            scmname = getCodeControlName (branch)
+            if scmname == "Mercurial":
+                isMercurial = True
+            elif scmname == "SVN":
+                isMercurial = False
+            elif scmname == "CVS":
+                print "cvs based cws is no longer supported"
+                sys.exit(66)
+            status = checkAndGet("/cws/" + branch)
+        else:
+            print "Internal error: is the CWS still valid?"
+            sys.exit(65)
+
+    if isMercurial:
+        print "Mercurial exited with status %u" % status
+    else:
+        print "Subversion exited with status %u" % status
+
+    # If the MWS cannot be found in SVN/Mercurial or an error has occurred,
+    # we do not try to checkout the source from CVS anymore
+    if status == 0 and os.path.exists(WORKDIR):
+        # Write milestone file for buildprep script
+        mfile = open("%s/milestone" % WORKDIR, "w")
+        mfile.write("export fetched_workstamp='%s'\n" % workstamp)
+        mfile.write("export fetched_milestone='%s'\n" % milestone)
+        mfile.close()
+        
+        # Export milestone patches from Subversion
+        svnExport("/patches/buildbot/%s/m%s" % (workstamp, milestone))
+    
+    if status > 255:
+        status = status >> 8
+    print "cws_fetch exited with status %u" % status
+    sys.exit(status)
+
+main()
+
