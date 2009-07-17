@@ -29,7 +29,7 @@ import SOAPpy
 import sys
 import re
 
-buildboturl = "http://so-buildbot-master.germany.sun.com/buildbot/builders"
+buildboturl = "http://so-buildbot-master.germany.sun.com:8080/buildbot/builders"
 
 class EISStatusReceiver(base.StatusReceiverMultiService):
 
