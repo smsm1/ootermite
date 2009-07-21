@@ -1,0 +1,17 @@
+#!/usr/bin/bash -x
+. ./solar.env
+
+Xvfb :2 &
+PID=$!
+
+export DISPLAY=:2
+export EXTERNAL_WARNINGS_NOT_ERRORS="TRUE"
+
+cd $SRC_ROOT/smoketestoo_native
+$PERL $SOLARENV/bin/build.pl
+RETVAL=$?
+
+# Stop Xvfb
+kill -15 $PID
+
+exit $RETVAL
