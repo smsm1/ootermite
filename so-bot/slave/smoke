@@ -1,6 +1,6 @@
 #!/usr/bin/bash -x
 . ./solar.env
-
+PATH=$PATH:/usr/X/bin
 Xvfb :2 &
 PID=$!
 
