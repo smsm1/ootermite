@@ -36,8 +36,8 @@ else
 fi
 USERNAME=$(cws query owner | tail -1)
 MACHINE=$(uname -a)
-echo "Subject: StarOffice Buildbot: build of $CWSNAME finished with status $STATUS" > mail.tmp
-echo "$MACHINE ($BUILDER) has finished build of your CWS $CWSNAME with status $STATUS" >> mail.tmp
+SUBJECT="\"Subject: StarOffice Buildbot: build of $CWSNAME finished with status $STATUS\""
+echo "$MACHINE ($BUILDER) has finished build of your CWS $CWSNAME with status $STATUS" > mail.tmp
 echo "" >> mail.tmp
 echo "Visit http://so-berlin:8080/builders/$BUILDER/builds/$BUILDNO for output logs." >> mail.tmp
 echo "" >> mail.tmp
@@ -46,7 +46,7 @@ echo "" >> mail.tmp
 echo "Thank you for using our StarOffice Buildbots :-)" >> mail.tmp
 
 if [ "" != "$USERNAME" ]; then
-  mail $USERNAME < mail.tmp
+  mail -s $SUBJECT $USERNAME < mail.tmp
 else
   echo "cws query for email address failed!"
 fi
