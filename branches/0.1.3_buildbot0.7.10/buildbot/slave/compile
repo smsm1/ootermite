@@ -1,0 +1,26 @@
+#!/bin/bash -x
+
+# read config
+. ../../steps.config
+
+#put name of OOo config file created by configure in $envname
+. *.sh
+
+# Custom configure flags
+[ -f winenv.set.sh ] && export PROFULLSWITCH="$PROFULLSWITCH"
+
+. ../../ccsetup.sh $ccdatapath
+
+hash -r
+
+# hack to survive build.pl "feature" :(
+export TMP=/tmp
+ccache -z
+cd instsetoo_native && perl ../solenv/bin/build.pl --all $custom_buildflags
+rcode=$?
+
+#call site specific compile_post copied from build_copy
+[ -f site_compile_post ] && . site_compile_post
+ccache -s
+exit $rcode
+

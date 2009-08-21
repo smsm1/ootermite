@@ -1,0 +1,16 @@
+# this file is to be sourced in a bash
+
+
+### buildprep
+copyrecursive="cp -rv" 
+patch=patch
+
+### configure
+configureswitches="--disable-mozilla --disable-cups --disable-headless --disable-gnome-vfs --disable-gconf --disable-gtk --disable-randr --disable-mediawiki --with-system-lpsolve=no --enable-werror"
+
+
+### compile
+ccdatapath=/buildbot/buildslave
+# --html: for nice HTML log files
+custom_buildflags="nodep=TRUE -P2 -- -P2"
+
