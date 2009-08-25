@@ -251,7 +251,7 @@ def main():
             milestone = mmile[8:]
             checkWithBlacklist(mmile)
             scmname = getCodeControlName (branch)
-            if scmname == "Mercurial":
+            if scmname == "HG":
                 isMercurial = True
             elif scmname == "SVN":
                 isMercurial = False
