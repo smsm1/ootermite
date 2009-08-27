@@ -1,4 +1,4 @@
-svn#!/usr/bin/python
+#!/usr/bin/python
 
 #*************************************************************************
 # 
@@ -177,8 +177,8 @@ def checkAndGet(path):
     status = 0
     if isMercurial:
         if isMercurialLocalCopy(WORKDIR):
-            os.system("hg clean --print %s" % WORKDIR)
-            os.system("hg clean %s" % WORKDIR)
+            os.system("hg clean -f --print %s" % WORKDIR)
+            os.system("hg clean -f %s" % WORKDIR)
             status = mercurialPull(path)
             if status == 0: 
                 status = mercurialUpdate()
