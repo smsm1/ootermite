@@ -94,7 +94,7 @@ def cleanUpDirectories():
     return
 
 # Handles backups for svn and mercurial
-def SwitchMercurialToSVN():
+def switchMercurialToSVN():
     if isMercurialLocalCopy(WORKDIR):
         if os.path.exists (WORKDIR + ".hg"):
             shutil.rmtree(WORKDIR + ".hg", True) # True means: Ignore errors
@@ -106,7 +106,7 @@ def SwitchMercurialToSVN():
         shutil.move(WORKDIR + ".svn", WORKDIR)
     return
 
-def SwitchSVNToMercurial():
+def switchSVNToMercurial():
     if isSubversionLocalCopy(WORKDIR):
         if os.path.exists (WORKDIR + ".svn"):
             shutil.rmtree(WORKDIR + ".svn", True) # True means: Ignore errors
@@ -118,11 +118,11 @@ def SwitchSVNToMercurial():
         shutil.move(WORKDIR + ".hg", WORKDIR)
     return
  
-def SwitchDirectory():
+def switchDirectory():
     if isMercurial:
-        SwitchSVNToMercurial()
+        switchSVNToMercurial()
     else:
-        SwitchMercurialToSVN()
+        switchMercurialToSVN()
     return
 
 def isSubversionLocalCopy(path):
@@ -173,12 +173,13 @@ def mercurialUpdate():
 # If no working copy is available (or only a CVS checkout), we
 # perform a clean SVN checkout.
 def checkAndGet(path):
-    SwitchDirectory()
+    switchDirectory()
     status = 0
     if isMercurial:
         if isMercurialLocalCopy(WORKDIR):
-            os.system("hg clean -f --print %s" % WORKDIR)
-            os.system("hg clean -f %s" % WORKDIR)
+            os.system("hg revert -a %s" % WORKDIR)
+            os.system("hg clean --print %s" % WORKDIR)
+            os.system("hg clean %s" % WORKDIR)
             status = mercurialPull(path)
             if status == 0: 
                 status = mercurialUpdate()
@@ -246,6 +247,8 @@ def main():
         milestone = branch[8:]
     # Otherwise it must be a Child Workspace
     else:
+        # Check if CWS is "new", "ready for QA" or "approved by QA"
+
         print "Getting CWS branch named '" + branch + "'"
         mmile = getMasterMile(branch)
         if mmile != None:
