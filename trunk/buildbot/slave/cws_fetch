@@ -178,8 +178,8 @@ def checkAndGet(path):
     if isMercurial:
         if isMercurialLocalCopy(WORKDIR):
             os.system("hg revert -a %s" % WORKDIR)
-            os.system("hg clean --print %s" % WORKDIR)
-            os.system("hg clean %s" % WORKDIR)
+#            os.system("hg clean --print %s" % WORKDIR)
+            os.system("hg clean --all %s" % WORKDIR)
             status = mercurialPull(path)
             if status == 0: 
                 status = mercurialUpdate()
