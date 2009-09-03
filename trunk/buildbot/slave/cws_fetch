@@ -170,7 +170,7 @@ def mercurialPurge():
 
 def mercurialUpdate():
     print "Update workdir"
-    p = Popen("hg" + " update --clean tip --reposotory " + WORKDIR, shell=True)
+    p = Popen("hg" + " update --clean tip --repository " + WORKDIR, shell=True)
     return os.waitpid(p.pid, 0)[1]
 
 # If there is an existing Subversion working copy, we switch
