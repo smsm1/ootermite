@@ -1,0 +1,48 @@
+<project name="botbooster" default="dist" basedir=".">
+    <description>
+        simple example build file
+    </description>
+  <!-- set global properties for this build -->
+  <property name="src" location="botbooster"/>
+  <property name="build" location="build"/>
+  <property name="dist"  location="dist"/>
+
+    <!-- name of jar file created, without .jar extension -->
+    <property name="jarname" value="botbooster"/>
+
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${build}"/>
+  </target>
+
+  <target name="compile" depends="init"
+        description="compile the source " >
+    <!-- Compile the java code from ${src} into ${build} -->
+    <path id="classpath">
+      <fileset dir=".">
+        <include name="*.jar"/>
+      </fileset>
+    </path>
+    <javac srcdir="${src}" destdir="${build}" classpathref="classpath">
+    </javac>
+  </target>
+
+  <target name="dist" depends="compile"
+        description="generate the distribution" >
+    <!-- Create the distribution directory -->
+    <mkdir dir="${dist}/lib"/>
+
+    <!-- Put everything in ${build} into the jar file -->
+    <jar jarfile="${dist}/${jarname}.jar" basedir="${build}"/>
+  </target>
+
+  <target name="clean"
+        description="clean up" >
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+  </target>
+</project>
+
