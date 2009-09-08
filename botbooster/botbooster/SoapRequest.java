@@ -80,13 +80,14 @@ public class SoapRequest
     {
       Debug.out.println("Error while calling '" + this.methodName + "':");
       Debug.out.println(ex.getMessage());
-      return null;
+      throw new RuntimeException( ex.toString() );
     }
 
     if (resp.generatedFault())
     {
       Debug.out.println("Call to '" + this.methodName + "' returned a fault:");
       Debug.out.println(resp.getFault());
+      throw new RuntimeException( "Call to '" + this.methodName + "' returned a fault:" + resp.getFault() );
     }
     else
     {
@@ -96,6 +97,6 @@ public class SoapRequest
         return result;
       }
     }
-    return null;
+    throw new RuntimeException( "empty list" );
   }
 }
