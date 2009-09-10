@@ -90,6 +90,7 @@ public class Main
           {
             cwsLst.add(obj);
             Debug.log("Found CWS " + obj);
+          }
           
           // Add the retaining elements to the list of new CWSs
           cwsNew.addAll(cwsLst);
