@@ -79,43 +79,20 @@ public class Main
       // status args[0].
       for(int n = 0; n < mwsLst.size(); n++)
       {
-        try
-        {
           SoapRequest cwsRec = new SoapRequest(SERVICE_URL, SERVICE_URN, GET_CWS_METHOD);
           Object      cwsObj = cwsRec.doRequest(
             new Object[] {String.class, mwsLst.get(n), String.class, args[0]});
           List        cwsAll = ListUtils.soapObjectToList(cwsObj);
           List        cwsLst = new ArrayList();
           
-          // Remove all CWS from this list that are not public
+          // Show found CWSes
           for(Object obj : cwsAll)
           {
-            cwsRec = new SoapRequest(SERVICE_URL, SERVICE_URN, GET_CWS_ID_METHOD);
-            cwsObj = cwsRec.doRequest(
-              new Object[] {String.class, mwsLst.get(n), String.class, obj});
-            
-            int cwsID = (Integer)cwsObj;
-            
-            cwsRec = new SoapRequest(SERVICE_URL, SERVICE_URN, IS_PUBLIC_METHOD);
-            cwsObj = cwsRec.doRequest(new Object[] {Integer.class, cwsID});
-            
-            if(cwsObj != null && cwsObj.toString().equalsIgnoreCase("true"))
-            {
-              cwsLst.add(obj);
-              Debug.log("Found CWS " + obj);
-            }
-            else
-              Debug.log("Skipping private CWS " + obj);
-          }
+            cwsLst.add(obj);
+            Debug.log("Found CWS " + obj);
           
           // Add the retaining elements to the list of new CWSs
           cwsNew.addAll(cwsLst);
-        }
-        catch(Exception ex)
-        {
-          Debug.log("Exception catched: ");
-          ex.printStackTrace(Debug.out);
-        }
       }
 
       // Remove all elements from cwsLast that are NOT in cwsNew
