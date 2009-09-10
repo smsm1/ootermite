@@ -32,7 +32,7 @@
   <target name="dist" depends="compile"
         description="generate the distribution" >
     <!-- Create the distribution directory -->
-    <mkdir dir="${dist}/lib"/>
+    <mkdir dir="${dist}"/>
 
     <!-- Put everything in ${build} into the jar file -->
     <jar jarfile="${dist}/${jarname}.jar" basedir="${build}"/>
