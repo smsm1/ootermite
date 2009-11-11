@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 #*************************************************************************
 # 
@@ -181,11 +181,11 @@ def checkAndGet(path):
     switchDirectory()
     status = 0
     if isMercurial:
-        if isMercurialLocalCopy(WORKDIR):
-    		status = mercurialPurge()
-        else:
-            cleanUpDirectories()
-            status = mercurialClone(path) 
+#        if isMercurialLocalCopy(WORKDIR):
+#    		status = mercurialPurge()
+#        else:
+        cleanUpDirectories()
+        status = mercurialClone(path) 
         if status == 0: 
             status = mercurialPull(path) 
         if status == 0: 
