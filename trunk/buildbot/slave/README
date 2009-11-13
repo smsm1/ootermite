@@ -3,15 +3,27 @@
 ==Builder bots==
 
 These files invoked by the buildslave to perform various steps
-outlined below.  Note that you may need to modify these for your platform or build slave.
+outlined below. The idea is not to modify these scripts in any way. There are two config files which you may need to modify  for your platform or build slave.
+Additionally there are some hooks that call certain scripts at certain times i
+which you can put in place with your own content if needed. More below.
+
 The process for building OpenOffice.org is in the following order:
 
-cws_get 		For getting CWS's from CVS
+cws_fetch 		For getting CWS's from CVS
+cws_fetch.cfg		Config file for cws_fetch
 
-buildprep		Insert whatever you need in here to prepare the tree for
-				building.  For example, copying mozilla, that daft windows.dll or patching.
+buildprep		Apply patches and copy files into the sourcetree
+			there are 3 directories which are copied into the 
+			sourcetree. The directory build_copy can contain these 
+			directories named as follows:
+				Common
+				<Master>_<Minor> (eg: DEV300_m66)
+				<Master>/<Minor> (eg: DEV300/m66)
+			After copying all patches named *.patch or *.diff in 
+			the source_root directory are applied.
+			For example, copying mozilla, that daft windows.dll s
 
-configure		Runs configure, you supply configure line
+configure		Runs configure, you supply configure switches in steps.config
 
 bootstrap		Runs bootstrap
 
@@ -19,8 +31,7 @@ compile			Actually does the compile
 
 smoketestoo		Run the smoketest after the build
 
-bundle			Zips up the install set.  The name is supplied
-				in $1 by the buildmaster.
+bundle			Zips up the install set.
 				
 
 ---------------
@@ -32,8 +43,17 @@ sloccount		Used by a source bot only, for getting some source code metrics
 --------------- 
  
 ==Notes for the above scripts==
-These should work out the box on as many platforms as possible.
+you probably only need to adapt the params of your configure line in steps.config.
+
+currently the following hooks are in place:
+	site_buildprep which is called at the end of buildprep
+	site_compile_post which is indeed called th the end of compile
+
+the scripts have to get copied by the prepare step and must reside in the source_root directory
+
+ithe rest should work out the box on as many platforms as possible.
 As we don't build on all platforms, we need your help.
+
  
 Please send us any updates so that we can
 make the scripts cross-platform.
