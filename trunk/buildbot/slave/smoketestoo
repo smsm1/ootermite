@@ -1,7 +1,7 @@
 #!/bin/bash -x
 
 # for those requiring X
-if [ -f LinuxX86Env.Set.sh -o -f LinuxIntelEnv.Set.sh -o -f SolarisX86Env.Set.sh -o -f SolarisSparcEnv.Set.sh -o -f MacOSXX86Env.Set.sh -o -f MacOSXPPCEnv.Set.sh ]
+if [ -f LinuxX86Env.Set.sh -o -f LinuxX86-64Env.Set.sh -o -f LinuxIntelEnv.Set.sh -o -f SolarisX86Env.Set.sh -o -f SolarisSparcEnv.Set.sh ]
 then
     /usr/bin/Xvfb :2 &
     export DISPLAY=:2
