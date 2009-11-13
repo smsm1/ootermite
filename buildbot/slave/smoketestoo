@@ -9,15 +9,16 @@ then
     XStarted=Yes
 fi
 
-# Source the file created by configure
-. *.sh
+# put name of OOo config file created by configure in $envname
+. ../../getOOoEnv
+. $envname
 
 # hack to survive build.pl "feature" :(
 export TMP=/tmp
 
 export TEMP="/tmp"
 cd smoketestoo_native && perl ../solenv/bin/build.pl
-export rcode=$?
+rcode=$?
 
 [ "$XStarted" ] && ../../../Xvfb_stop.sh
 
