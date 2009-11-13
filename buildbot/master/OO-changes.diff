@@ -1,21 +1,6 @@
-Binärdateien buildbot-0.7.10-orig/buildbot/__init__.pyc and buildbot-0.7.10-patched/buildbot/__init__.pyc sind verschieden.
-diff -u -r -N buildbot-0.7.10-orig/buildbot/interfaces.py buildbot-0.7.10-patched/buildbot/interfaces.py
---- buildbot-0.7.10-orig/buildbot/interfaces.py	2009-02-26 17:29:09.000000000 +0100
-+++ buildbot-0.7.10-patched/buildbot/interfaces.py	2009-03-04 11:09:53.000000000 +0100
-@@ -1022,6 +1022,10 @@
-         to a scarcity of build slaves). These upcoming builds can be canceled
-         through the control object."""
- 
-+    def cancelBuildRequest(self, request_number):
-+        """If there is a build request with the given number on the builder's queue,
-+        cancel the request"""
-+
-     def getBuild(number):
-         """Attempt to return an IBuildControl object for the given build.
-         Returns None if no such object is available. This will only work for
-diff -u -r -N buildbot-0.7.10-orig/buildbot/process/base.py buildbot-0.7.10-patched/buildbot/process/base.py
---- buildbot-0.7.10-orig/buildbot/process/base.py	2009-02-26 17:29:09.000000000 +0100
-+++ buildbot-0.7.10-patched/buildbot/process/base.py	2009-03-04 13:24:54.000000000 +0100
+diff -ru buildbot-0.7.11p3_orig/build/lib/buildbot/process/base.py buildbot-0.7.11p3_patched/build/lib/buildbot/process/base.py
+--- buildbot-0.7.11p3_orig/build/lib/buildbot/process/base.py	2009-08-12 12:36:07.000000000 -0700
++++ buildbot-0.7.11p3_patched/build/lib/buildbot/process/base.py	2009-08-21 02:56:14.000000000 -0700
 @@ -74,6 +74,11 @@
          self.finish_watchers = []
          self.status = BuildRequestStatus(source, builderName)
@@ -36,10 +21,10 @@ diff -u -r -N buildbot-0.7.10-orig/buildbot/process/base.py buildbot-0.7.10-patc
          if self.builder:
              return self.builder.cancelBuildRequest(self)
          return False
-diff -u -r -N buildbot-0.7.10-orig/buildbot/process/builder.py buildbot-0.7.10-patched/buildbot/process/builder.py
---- buildbot-0.7.10-orig/buildbot/process/builder.py	2009-02-26 17:29:09.000000000 +0100
-+++ buildbot-0.7.10-patched/buildbot/process/builder.py	2009-03-04 13:28:44.000000000 +0100
-@@ -436,6 +436,24 @@
+diff -ru buildbot-0.7.11p3_orig/build/lib/buildbot/process/builder.py buildbot-0.7.11p3_patched/build/lib/buildbot/process/builder.py
+--- buildbot-0.7.11p3_orig/build/lib/buildbot/process/builder.py	2009-08-12 12:36:07.000000000 -0700
++++ buildbot-0.7.11p3_patched/build/lib/buildbot/process/builder.py	2009-08-26 01:40:01.000000000 -0700
+@@ -449,6 +449,34 @@
              return None
  
      def submitBuildRequest(self, req):
@@ -47,24 +32,34 @@ diff -u -r -N buildbot-0.7.10-orig/buildbot/process/builder.py buildbot-0.7.10-p
 +            if breq == req:
 +                # Check if install_set is on and languages equal
 +                # This is an ugly hack!!!
-+                if req.properties.has_key('install_set') and breq.properties.has_key('install_set') and \
-+                    req.properties.has_key('languages') and breq.properties.has_key('languages'):
-+                    if breq.properties['languages'] == req.properties['languages'] and \
-+                        breq.properties['install_set'] == req.properties['install_set']:
-+                        print "DEBUG: Build %s skipped!" % req
-+                        return
-+                    else:
-+                        # Enable install_set
-+                        breq.properties['install_set'] = 'on' 
-+                        print "DEBUG: Build %s merged!" % req
-+                        return                  
++                # checking if languages is equal is hard since they can be undefined
++                bMerge = False
++                if not req.properties.has_key('languages') and not breq.properties.has_key('languages'):
++                    bMerge = True
++                    print "DEBUG: merge 1"
 +                else:
-+                    print "DEBUG: Build %s skipped!" % req
++                    if req.properties.has_key('languages') and breq.properties.has_key('languages'):
++                        if breq.properties['languages'] == req.properties['languages']:
++                            bMerge = True
++                            print "DEBUG: merge 2"
++                    else:
++                        if (req.properties.has_key('languages') and req.properties['languages'] == '') or \
++                            (breq.properties.has_key('languages') and breq.properties['languages'] == ''):
++                             bMerge = True
++                             print "DEBUG: merge 3"
++                # now merge
++                if bMerge:
++                    if req.properties.has_key('install_set') and \
++                        req.properties['install_set'] == 'on': 
++                        # Enable install_set
++                        breq.properties['install_set'] = 'on'
++                    print "DEBUG: Build %s merged!" % req
 +                    return
++
          req.setSubmitTime(now())
          self.buildable.append(req)
          req.requestSubmitted(self)
-@@ -844,12 +862,18 @@
+@@ -882,7 +910,8 @@
              return
  
          ss = bs.getSourceStamp(absolute=True)
@@ -74,106 +69,25 @@ diff -u -r -N buildbot-0.7.10-orig/buildbot/process/builder.py buildbot-0.7.10-p
          self.requestBuild(req)
  
      def getPendingBuilds(self):
-         # return IBuildRequestControl objects
-         raise NotImplementedError
-+#        """Return a list of L{IBuildRequestControl} objects for this Builder.
-+#        Each one corresponds to a pending build that has not yet started (due
-+#        to a scarcity of build slaves). These upcoming builds can be canceled
-+#        through the control object."""
-+#        return self.original.buildable
- 
-     def getBuild(self, number):
-         return self.original.getBuild(number)
-@@ -865,6 +889,12 @@
-         d.addCallback(self._gatherPingResults)
-         return d
- 
-+    def cancelBuildRequest(self, request_number):
-+        # Delete the build request from queue
-+        for br in self.original.buildable:
-+            if br.status.getNumber() == request_number:
-+                br.cancel()
-+
-     def _gatherPingResults(self, res):
-         for ignored,success in res:
-             if not success:
-diff -u -r -N buildbot-0.7.10-orig/buildbot/process/properties.py buildbot-0.7.10-patched/buildbot/process/properties.py
---- buildbot-0.7.10-orig/buildbot/process/properties.py	2009-02-26 17:29:09.000000000 +0100
-+++ buildbot-0.7.10-patched/buildbot/process/properties.py	2009-03-04 13:29:27.000000000 +0100
-@@ -39,8 +39,10 @@
+diff -ru buildbot-0.7.11p3_orig/build/lib/buildbot/process/properties.py buildbot-0.7.11p3_patched/build/lib/buildbot/process/properties.py
+--- buildbot-0.7.11p3_orig/build/lib/buildbot/process/properties.py	2009-08-12 11:53:03.000000000 -0700
++++ buildbot-0.7.11p3_patched/build/lib/buildbot/process/properties.py	2009-08-21 04:28:57.000000000 -0700
+@@ -42,8 +42,10 @@
  
      def __getitem__(self, name):
          """Just get the value for this property."""
 -        rv = self.properties[name][0]
 -        return rv
 +        return self.properties[name][0]
-+        
++
 +    def __setitem__(self, key, value):
 +        self.properties[key] = (value, "Merged")
  
      def has_key(self, name):
          return self.properties.has_key(name)
-diff -u -r -N buildbot-0.7.10-orig/buildbot/status/builder.py buildbot-0.7.10-patched/buildbot/status/builder.py
---- buildbot-0.7.10-orig/buildbot/status/builder.py	2009-02-26 17:29:09.000000000 +0100
-+++ buildbot-0.7.10-patched/buildbot/status/builder.py	2009-03-04 11:26:52.000000000 +0100
-@@ -671,6 +671,7 @@
-         self.builds = [] # list of BuildStatus objects
-         self.observers = []
-         self.submittedAt = None
-+        self.number = None
- 
-     def buildStarted(self, build):
-         self.builds.append(build)
-@@ -692,6 +693,11 @@
-     def unsubscribe(self, observer):
-         self.observers.remove(observer)
- 
-+    def setNumber(self, number):
-+        self.number = number
-+    def getNumber(self):
-+        return self.number
-+
-     def getSubmitTime(self):
-         return self.submittedAt
-     def setSubmitTime(self, t):
-@@ -1439,6 +1445,7 @@
-         self.watchers = []
-         self.buildCache = [] # TODO: age builds out of the cache
-         self.logCompressionLimit = False # default to no compression for tests
-+        self.nextRequestNumber = 0
- 
-     # persistence
- 
-@@ -1459,6 +1466,7 @@
-         del d['basedir']
-         del d['status']
-         del d['nextBuildNumber']
-+        del d['nextRequestNumber']
-         return d
- 
-     def __setstate__(self, d):
-@@ -1470,6 +1478,7 @@
-         self.pendingBuilds = []
-         self.watchers = []
-         self.slavenames = []
-+        self.nextRequestNumber = 0
-         # self.basedir must be filled in by our parent
-         # self.status must be filled in by our parent
- 
-@@ -1730,6 +1739,10 @@
-         return s
- 
-     def addBuildRequest(self, brstatus):
-+        req_number = self.nextRequestNumber
-+        self.nextRequestNumber += 1
-+        brstatus.setNumber(req_number)
-+        log.msg("Adding build request %u" % req_number)
-         self.pendingBuilds.append(brstatus)
-         for w in self.watchers:
-             w.requestSubmitted(brstatus)
-diff -u -r -N buildbot-0.7.10-orig/buildbot/status/web/about.py buildbot-0.7.10-patched/buildbot/status/web/about.py
---- buildbot-0.7.10-orig/buildbot/status/web/about.py	2009-02-25 00:20:54.000000000 +0100
-+++ buildbot-0.7.10-patched/buildbot/status/web/about.py	2009-03-04 13:30:57.000000000 +0100
+diff -ru buildbot-0.7.11p3_orig/build/lib/buildbot/status/web/about.py buildbot-0.7.11p3_patched/build/lib/buildbot/status/web/about.py
+--- buildbot-0.7.11p3_orig/build/lib/buildbot/status/web/about.py	2009-08-12 11:53:04.000000000 -0700
++++ buildbot-0.7.11p3_patched/build/lib/buildbot/status/web/about.py	2009-08-21 01:22:15.000000000 -0700
 @@ -5,6 +5,8 @@
  import twisted
  import sys
@@ -194,11 +108,11 @@ diff -u -r -N buildbot-0.7.10-orig/buildbot/status/web/about.py buildbot-0.7.10-
          data += '''
  <h2>Source code</h2>
  
-diff -u -r -N buildbot-0.7.10-orig/buildbot/status/web/base.py buildbot-0.7.10-patched/buildbot/status/web/base.py
---- buildbot-0.7.10-orig/buildbot/status/web/base.py	2009-02-26 17:29:10.000000000 +0100
-+++ buildbot-0.7.10-patched/buildbot/status/web/base.py	2009-03-04 13:34:29.000000000 +0100
-@@ -84,10 +84,12 @@
-                  "<input type='text' name='username' />")
+diff -ru buildbot-0.7.11p3_orig/build/lib/buildbot/status/web/base.py buildbot-0.7.11p3_patched/build/lib/buildbot/status/web/base.py
+--- buildbot-0.7.11p3_orig/build/lib/buildbot/status/web/base.py	2009-08-13 08:53:17.000000000 -0700
++++ buildbot-0.7.11p3_patched/build/lib/buildbot/status/web/base.py	2009-08-26 04:07:07.000000000 -0700
+@@ -97,10 +97,12 @@
+       + make_name_user_passwd_form(useUserPasswd)
        + make_row("Reason for build:",
                   "<input type='text' name='comments' />")
 -      + make_row("Branch to build:",
@@ -213,76 +127,71 @@ diff -u -r -N buildbot-0.7.10-orig/buildbot/status/web/base.py buildbot-0.7.10-p
        + '<input type="submit" value="Force Build" /></form>\n')
  
  def td(text="", parms={}, **props):
-diff -u -r -N buildbot-0.7.10-orig/buildbot/status/web/baseweb.py buildbot-0.7.10-patched/buildbot/status/web/baseweb.py
---- buildbot-0.7.10-orig/buildbot/status/web/baseweb.py	2009-02-26 17:29:10.000000000 +0100
-+++ buildbot-0.7.10-patched/buildbot/status/web/baseweb.py	2009-03-04 11:28:28.000000000 +0100
-@@ -22,6 +22,7 @@
- from buildbot.status.web.slaves import BuildSlavesResource
- from buildbot.status.web.xmlrpc import XMLRPCServer
- from buildbot.status.web.about import AboutBuildbot
-+from buildbot.status.web.build import QueueStatusResource
- 
- # this class contains the status services (WebStatus and the older Waterfall)
- # which can be put in c['status']. It also contains some of the resources
-diff -u -r -N buildbot-0.7.10-orig/buildbot/status/web/builder.py buildbot-0.7.10-patched/buildbot/status/web/builder.py
---- buildbot-0.7.10-orig/buildbot/status/web/builder.py	2009-02-26 17:29:10.000000000 +0100
-+++ buildbot-0.7.10-patched/buildbot/status/web/builder.py	2009-03-13 16:24:31.000000000 +0100
-@@ -9,9 +9,10 @@
- from buildbot.status.web.base import HtmlResource, make_row, \
-      make_force_build_form, OneLineMixin, path_to_build, path_to_slave, path_to_builder
+@@ -398,6 +400,7 @@
+         builder_name = build.getBuilder().getName()
+         results = build.getResults()
+         text = build.getText()
++        branch = build.getSourceStamp().branch
+         try:
+             rev = build.getProperty("got_revision")
+             if rev is None:
+@@ -416,6 +419,7 @@
+                   'text': " ".join(build.getText()),
+                   'buildurl': path_to_build(req, build),
+                   'builderurl': path_to_builder(req, build.getBuilder()),
++                  'branch': branch,
+                   'rev': rev,
+                   'time': time.strftime(self.LINE_TIME_FORMAT,
+                                         time.localtime(build.getTimes()[0])),
+@@ -433,7 +437,7 @@
+                       ]
+         if include_builder:
+             fmt_pieces.append('<a href="%(builderurl)s">%(builder_name)s</a>')
+-        fmt_pieces.append('<a href="%(buildurl)s">#%(buildnum)d</a>:')
++        fmt_pieces.append('<a href="%(buildurl)s">#%(buildnum)d %(branch)s</span></a>:')
+         fmt_pieces.append('%(text)s')
+         data = " ".join(fmt_pieces) % values
+         return data
+diff -ru buildbot-0.7.11p3_orig/build/lib/buildbot/status/web/builder.py buildbot-0.7.11p3_patched/build/lib/buildbot/status/web/builder.py
+--- buildbot-0.7.11p3_orig/build/lib/buildbot/status/web/builder.py	2009-08-13 08:53:29.000000000 -0700
++++ buildbot-0.7.11p3_patched/build/lib/buildbot/status/web/builder.py	2009-08-26 04:12:18.000000000 -0700
+@@ -10,6 +10,7 @@
+      make_force_build_form, OneLineMixin, path_to_build, path_to_slave, \
+      path_to_builder, path_to_change
  from buildbot.process.base import BuildRequest
 +from buildbot.process.properties import Properties
  from buildbot.sourcestamp import SourceStamp
  
--from buildbot.status.web.build import BuildsResource, StatusResourceBuild
-+from buildbot.status.web.build import BuildsResource, StatusResourceBuild, QueueStatusResource
+ from buildbot.status.web.build import BuildsResource, StatusResourceBuild
+@@ -29,8 +30,9 @@
  
- # /builders/$builder
- class StatusResourceBuilder(HtmlResource, OneLineMixin):
-@@ -50,6 +51,15 @@
- </form>''' % stopURL
+     def build_line(self, build, req):
+         buildnum = build.getNumber()
++        branch = build.getSourceStamp().branch
+         buildurl = path_to_build(req, build)
+-        data = '<a href="%s">#%d</a> ' % (buildurl, buildnum)
++        data = '<a href="%s">#%d %s</a> ' % (buildurl, buildnum, branch)
+ 
+         when = build.getETA()
+         if when is not None:
+@@ -53,6 +55,7 @@
          return data
  
-+    
-+    def makeRemoveFromQueueButton(self, req, req_num):
-+        stopURL = urllib.quote(req.childLink("queue/%d/remove" % req_num))
-+        data = '''
-+<form action="%s" class="command stopbuild" style="display:inline">
-+  <input type="submit" value="Remove Build" />
-+</form>''' % stopURL
-+        return data
-+
+     def request_line(self, build_request, req):
++        branch = build_request.getSourceStamp().branch
+         when = time.strftime("%b %d %H:%M:%S", time.localtime(build_request.getSubmitTime()))
+         delay = util.formatInterval(util.now() - build_request.getSubmitTime())
+         changes = build_request.source.changes
+@@ -78,7 +81,7 @@
+ </form>''' % (cancelURL, id(build_request))
+         else:
+             cancelButton = ""
+-        return "<font size=\"-1\">(%s, waiting %s)</font>%s%s" % (when, delay, cancelButton, reason)
++        return "<font size=\"-1\">%s (%s, waiting %s)</font>%s%s" % (branch, when, delay, cancelButton, reason)
+ 
      def body(self, req):
          b = self.builder_status
-         control = self.builder_control
-@@ -75,6 +85,26 @@
-             data += "</ul>\n"
-         else:
-             data += "<h2>no current builds</h2>\n"
-+            
-+        # Then a section with the queued build requests
-+        data += "<h2>Pending Builds:</h2>\n"
-+        # Retrieve the builders queue
-+        pendingBuilds = b.getPendingBuilds()
-+        if pendingBuilds:
-+            # Determine the build numbers of the queue builds.
-+            # Sadly we cannot remove the build from the queue with this
-+            # number as it is not valid yet.
-+            data += "<ul>\n"
-+            for buildRequestStatus in pendingBuilds:
-+                sourceStamp = buildRequestStatus.getSourceStamp()
-+                req_number = buildRequestStatus.getNumber()
-+                data += "<li>#%u " % req_number
-+                data += "Branch: %s " % sourceStamp.branch
-+                data += self.makeRemoveFromQueueButton(req, req_number)
-+                data += "</li>"
-+            data += "</ul>\n"
-+        else:
-+            data += "No pending builds"
- 
-         # Then a section with the last 5 builds, with the most recent build
-         # distinguished from the rest.
-@@ -167,11 +197,18 @@
+@@ -221,6 +224,13 @@
          if not revision:
              revision = None
  
@@ -296,113 +205,18 @@ diff -u -r -N buildbot-0.7.10-orig/buildbot/status/web/builder.py buildbot-0.7.1
          # TODO: if we can authenticate that a particular User pushed the
          # button, use their name instead of None, so they'll be informed of
          # the results.
+@@ -229,7 +239,7 @@
+         # buildbot.changes.changes.Change instance which is tedious at this
+         # stage to compute
          s = SourceStamp(branch=branch, revision=revision)
 -        req = BuildRequest(r, s, builderName=self.builder_status.getName())
 +        req = BuildRequest(r, s, builderName=self.builder_status.getName(), properties=customBuildProps)
          try:
              self.builder_control.requestBuildSoon(req)
          except interfaces.NoSlaveError:
-@@ -214,6 +251,8 @@
-             return file
-         if path == "builds":
-             return BuildsResource(self.builder_status, self.builder_control)
-+        if path == "queue":
-+            return QueueStatusResource(self.builder_status, self.builder_control)
- 
-         return HtmlResource.getChild(self, path, req)
- 
-diff -u -r -N buildbot-0.7.10-orig/buildbot/status/web/build.py buildbot-0.7.10-patched/buildbot/status/web/build.py
---- buildbot-0.7.10-orig/buildbot/status/web/build.py	2009-02-26 17:29:10.000000000 +0100
-+++ buildbot-0.7.10-patched/buildbot/status/web/build.py	2009-03-04 12:15:16.000000000 +0100
-@@ -11,6 +11,7 @@
- from buildbot.status.web.tests import TestsResource
- from buildbot.status.web.step import StepsResource
- from buildbot import version, util
-+from buildbot.status.web.queue import QueueEntryStatusResource
- 
- # /builders/$builder/builds/$buildnum
- class StatusResourceBuild(HtmlResource):
-@@ -55,8 +56,8 @@
-             results = b.getResults()
-             data += "<h2>Results:</h2>\n"
-             text = " ".join(b.getText())
--            data += '<span class="%s">%s</span>\n' % (css_classes[results],
--                                                      text)
-+            if results != None:
-+                data += '<span class="%s">%s</span>\n' % (css_classes[results], text)
-             if b.getTestResults():
-                 url = req.childLink("tests")
-                 data += "<h3><a href=\"%s\">test results</a></h3>\n" % url
-@@ -298,5 +299,28 @@
-                 return StatusResourceBuild(build_status, build_control,
-                                            self.builder_control)
- 
-+            else:
-+                # Probably a build that was not started yet
-+                return QueueEntryStatusResource(path, req, num, self.builder_status, self.builder_control)
-+
-+        return HtmlResource.getChild(self, path, req)
-+
-+# /builders/$builder/queue
-+class QueueStatusResource(HtmlResource):
-+    addSlash = True
-+
-+    def __init__(self, builder_status, builder_control):
-+        HtmlResource.__init__(self)
-+        self.builder_status = builder_status
-+        self.builder_control = builder_control
-+
-+    def getChild(self, path, req):
-+        try:
-+            num = int(path)
-+        except ValueError:
-+            num = None
-+        if num is not None:
-+            return QueueEntryStatusResource(path, req, num, self.builder_status, self.builder_control)
-+ 
-         return HtmlResource.getChild(self, path, req)
- 
-diff -u -r -N buildbot-0.7.10-orig/buildbot/status/web/queue.py buildbot-0.7.10-patched/buildbot/status/web/queue.py
---- buildbot-0.7.10-orig/buildbot/status/web/queue.py	1970-01-01 01:00:00.000000000 +0100
-+++ buildbot-0.7.10-patched/buildbot/status/web/queue.py	2009-03-04 12:25:44.000000000 +0100
-@@ -0,0 +1,34 @@
-+from twisted.web.util import Redirect, DeferredResource
-+from twisted.python import log
-+from twisted.internet import defer, reactor
-+from buildbot.status.web.base import HtmlResource
-+
-+# Shows the queue of a Builder
-+class QueueEntryStatusResource(HtmlResource):
-+    def __init__(self, path, req, num, builder_status, builder_control):
-+        HtmlResource.__init__(self)
-+        self.path = path
-+        self.req  = req
-+        self.num  = num
-+        self.builder_status = builder_status
-+        self.builder_control = builder_control
-+        
-+    def body(self, request):    
-+        return ""
-+    
-+    # Removes a build from a builders queue
-+    def removeFromQueue(self, req):
-+        self.builder_control.cancelBuildRequest(self.num)
-+
-+        # we're at http://localhost:8080/svn-hello/builds/5/stop?[args] and
-+        # we want to go to: http://localhost:8080/svn-hello
-+        r = Redirect("../..")
-+        d = defer.Deferred()
-+        reactor.callLater(1, d.callback, r)
-+        return DeferredResource(d)
-+        
-+    def getChild(self, path, req):
-+        if path == "remove":
-+            return self.removeFromQueue(req)
-+        else:
-+            return HtmlResource.getChild(self, path, req)
-diff -u -r -N buildbot-0.7.10-orig/buildbot/status/web/waterfall.py buildbot-0.7.10-patched/buildbot/status/web/waterfall.py
---- buildbot-0.7.10-orig/buildbot/status/web/waterfall.py	2009-02-26 17:29:10.000000000 +0100
-+++ buildbot-0.7.10-patched/buildbot/status/web/waterfall.py	2009-03-13 14:31:17.000000000 +0100
+diff -ru buildbot-0.7.11p3_orig/build/lib/buildbot/status/web/waterfall.py buildbot-0.7.11p3_patched/build/lib/buildbot/status/web/waterfall.py
+--- buildbot-0.7.11p3_orig/build/lib/buildbot/status/web/waterfall.py	2009-08-13 08:53:58.000000000 -0700
++++ buildbot-0.7.11p3_patched/build/lib/buildbot/status/web/waterfall.py	2009-08-21 02:51:15.000000000 -0700
 @@ -122,8 +122,17 @@
          number = b.getNumber()
          url = path_to_build(req, b)
@@ -412,14 +226,260 @@ diff -u -r -N buildbot-0.7.10-orig/buildbot/status/web/waterfall.py buildbot-0.7
 +
 +        if reason == None:
 +            reason = "No specific reason"
-+            
++
 +        branch = b.getProperty('branch')
 +        if branch == None:
 +            branch = "ERROR: No CWS/MWS provided!"
-+            
++
 +        text = ('<a title="Reason: %s | CWS: %s" href="%s">Build %d<br/>CWS/MWS: %s</a>'
 +                % (html.escape(reason), html.escape(branch), url, number, html.escape(branch)))
-+ 
++
          class_ = "start"
          if b.isFinished() and not b.getSteps():
              # the steps have been pruned, so there won't be any indication
+Binary files buildbot-0.7.11p3_orig/buildbot/__init__.pyc and buildbot-0.7.11p3_patched/buildbot/__init__.pyc differ
+diff -ru buildbot-0.7.11p3_orig/buildbot/process/base.py buildbot-0.7.11p3_patched/buildbot/process/base.py
+--- buildbot-0.7.11p3_orig/buildbot/process/base.py	2009-08-12 12:36:07.000000000 -0700
++++ buildbot-0.7.11p3_patched/buildbot/process/base.py	2009-08-21 02:56:14.000000000 -0700
+@@ -74,6 +74,11 @@
+         self.finish_watchers = []
+         self.status = BuildRequestStatus(source, builderName)
+ 
++    # This method is necessary to remove equal builds from the
++    # queue.
++    def __eq__(self, other):
++        return self.canBeMergedWith(other)
++
+     def canBeMergedWith(self, other):
+         return self.source.canBeMergedWith(other.source)
+ 
+@@ -136,6 +141,7 @@
+         not yet been started.
+ 
+         @return: a boolean indicating if the cancel was successful."""
++        log.msg("Cancelling %r" % self)
+         if self.builder:
+             return self.builder.cancelBuildRequest(self)
+         return False
+diff -ru buildbot-0.7.11p3_orig/buildbot/process/builder.py buildbot-0.7.11p3_patched/buildbot/process/builder.py
+--- buildbot-0.7.11p3_orig/buildbot/process/builder.py	2009-08-12 12:36:07.000000000 -0700
++++ buildbot-0.7.11p3_patched/buildbot/process/builder.py	2009-08-27 01:11:04.000000000 -0700
+@@ -449,6 +449,34 @@
+             return None
+ 
+     def submitBuildRequest(self, req):
++        for breq in self.buildable:
++            if breq == req:
++                # Check if install_set is on and languages equal
++                # This is an ugly hack!!!
++                # checking if languages is equal is hard since they can be undefined
++                bMerge = False
++                if not req.properties.has_key('languages') and not breq.properties.has_key('languages'):
++                    bMerge = True
++                    print "DEBUG: merge 1"
++                else:
++                    if req.properties.has_key('languages') and breq.properties.has_key('languages'):
++                        if breq.properties['languages'] == req.properties['languages']:
++                            bMerge = True
++                            #print "DEBUG: merge 2"
++                    else:
++                        if (req.properties.has_key('languages') and req.properties['languages'] == '') or \
++                            (breq.properties.has_key('languages') and breq.properties['languages'] == ''):
++                             bMerge = True
++                             print "DEBUG: merge 3"
++                # now merge
++                if bMerge:
++                    if req.properties.has_key('install_set') and \
++                        req.properties['install_set'] == 'on': 
++                        # Enable install_set
++                        breq.properties['install_set'] = 'on'
++                    print "DEBUG: Build %s merged!" % req
++                    return
++
+         req.setSubmitTime(now())
+         self.buildable.append(req)
+         req.requestSubmitted(self)
+@@ -882,7 +910,8 @@
+             return
+ 
+         ss = bs.getSourceStamp(absolute=True)
+-        req = base.BuildRequest(reason, ss, self.original.name)
++        # The properties need to be passed again
++        req = base.BuildRequest(reason, ss, self.original.name, bs.getProperties())
+         self.requestBuild(req)
+ 
+     def getPendingBuilds(self):
+Only in buildbot-0.7.11p3_patched/buildbot/process: builder.py.orig
+diff -ru buildbot-0.7.11p3_orig/buildbot/process/properties.py buildbot-0.7.11p3_patched/buildbot/process/properties.py
+--- buildbot-0.7.11p3_orig/buildbot/process/properties.py	2009-08-12 11:53:03.000000000 -0700
++++ buildbot-0.7.11p3_patched/buildbot/process/properties.py	2009-08-21 04:28:57.000000000 -0700
+@@ -42,8 +42,10 @@
+ 
+     def __getitem__(self, name):
+         """Just get the value for this property."""
+-        rv = self.properties[name][0]
+-        return rv
++        return self.properties[name][0]
++
++    def __setitem__(self, key, value):
++        self.properties[key] = (value, "Merged")
+ 
+     def has_key(self, name):
+         return self.properties.has_key(name)
+Only in buildbot-0.7.11p3_patched/buildbot/process: properties.py.orig
+diff -ru buildbot-0.7.11p3_orig/buildbot/status/web/about.py buildbot-0.7.11p3_patched/buildbot/status/web/about.py
+--- buildbot-0.7.11p3_orig/buildbot/status/web/about.py	2009-08-12 11:53:04.000000000 -0700
++++ buildbot-0.7.11p3_patched/buildbot/status/web/about.py	2009-08-21 01:22:15.000000000 -0700
+@@ -5,6 +5,8 @@
+ import twisted
+ import sys
+ 
++from ootermite import *
++
+ class AboutBuildbot(HtmlResource):
+     title = "About this Buildbot"
+ 
+@@ -19,6 +21,10 @@
+         data += ' <li>Buildmaster platform: %s</li>\n' % html.escape(sys.platform)
+         data += '</ul>\n'
+ 
++        # Add customizer version information
++        data += '<h2>Customizer</h2>'
++        data += '%s %s\n' % (html.escape(ootermite.name), html.escape(ootermite.version))
++
+         data += '''
+ <h2>Source code</h2>
+ 
+Only in buildbot-0.7.11p3_patched/buildbot/status/web: about.py.orig
+diff -ru buildbot-0.7.11p3_orig/buildbot/status/web/base.py buildbot-0.7.11p3_patched/buildbot/status/web/base.py
+--- buildbot-0.7.11p3_orig/buildbot/status/web/base.py	2009-08-13 08:53:17.000000000 -0700
++++ buildbot-0.7.11p3_patched/buildbot/status/web/base.py	2009-08-26 04:07:07.000000000 -0700
+@@ -97,10 +97,12 @@
+       + make_name_user_passwd_form(useUserPasswd)
+       + make_row("Reason for build:",
+                  "<input type='text' name='comments' />")
+-      + make_row("Branch to build:",
++      + make_row("CWS/MWS to build:",
+                  "<input type='text' name='branch' />")
+-      + make_row("Revision to build:",
+-                 "<input type='text' name='revision' />")
++      + make_row("Install Set?:",
++                 "<input type='checkbox' name='install_set' />")
++      + make_row("Additional languages:",
++                 "<input type='text' name='languages' />")
+       + '<input type="submit" value="Force Build" /></form>\n')
+ 
+ def td(text="", parms={}, **props):
+@@ -398,6 +400,7 @@
+         builder_name = build.getBuilder().getName()
+         results = build.getResults()
+         text = build.getText()
++        branch = build.getSourceStamp().branch
+         try:
+             rev = build.getProperty("got_revision")
+             if rev is None:
+@@ -416,6 +419,7 @@
+                   'text': " ".join(build.getText()),
+                   'buildurl': path_to_build(req, build),
+                   'builderurl': path_to_builder(req, build.getBuilder()),
++                  'branch': branch,
+                   'rev': rev,
+                   'time': time.strftime(self.LINE_TIME_FORMAT,
+                                         time.localtime(build.getTimes()[0])),
+@@ -433,7 +437,7 @@
+                       ]
+         if include_builder:
+             fmt_pieces.append('<a href="%(builderurl)s">%(builder_name)s</a>')
+-        fmt_pieces.append('<a href="%(buildurl)s">#%(buildnum)d</a>:')
++        fmt_pieces.append('<a href="%(buildurl)s">#%(buildnum)d %(branch)s</span></a>:')
+         fmt_pieces.append('%(text)s')
+         data = " ".join(fmt_pieces) % values
+         return data
+Only in buildbot-0.7.11p3_patched/buildbot/status/web: base.py.orig
+diff -ru buildbot-0.7.11p3_orig/buildbot/status/web/builder.py buildbot-0.7.11p3_patched/buildbot/status/web/builder.py
+--- buildbot-0.7.11p3_orig/buildbot/status/web/builder.py	2009-08-13 08:53:29.000000000 -0700
++++ buildbot-0.7.11p3_patched/buildbot/status/web/builder.py	2009-08-26 04:12:18.000000000 -0700
+@@ -10,6 +10,7 @@
+      make_force_build_form, OneLineMixin, path_to_build, path_to_slave, \
+      path_to_builder, path_to_change
+ from buildbot.process.base import BuildRequest
++from buildbot.process.properties import Properties
+ from buildbot.sourcestamp import SourceStamp
+ 
+ from buildbot.status.web.build import BuildsResource, StatusResourceBuild
+@@ -29,8 +30,9 @@
+ 
+     def build_line(self, build, req):
+         buildnum = build.getNumber()
++        branch = build.getSourceStamp().branch
+         buildurl = path_to_build(req, build)
+-        data = '<a href="%s">#%d</a> ' % (buildurl, buildnum)
++        data = '<a href="%s">#%d %s</a> ' % (buildurl, buildnum, branch)
+ 
+         when = build.getETA()
+         if when is not None:
+@@ -53,6 +55,7 @@
+         return data
+ 
+     def request_line(self, build_request, req):
++        branch = build_request.getSourceStamp().branch
+         when = time.strftime("%b %d %H:%M:%S", time.localtime(build_request.getSubmitTime()))
+         delay = util.formatInterval(util.now() - build_request.getSubmitTime())
+         changes = build_request.source.changes
+@@ -78,7 +81,7 @@
+ </form>''' % (cancelURL, id(build_request))
+         else:
+             cancelButton = ""
+-        return "<font size=\"-1\">(%s, waiting %s)</font>%s%s" % (when, delay, cancelButton, reason)
++        return "<font size=\"-1\">%s (%s, waiting %s)</font>%s%s" % (branch, when, delay, cancelButton, reason)
+ 
+     def body(self, req):
+         b = self.builder_status
+@@ -221,6 +224,13 @@
+         if not revision:
+             revision = None
+ 
++        install_set = req.args.get("install_set", [""])[0]
++        languages   = req.args.get("languages", [""])[0]
++
++        customBuildProps = Properties()
++        customBuildProps.setProperty("install_set", install_set, "")
++        customBuildProps.setProperty("languages", languages, "")
++
+         # TODO: if we can authenticate that a particular User pushed the
+         # button, use their name instead of None, so they'll be informed of
+         # the results.
+@@ -229,7 +239,7 @@
+         # buildbot.changes.changes.Change instance which is tedious at this
+         # stage to compute
+         s = SourceStamp(branch=branch, revision=revision)
+-        req = BuildRequest(r, s, builderName=self.builder_status.getName())
++        req = BuildRequest(r, s, builderName=self.builder_status.getName(), properties=customBuildProps)
+         try:
+             self.builder_control.requestBuildSoon(req)
+         except interfaces.NoSlaveError:
+diff -ru buildbot-0.7.11p3_orig/buildbot/status/web/waterfall.py buildbot-0.7.11p3_patched/buildbot/status/web/waterfall.py
+--- buildbot-0.7.11p3_orig/buildbot/status/web/waterfall.py	2009-08-13 08:53:58.000000000 -0700
++++ buildbot-0.7.11p3_patched/buildbot/status/web/waterfall.py	2009-08-21 02:51:15.000000000 -0700
+@@ -122,8 +122,17 @@
+         number = b.getNumber()
+         url = path_to_build(req, b)
+         reason = b.getReason()
+-        text = ('<a title="Reason: %s" href="%s">Build %d</a>'
+-                % (html.escape(reason), url, number))
++
++        if reason == None:
++            reason = "No specific reason"
++
++        branch = b.getProperty('branch')
++        if branch == None:
++            branch = "ERROR: No CWS/MWS provided!"
++
++        text = ('<a title="Reason: %s | CWS: %s" href="%s">Build %d<br/>CWS/MWS: %s</a>'
++                % (html.escape(reason), html.escape(branch), url, number, html.escape(branch)))
++
+         class_ = "start"
+         if b.isFinished() and not b.getSteps():
+             # the steps have been pruned, so there won't be any indication
+Only in buildbot-0.7.11p3_patched/buildbot/status/web: waterfall.py.orig
+Only in buildbot-0.7.11p3_patched/: OO-changes.diff
