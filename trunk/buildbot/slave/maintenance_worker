@@ -1,0 +1,35 @@
+#!/bin/bash -x
+
+cd ../..
+mkdir script_checkout
+cd script_checkout || exit 1
+svn co http://ootermite.googlecode.com/svn/trunk/buildbot/slave
+
+ls -l
+
+diff -u slave/bootstrap ..
+diff -u slave/buildprep ..
+diff -u slave/bundle ..
+diff -u slave/compile ..
+diff -u slave/configure ..
+diff -u slave/cws_fetch ..
+diff -u slave/smoketestoo ..
+
+cd ..
+
+rm -rf script_checkout
+
+exit
+
+bundle.soli
+bundle.sols
+bundle.win
+ccsetup.sh
+cws_fetch.cfg
+maintenance
+maintenance_worker
+README
+sloccount
+steps.config.sample
+svn-clean
+Xvfb_stop.sh
