@@ -10,26 +10,28 @@ ls -l
 diff -u slave/bootstrap .. || return=65
 diff -u slave/buildprep .. || return=65
 diff -u slave/bundle .. || return=65
+diff -u slave/ccsetup.sh .. || return=65
 diff -u slave/compile .. || return=65
 diff -u slave/configure .. || return=65
 diff -u slave/cws_fetch .. || return=65
+diff -u slave/getOOoEnv .. || return=65
 diff -u slave/smoketestoo .. || return=65
+diff -u slave/svn-clean .. || return=65
+diff -u slave/Xvfb_stop.sh .. || return=65
 
 cd ..
 
 rm -rf script_checkout
 
+exit
 exit $return
 
 bundle.soli
 bundle.sols
 bundle.win
-ccsetup.sh
 cws_fetch.cfg
 maintenance
 maintenance_worker
 README
 sloccount
 steps.config.sample
-svn-clean
-Xvfb_stop.sh
