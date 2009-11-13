@@ -7,19 +7,19 @@ svn co http://ootermite.googlecode.com/svn/trunk/buildbot/slave
 
 ls -l
 
-diff -u slave/bootstrap ..
-diff -u slave/buildprep ..
-diff -u slave/bundle ..
-diff -u slave/compile ..
-diff -u slave/configure ..
-diff -u slave/cws_fetch ..
-diff -u slave/smoketestoo ..
+diff -u slave/bootstrap .. || return=65
+diff -u slave/buildprep .. || return=65
+diff -u slave/bundle .. || return=65
+diff -u slave/compile .. || return=65
+diff -u slave/configure .. || return=65
+diff -u slave/cws_fetch .. || return=65
+diff -u slave/smoketestoo .. || return=65
 
 cd ..
 
 rm -rf script_checkout
 
-exit
+exit $return
 
 bundle.soli
 bundle.sols

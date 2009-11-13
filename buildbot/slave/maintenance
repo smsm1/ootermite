@@ -1,7 +1,9 @@
 #!/bin/bash -x
 
 ../../maintenance_worker
+rcode=$?
 
 [ -f ../../maintenance_worker_new ] && mv ../../maintenance_worker_new ../../maintenance_worker
 
+exit $rcode
 
