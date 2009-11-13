@@ -14,6 +14,7 @@ if [ -n "$1" ]; then
         export CXX="ccache $CXX"
 
 else
-        echo usage...;
+        echo usage...
+        echo call with directory to enable ccache
 fi
 
