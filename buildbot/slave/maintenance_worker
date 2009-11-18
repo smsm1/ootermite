@@ -6,23 +6,22 @@ svn co http://ootermite.googlecode.com/svn/trunk/buildbot/slave
 
 ls -l
 
-diff -u ../bootstrap slave || return=65
-diff -u ../buildprep slave || return=65
-diff -u ../bundle slave || return=65
-diff -u ../ccsetup.sh slave || return=65
-diff -u ../compile slave || return=65
-diff -u ../configure slave || return=65
+#diff -u ../bootstrap slave || return=65
+#diff -u ../buildprep slave || return=65
+#diff -u ../bundle slave || return=65
+#diff -u ../ccsetup.sh slave || return=65
+#diff -u ../compile slave || return=65
+#diff -u ../configure slave || return=65
 diff -u ../cws_fetch slave || return=65
-diff -u ../getOOoEnv slave || return=65
-diff -u ../smoketestoo slave || return=65
-diff -u ../svn-clean slave || return=65
-diff -u ../Xvfb_stop.sh slave || return=65
+#diff -u ../getOOoEnv slave || return=65
+#diff -u ../smoketestoo slave || return=65
+#diff -u ../svn-clean slave || return=65
+#diff -u ../Xvfb_stop.sh slave || return=65
 
 cd ..
 
 rm -rf script_checkout
 
-exit
 exit $return
 
 bundle.soli
