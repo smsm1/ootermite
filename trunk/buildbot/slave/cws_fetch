@@ -89,8 +89,10 @@ def cleanUpDirectories():
         print "Remove workdir.old..."
         shutil.rmtree(WORKDIR + ".old", True) # True means: Ignore errors
     if os.path.exists(WORKDIR):
-        print "Save a copy of the %s to %s.old..." % (WORKDIR, WORKDIR)
-        shutil.move(WORKDIR, WORKDIR + ".old")
+        print "Remove workdir..."
+        shutil.rmtree(WORKDIR)
+#        print "Save a copy of the %s to %s.old..." % (WORKDIR, WORKDIR)
+#        shutil.move(WORKDIR, WORKDIR + ".old")
     return
 
 # Handles backups for svn and mercurial
