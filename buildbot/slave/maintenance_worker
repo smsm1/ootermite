@@ -1,11 +1,7 @@
 #!/bin/bash -x
 
-pwd
-cd ../..
-pwd
 mkdir script_checkout
 cd script_checkout || exit 1
-pwd
 svn co http://ootermite.googlecode.com/svn/trunk/buildbot/slave
 
 ls -l
