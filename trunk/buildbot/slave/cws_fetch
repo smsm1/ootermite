@@ -170,10 +170,17 @@ def mercurialPurge():
     p = Popen("hg purge --all --repository " + WORKDIR, shell=True)
     return os.waitpid(p.pid, 0)[1]
 
-def mercurialUpdate():
-    print "Update workdir"
-    p = Popen("hg" + " update --clean tip --repository " + WORKDIR, shell=True)
+def mercurialUpdate(rev):
+    print "Update workdir to revision " + rev
+    p = Popen("hg" + " update --clean --rev " + rev + " --repository " + WORKDIR, shell=True)
     return os.waitpid(p.pid, 0)[1]
+
+def mercurialGetID(url):
+    print "Get id of " + url
+    p = Popen("hg" + " id " + MERCURIAL_ROOT + url, shell=True, stdout=PIPE)
+    output = p.communicate()[0]
+    id = output.strip()
+    return id
 
 # If there is an existing Subversion working copy, we switch
 # this workdir to the given repository path (Heiner said this is *fast*).
@@ -183,15 +190,21 @@ def checkAndGet(path):
     switchDirectory()
     status = 0
     if isMercurial:
-#        if isMercurialLocalCopy(WORKDIR):
-#    		status = mercurialPurge()
-#        else:
-        cleanUpDirectories()
-        status = mercurialClone(path) 
+        if isMercurialLocalCopy(WORKDIR):
+            status = mercurialPurge()
+        else:
+            cleanUpDirectories()
+            status = mercurialClone(path) 
+        if status == 0: 
+            revision = mercurialGetID(path) 
+            if revision != "":
+                status = 0
+            else:
+                status =-1
         if status == 0: 
             status = mercurialPull(path) 
         if status == 0: 
-            status = mercurialUpdate()
+            status = mercurialUpdate(revision)
     else:
         if isSubversionLocalCopy(WORKDIR):
             # Wipe out all unversioned files first 
