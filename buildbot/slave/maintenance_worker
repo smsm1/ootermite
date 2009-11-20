@@ -1,10 +1,65 @@
-#!/bin/bash -x
+#!/bin/bash
+
+scripts=../..
+checkout=slave
 
 mkdir script_checkout
 cd script_checkout || exit 1
 svn co http://ootermite.googlecode.com/svn/trunk/buildbot/slave
+cd $checkout || exit 1
 
-ls -l
+for file in cws_fetch svn-clean configure buildprep bootstrap ccsetup.sh compile Xvfb_stop.sh getOOoEnv smoketestoo bundle
+do
+  mv $file $file.co
+  cp ../$scripts/$file $file
+  if [ "`svn diff $file`" ]
+  then
+    echo file $file not up to date
+    ok=
+    err=
+    for rev in `svn log -l 5 $file |grep "^r[0-9]* | "|sed -e "s/r//" -e "s/ .*//"`
+    do
+      if [ -z "$ok" ]
+      then
+        echo checking against revision $rev of $file
+        if [ -z "`svn diff -r $rev $file`" ]
+        then
+          echo revision matches, copying new file
+          if [ "$1" == "debug" ]
+          then 
+            diff -u $file.co ../$scripts/$file
+          else
+            cp ../$scripts/$file ../$scripts/$file.bak || err="err"
+            [ "$err" ] || cp $file.co ../$scripts/$file || err="err"
+          fi
+          ok=ok
+        fi
+      fi
+    done
+    if [ -z "$ok" ]
+    then
+      warn=1
+      echo warning: could not update file $file. Seems to be modified locally
+    fi
+    if [ "$err" ]
+    then
+      echo warning: could not update file $file. Problem accessing file
+      warn=2
+    fi
+  fi
+
+done
+
+#copy new worker. will be renamed by maintenance script
+cp maintenance_worker ../$scripts/maintenance_worker_new
+
+cd ../.. || exit 1
+
+rm -rf script_checkout
+
+echo $warn
+
+exit $warn
 
 #diff -u ../bootstrap slave || return=65
 #diff -u ../buildprep slave || return=65
