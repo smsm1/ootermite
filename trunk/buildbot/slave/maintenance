@@ -1,6 +1,6 @@
 #!/bin/bash -x
 
-./maintenance_worker
+./maintenance_worker $1 $2
 rcode=$?
 
 [ -f maintenance_worker_new ] && mv maintenance_worker_new maintenance_worker
