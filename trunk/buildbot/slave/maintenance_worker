@@ -1,9 +1,9 @@
 #!/bin/bash
 
-if [ "$1" == "debug" ]
-then
-  set -x
-fi
+#if [ "$1" == "debug" ]
+#then
+#  set -x
+#fi
 
 scripts=../..
 checkout=slave
