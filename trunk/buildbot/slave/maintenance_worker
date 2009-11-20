@@ -22,7 +22,7 @@ do
     echo file $file not up to date
     ok=
     err=
-    for rev in `svn log -l 5 $file |grep "^r[0-9]* | "|sed -e "s/r//" -e "s/ .*//"`
+    for rev in `svn log $file |grep "^r[0-9]* | "| head -n 5 | sed -e "s/r//" -e "s/ .*//"`
     do
       if [ -z "$ok" ]
       then
