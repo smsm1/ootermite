@@ -47,7 +47,8 @@ do
       done
     fi
   else
-    echo file does not exist. installing
+    echo
+    echo file $file does not exist. installing
     cp $file ../$scripts/$file || err="err"
     ok=ok
   fi
