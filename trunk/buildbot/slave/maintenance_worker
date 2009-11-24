@@ -10,47 +10,55 @@ checkout=slave
 
 mkdir script_checkout
 cd script_checkout || exit 1
-svn co http://ootermite.googlecode.com/svn/trunk/buildbot/slave
+svn co http://ootermite.googlecode.com/svn/trunk/buildbot/slave || exit 1
 cd $checkout || exit 1
 
 for file in cws_fetch svn-clean configure buildprep bootstrap ccsetup.sh compile Xvfb_stop.sh getOOoEnv smoketestoo bundle
 do
-  mv $file $file.co
-  cp ../$scripts/$file $file
-  if [ "`svn diff $file`" ]
+  ok=
+  err=
+
+  if [ -f ../$scripts/$file ]
   then
-    echo file $file not up to date
-    ok=
-    err=
-    for rev in `svn log $file |grep "^r[0-9]* | "| head -n 5 | sed -e "s/r//" -e "s/ .*//"`
-    do
-      if [ -z "$ok" ]
-      then
-        echo checking against revision $rev of $file
-        if [ -z "`svn diff -r $rev $file`" ]
+    mv $file $file.co
+    cp ../$scripts/$file $file
+    if [ "`svn diff $file`" ]
+    then
+      echo
+      echo File $file not up to date. Trying update.
+      for rev in `svn log $file |grep "^r[0-9]* | "| head -n 5 | sed -e "s/r//" -e "s/ .*//"`
+      do
+        if [ -z "$ok" ]
         then
-          echo revision matches, copying new file
-          if [ "$1" == "debug" ]
-          then 
-            diff -u $file.co ../$scripts/$file
-          else
-            cp ../$scripts/$file ../$scripts/$file.bak || err="err"
-            [ "$err" ] || cp $file.co ../$scripts/$file || err="err"
+          echo checking against revision $rev of $file
+          if [ -z "`svn diff -r $rev $file || echo error`" ]
+          then
+            echo revision matches, copying new file
+            if [ "$1" == "debug" ]
+            then 
+              diff -u $file.co ../$scripts/$file
+            else
+              cp ../$scripts/$file ../$scripts/$file.bak || err="err"
+              [ "$err" ] || cp $file.co ../$scripts/$file || err="err"
+            fi
+            ok=ok
           fi
-          ok=ok
         fi
-      fi
-    done
-    if [ -z "$ok" ]
-    then
-#      warn=1
-      echo warning: could not update file $file. Seems to be modified locally
+      done
     fi
-    if [ "$err" ]
-    then
-      echo warning: could not update file $file. Problem accessing file
-      warn=2
-    fi
+  else
+    echo file does not exist. installing
+    cp ../$scripts/$file ../$scripts/$file.bak || err="err"
+    [ "$err" ] || cp $file.co ../$scripts/$file || err="err"
+  fi
+  if [ -z "$ok" ]
+  then
+    echo warning: could not update file $file. Seems to be modified locally
+  fi
+  if [ "$err" ]
+  then
+    echo warning: could not update file $file. Problem accessing file
+    warn=2
   fi
 
 done
