@@ -15,15 +15,14 @@ cd $checkout || exit 1
 
 for file in cws_fetch svn-clean configure buildprep bootstrap ccsetup.sh compile Xvfb_stop.sh getOOoEnv smoketestoo bundle
 do
-  ok=
   err=
-
   if [ -f ../$scripts/$file ]
   then
     mv $file $file.co
     cp ../$scripts/$file $file
     if [ "`svn diff $file`" ]
     then
+      ok=
       echo
       echo File $file not up to date. Trying update.
       for rev in `svn log $file |grep "^r[0-9]* | "| head -n 5 | sed -e "s/r//" -e "s/ .*//"`
@@ -45,12 +44,15 @@ do
           fi
         fi
       done
+      if [ -z "$ok" ]
+      then
+        echo warning: could not update file $file. Seems to be modified locally
+      fi
     fi
   else
     echo
     echo file $file does not exist. installing
     cp $file ../$scripts/$file || err="err"
-    ok=ok
   fi
   if [ -z "$ok" ]
   then
