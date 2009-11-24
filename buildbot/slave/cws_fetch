@@ -153,6 +153,16 @@ def svnRevert():
     p = Popen("svn revert -R " + WORKDIR, shell=True) # --depth is supported since SVN 1.5
     return os.waitpid(p.pid, 0)[1]
 
+def svnHasTag(svnurl):
+    print "checking svn tag ..."
+    p = Popen("svn info " + SVN_ROOT + svnurl, shell=True, stdout=PIPE) 
+    output = p.communicate()[0]
+    id = output.strip()
+    if output == "":
+        return False
+    else:
+        return True
+
 ### mercurial commands
 
 def mercurialClone(url):
@@ -175,9 +185,12 @@ def mercurialUpdate(rev):
     p = Popen("hg" + " update --clean --rev " + rev + " --repository " + WORKDIR, shell=True)
     return os.waitpid(p.pid, 0)[1]
 
-def mercurialGetID(url):
+def mercurialGetID(url, tag=""):
     print "Get id of " + url
-    p = Popen("hg" + " id " + MERCURIAL_ROOT + url, shell=True, stdout=PIPE)
+    revisionstr = ""
+    if tag != "":
+        revisionstr = " --rev " + tag
+    p = Popen("hg" + " id " + MERCURIAL_ROOT + url + revisionstr, shell=True, stdout=PIPE)
     output = p.communicate()[0]
     id = output.strip()
     return id
@@ -186,7 +199,7 @@ def mercurialGetID(url):
 # this workdir to the given repository path (Heiner said this is *fast*).
 # If no working copy is available (or only a CVS checkout), we
 # perform a clean SVN checkout.
-def checkAndGet(path):
+def checkAndGet(path, rev = ""):
     switchDirectory()
     status = 0
     if isMercurial:
@@ -194,13 +207,16 @@ def checkAndGet(path):
             status = mercurialPurge()
         else:
             cleanUpDirectories()
-            status = mercurialClone(path) 
-        if status == 0: 
+            status = mercurialClone(path)
+        if (rev == "") and (status == 0):
+            # get global id if no id has been found yet 
             revision = mercurialGetID(path) 
             if revision != "":
                 status = 0
             else:
                 status =-1
+        else:
+            revision = rev
         if status == 0: 
             status = mercurialPull(path) 
         if status == 0: 
@@ -257,9 +273,20 @@ def main():
     # Check if it's a Master Workspace
     elif pattern.match(branch) != None:
         print "Getting MWS named '" + branch + "'"
-        status = checkAndGet("/tags/" + branch)
         workstamp = branch[:6]
         milestone = branch[8:]
+        # check for a mercurial MWS
+        workstampURL = "/" + workstamp 
+        revision = mercurialGetID(workstampURL, branch)
+        if revision != "": 
+            isMercurial = True
+            status = checkAndGet(workstampURL, revision)
+        else:
+            status = -1 # not a mercurial version
+        if (status != 0) and svnHasTag("/tags/" + branch):
+            # try a subversion MWS
+            isMercurial = False
+            status = checkAndGet("/tags/" + branch)
     # Otherwise it must be a Child Workspace
     else:
         # Check if CWS is "new", "ready for QA" or "approved by QA"
