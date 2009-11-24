@@ -277,7 +277,7 @@ def main():
                 isMercurial = False
             elif scmname == "CVS":
                 print "cvs based cws is no longer supported"
-                sys.exit(66)
+                sys.exit(65)
             status = checkAndGet("/cws/" + branch)
         else:
             print "Internal error: is the CWS still valid?"
