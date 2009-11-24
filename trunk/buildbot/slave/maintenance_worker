@@ -48,8 +48,8 @@ do
     fi
   else
     echo file does not exist. installing
-    cp ../$scripts/$file ../$scripts/$file.bak || err="err"
-    [ "$err" ] || cp $file.co ../$scripts/$file || err="err"
+    cp $file ../$scripts/$file || err="err"
+    ok=ok
   fi
   if [ -z "$ok" ]
   then
