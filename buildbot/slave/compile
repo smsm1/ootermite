@@ -3,8 +3,9 @@
 # read config
 . ../../steps.config
 
-#put name of OOo config file created by configure in $envname
-. *.sh
+# put name of OOo config file created by configure in $envname
+. ../../getOOoEnv
+. $envname
 
 # Custom configure flags
 [ -f winenv.set.sh ] && export PROFULLSWITCH="$PROFULLSWITCH"
