@@ -1,8 +1,12 @@
 #!/bin/bash
-if [ -n "$1" ]; then
 
-        if [ ! -d "$1/ccache" ];then mkdir -p "$1/ccache"; fi
-        export CCACHE_DIR=$1/ccache
+# read config
+. ../../steps.config
+
+if [ -n "$ccdatapath" ]; then
+
+        if [ ! -d "$ccdatapath/ccache" ];then mkdir -p "$ccdatapath/ccache"; fi
+        export CCACHE_DIR=$ccdatapath/ccache
         ccache -M 4G
         ccache -F 200000
         if [ -n "$USE_PCH" ]; then
@@ -18,7 +22,7 @@ if [ -n "$1" ]; then
         export CXX="ccache $CXX"
 
 else
-        echo usage...
-        echo call with directory to enable ccache
+        echo usage
+        echo set ccdatapath in steps.config to enable ccache
 fi
 
