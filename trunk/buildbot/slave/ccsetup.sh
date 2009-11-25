@@ -9,7 +9,11 @@ if [ -n "$1" ]; then
                  unset USE_PCH
         #        export USE_PCH
         fi
-
+        if [ -z "$CC" -o -z "$CXX" ]
+        then
+          echo please set environment variables \$CXX and \$CC
+          exit 1
+        fi
         export CC="ccache $CC"
         export CXX="ccache $CXX"
 
