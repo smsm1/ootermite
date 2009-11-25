@@ -54,10 +54,6 @@ do
     echo file $file does not exist. installing
     cp $file ../$scripts/$file || err="err"
   fi
-  if [ -z "$ok" ]
-  then
-    echo warning: could not update file $file. Seems to be modified locally
-  fi
   if [ "$err" ]
   then
     echo warning: could not update file $file. Problem accessing file
