@@ -15,6 +15,7 @@ cd $checkout || exit 1
 
 for file in cws_fetch svn-clean configure buildprep bootstrap ccsetup.sh compile Xvfb_stop.sh getOOoEnv smoketestoo bundle
 do
+  uifile=\"$file\"
   err=
   if [ -f ../$scripts/$file ]
   then
@@ -24,15 +25,15 @@ do
     then
       ok=
       echo
-      echo File $file not up to date. Trying update.
+      echo File $uifile not up to date. Trying update.
       for rev in `svn log $file |grep "^r[0-9]* | "| head -n 5 | sed -e "s/r//" -e "s/ .*//"`
       do
         if [ -z "$ok" ]
         then
-          echo checking against revision $rev of $file
-          if [ -z "`svn diff -r $rev $file || echo error`" ]
+          echo checking against revision $rev of $uifile
+          if [ -z "`svn diff -r $rev $file || echo in case of failure of svn command have something to prevent unwanted copying of file`" ]
           then
-            echo revision matches, copying new file
+            echo ======>> revision matches, copying new file $uifile
             if [ "$1" == "debug" ]
             then 
               diff -u $file.co ../$scripts/$file
@@ -46,17 +47,17 @@ do
       done
       if [ -z "$ok" ]
       then
-        echo warning: could not update file $file. Seems to be modified locally
+        echo warning: could not update file $uifile. Seems to be modified locally
       fi
     fi
   else
     echo
-    echo file $file does not exist. installing
+    echo ======>> file $uifile does not exist. installing
     cp $file ../$scripts/$file || err="err"
   fi
   if [ "$err" ]
   then
-    echo warning: could not update file $file. Problem accessing file
+    echo warning: could not update file $uifile. Problem accessing file
     warn=2
   fi
 
