@@ -189,8 +189,8 @@ def mercurialGetID(url, tag=""):
     print "Get id of " + url
     revisionstr = ""
     if tag != "":
-        revisionstr = " --rev " + tag
-    p = Popen("hg" + " id " + MERCURIAL_ROOT + url + revisionstr, shell=True, stdout=PIPE)
+        revisionstr = " --rev " + tag + " "
+    p = Popen("hg" + " id " + revisionstr + MERCURIAL_ROOT + url, shell=True, stdout=PIPE)
     output = p.communicate()[0]
     id = output.strip()
     return id
