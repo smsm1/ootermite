@@ -18,8 +18,18 @@ if [ -n "$ccdatapath" ]; then
           echo please set environment variables \$CXX and \$CC
           exit 1
         fi
-        export CC="ccache $CC"
-        export CXX="ccache $CXX"
+        if [ -n "$WRAPCMD" ]; then
+          export CC="$WRAPCMD ccache cl"
+          export CXX="$WRAPCMD ccache cl"
+        else
+          export CC="ccache cl"
+          export CXX="ccache cl"
+        fi
+
+#       if windows most likely deprecated
+        # disable warning that happens with -E
+        # only
+#         export ENVCFLAGS="$ENVCFLAGS -wd4668"
 
 else
         echo usage
