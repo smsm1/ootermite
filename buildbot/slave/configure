@@ -7,7 +7,6 @@ echo $configureswitches
 
 if [ ! -e "configure" ] ; then
   cd config_office
-  OLDCONF=../
   ./configure $configureswitches || exit $?
   cd ..
 else
@@ -15,21 +14,9 @@ else
 fi
 
 # put name of OOo config file created by configure in $envname
-[ -f LinuxX86Env.Set.sh ] && envname=LinuxX86Env.Set.sh
-[ -f LinuxX86-64Env.Set.sh ] && envname=LinuxX86-64Env.Set.sh
-[ -f LinuxIntelEnv.Set.sh ] && envname=LinuxIntelEnv.Set.sh
-[ -f MacOSXX86Env.Set.sh ] && envname=MacOSXX86Env.Set.sh
-[ -f MacOSXPPCEnv.Set.sh ] && envname=MacOSXPPCEnv.Set.sh
-[ -f SolarisX86Env.Set.sh ] && envname=SolarisX86Env.Set.sh
-[ -f SolarisSparcEnv.Set.sh ] && envname=SolarisSparcEnv.Set.sh
-[ -f winenv.set.sh ] && envname=winenv.set.sh
+. ../../getOOoEnv
 
-if [ -z "$envname" ] ; then
-  echo Cannot determine configuration file name
-  echo Please adapt the script on the buildslave
-  echo cannot set CWS and Languages for build
-  exit 1
-fi
+echo setting up CWS information
 
 CWS=`echo $* | grep '\--branch' | sed -e 's/.*--branch\=//' -e 's/ .*//' | grep -v _`
 if [ "$CWS" ] ; then
@@ -41,6 +28,18 @@ fi
 LANG=`echo $* | grep '\--languages' | sed -e 's/.*--languages\=\"//' -e 's/\".*//'`
 echo WITH_LANG=\"\$WITH_LANG\ $LANG\" >> $envname
 echo export WITH_LANG >> $envname
+
+if [ $envname == "winenv.set.sh" ]
+then
+  echo 'WINDOWS_VISTA_PSDK=TRUE' >> $envname
+  echo export WINDOWS_VISTA_PSDK >> $envname
+
+  echo 'DISABLE_ATL=TRUE' >> $envname
+  echo export DISABLE_ATL >> $envname
+
+  echo 'DISABLE_ACTIVEX=TRUE' >> $envname
+  echo export DISABLE_ACTIVEX >> $envname
+fi
 
 echo done
 
