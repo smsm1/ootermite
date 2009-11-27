@@ -14,3 +14,8 @@ ccdatapath=/buildbot/buildslave
 # --html: for nice HTML log files
 custom_buildflags="nodep=TRUE -P2 -- -P2"
 
+### smoketestoo
+#no need to set "XvfbBinary", it defaults to /usr/bin/Xvfb
+#XvfbBinary=/usr/bin/Xvfb
+
+
