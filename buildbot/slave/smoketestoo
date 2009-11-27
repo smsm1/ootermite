@@ -1,9 +1,16 @@
 #!/bin/bash -x
 
+# read config
+. ../../steps.config
+
 # for those requiring X
 if [ -f LinuxX86Env.Set.sh -o -f LinuxX86-64Env.Set.sh -o -f LinuxIntelEnv.Set.sh -o -f SolarisX86Env.Set.sh -o -f SolarisSparcEnv.Set.sh ]
 then
-    /usr/bin/Xvfb :2 &
+    if [ -z $XvfbBinary ]
+    then
+      XvfbBinary=/usr/bin/Xvfb
+    fi
+    $XvfbBinary :2 &
     export DISPLAY=:2
     export EXTERNAL_WARNINGS_NOT_ERRORS="TRUE"
     XStarted=Yes
