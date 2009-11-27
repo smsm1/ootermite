@@ -33,7 +33,7 @@ do
           echo checking against revision $rev of $uifile
           if [ -z "`svn diff -r $rev $file || echo in case of failure of svn command have something to prevent unwanted copying of file`" ]
           then
-            echo ======>> revision matches, copying new file $uifile
+            echo "======>> revision matches, copying new file $uifile"
             if [ "$1" == "debug" ]
             then 
               diff -u $file.co ../$scripts/$file
@@ -52,7 +52,7 @@ do
     fi
   else
     echo
-    echo ======>> file $uifile does not exist. installing
+    echo "======>> file $uifile does not exist. installing"
     cp $file ../$scripts/$file || err="err"
   fi
   if [ "$err" ]
