@@ -6,7 +6,7 @@ rm $zipname
 
 [ -f winenv.set.sh ] && source winenv.set.sh
 
-cd instsetoo_native/wntmsci11.pro/
+cd instsetoo_native/wntmsci12.pro/
 
 if [ -z $WITH_LANG ]; then
         WITH_LANG=en-US
