@@ -19,11 +19,11 @@ if [ -n "$ccdatapath" ]; then
           exit 1
         fi
         if [ -n "$WRAPCMD" ]; then
-          export CC="$WRAPCMD ccache cl"
-          export CXX="$WRAPCMD ccache cl"
+          export CC="$WRAPCMD ccache $CC"
+          export CXX="$WRAPCMD ccache $CXX"
         else
-          export CC="ccache cl"
-          export CXX="ccache cl"
+          export CC="ccache $CC"
+          export CXX="ccache $CXX"
         fi
 
 #       if windows most likely deprecated
