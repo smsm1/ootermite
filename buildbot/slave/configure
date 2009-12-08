@@ -7,10 +7,10 @@ echo $configureswitches
 
 if [ ! -e "configure" ] ; then
   cd config_office
-  ./configure $configureswitches || exit $?
+  ./configure --enable-werror $configureswitches || exit $?
   cd ..
 else
-  ./configure $configureswitches || exit $?
+  ./configure --enable-werror $configureswitches || exit $?
 fi
 
 # put name of OOo config file created by configure in $envname
