@@ -18,12 +18,18 @@ if [ -n "$ccdatapath" ]; then
           echo please set environment variables \$CXX and \$CC
           exit 1
         fi
-        if [ -n "$WRAPCMD" ]; then
-          export CC="$WRAPCMD ccache $CC"
-          export CXX="$WRAPCMD ccache $CXX"
+        if [ -L "$CXX" -a -L "$CC" ]; then
+          if [ `ls -l "$CXX" "$CC" | grep ccache | wc -l` -eq 2 ]; then
+            echo Using symlinked ccache
+          fi
         else
-          export CC="ccache $CC"
-          export CXX="ccache $CXX"
+          if [ -n "$WRAPCMD" ]; then
+            export CC="$WRAPCMD ccache $CC"
+            export CXX="$WRAPCMD ccache $CXX"
+          else
+            export CC="ccache $CC"
+            export CXX="ccache $CXX"
+          fi
         fi
 
 #       if windows most likely deprecated
