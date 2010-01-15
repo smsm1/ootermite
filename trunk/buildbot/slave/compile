@@ -10,18 +10,24 @@
 # Custom configure flags
 [ -f winenv.set.sh ] && export PROFULLSWITCH="$PROFULLSWITCH"
 
-. ../../ccsetup.sh $ccdatapath
+. ../../ccsetup.sh
 
 hash -r
 
 # hack to survive build.pl "feature" :(
 export TMP=/tmp
+
+# clear statistics
 ccache -z
+
 cd instsetoo_native && perl ../solenv/bin/build.pl --all $custom_buildflags
 rcode=$?
 
 #call site specific compile_post copied from build_copy
 [ -f site_compile_post ] && . site_compile_post
+
+# show statistics
 ccache -s
+
 exit $rcode
 
