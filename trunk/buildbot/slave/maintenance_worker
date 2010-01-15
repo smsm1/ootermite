@@ -13,7 +13,7 @@ cd script_checkout || exit 1
 svn co http://ootermite.googlecode.com/svn/trunk/buildbot/slave || exit 1
 cd $checkout || exit 1
 
-for file in cws_fetch svn-clean configure buildprep bootstrap ccsetup.sh compile Xvfb_stop.sh getOOoEnv smoketestoo bundle
+for file in cws_fetch svn-clean configure buildprep bootstrap ccsetup.sh compile Xvfb_stop.sh getOOoEnv smoketestoo bundle steps.config.sample
 do
   uifile=\"$file\"
   err=
