@@ -11,6 +11,10 @@ configureswitches="--disable-mozilla --disable-cups --disable-headless --disable
 
 ### compile
 ccdatapath=/buildbot/buildslave
+#if set ccsetup will automatically generate symlinks to ccache
+#and use them to call the compiler.
+#This implies that the compiler and ccache can be found in $PATH
+ccUsePrivateSymlinks=TRUE
 # --html: for nice HTML log files
 custom_buildflags="nodep=TRUE -P2 -- -P2"
 
