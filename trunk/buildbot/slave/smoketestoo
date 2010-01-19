@@ -16,6 +16,12 @@ then
     XStarted=Yes
 fi
 
+# for solaris X11 deadlock problem
+if [ -f SolarisX86Env.Set.sh -o -f SolarisSparcEnv.Set.sh ]
+then
+    export SAL_NO_XINITTHREADS=TRUE
+fi
+
 # put name of OOo config file created by configure in $envname
 . ../../getOOoEnv
 . $envname
