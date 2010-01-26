@@ -8,7 +8,7 @@
 . $envname
 
 # Custom configure flags
-[ -f winenv.set.sh ] && export PROFULLSWITCH="$PROFULLSWITCH"
+[ -f winenv.set.sh -o -f winmingw.set.sh ] && export PROFULLSWITCH="$PROFULLSWITCH"
 
 . ../../ccsetup.sh
 
