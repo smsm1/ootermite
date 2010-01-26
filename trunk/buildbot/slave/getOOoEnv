@@ -9,6 +9,7 @@
 [ -f SolarisX86Env.Set.sh ] && envname=SolarisX86Env.Set.sh
 [ -f SolarisSparcEnv.Set.sh ] && envname=SolarisSparcEnv.Set.sh
 [ -f winenv.set.sh ] && envname=winenv.set.sh
+[ -f winmingw.set.sh ] && envname=winmingw.set.sh
 
 if [ -z "$envname" ] ; then
   echo Cannot determine configuration file name
