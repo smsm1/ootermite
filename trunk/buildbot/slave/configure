@@ -29,7 +29,7 @@ LANG=`echo $* | grep '\--languages' | sed -e 's/.*--languages\=\"//' -e 's/\".*/
 echo WITH_LANG=\"\$WITH_LANG\ $LANG\" >> $envname
 echo export WITH_LANG >> $envname
 
-if [ $envname == "winenv.set.sh" ]
+if [ $envname == "winenv.set.sh" -o $envname == "winmingw.set.sh" ]
 then
   echo 'WINDOWS_VISTA_PSDK=TRUE' >> $envname
   echo export WINDOWS_VISTA_PSDK >> $envname
