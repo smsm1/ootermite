@@ -86,12 +86,12 @@ def main():
     elif os.path.exists("winenv.set.sh"):
         proc = os.system("../../bundle.win")
         sys.exit(proc)
-
+        
     # MinGW
     elif os.path.exists("winmingw.set.sh"):
         proc = os.system("../../bundle.mingw")
         sys.exit(proc)
-
+        
     else:
         print "Bundling for this platform is currently not supported!"
         sys.exit(65)
