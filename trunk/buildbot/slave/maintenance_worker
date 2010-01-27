@@ -34,13 +34,8 @@ do
           if [ -z "`svn diff -r $rev $file || echo in case of failure of svn command have something to prevent unwanted copying of file`" ]
           then
             echo "======>> revision matches, copying new file $uifile"
-            if [ "$1" == "debug" ]
-            then 
-              diff -u $file.co ../$scripts/$file
-            else
-              cp ../$scripts/$file ../$scripts/$file.bak || err="err"
-              [ "$err" ] || cp $file.co ../$scripts/$file || err="err"
-            fi
+            cp ../$scripts/$file ../$scripts/$file.bak || err="err"
+            [ "$err" ] || cp $file.co ../$scripts/$file || err="err"
             ok=ok
           fi
         fi
@@ -48,6 +43,10 @@ do
       if [ -z "$ok" ]
       then
         echo warning: could not update file $uifile. Seems to be modified locally
+        if [ "$1" == "debug" ]
+        then
+          diff -u $file.co ../$scripts/$file
+        fi
       fi
     fi
   else
@@ -74,24 +73,7 @@ echo $warn
 
 exit $warn
 
-#diff -u ../bootstrap slave || return=65
-#diff -u ../buildprep slave || return=65
-#diff -u ../bundle slave || return=65
-#diff -u ../ccsetup.sh slave || return=65
-#diff -u ../compile slave || return=65
-#diff -u ../configure slave || return=65
-diff -u ../cws_fetch slave || return=65
-#diff -u ../getOOoEnv slave || return=65
-#diff -u ../smoketestoo slave || return=65
-#diff -u ../svn-clean slave || return=65
-#diff -u ../Xvfb_stop.sh slave || return=65
-
-cd ..
-
-rm -rf script_checkout
-
-exit $return
-
+# other files in cvs but not updated
 bundle.soli
 bundle.sols
 bundle.win
@@ -100,4 +82,3 @@ maintenance
 maintenance_worker
 README
 sloccount
-steps.config.sample
