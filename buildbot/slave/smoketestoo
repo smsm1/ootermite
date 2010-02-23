@@ -30,6 +30,12 @@ fi
 export TMP=/tmp
 
 export TEMP="/tmp"
+if [ -d test ]
+then
+    workdir=`pwd`
+    cd test && perl ../solenv/bin/build.pl && deliver
+    cd $workdir
+fi
 cd smoketestoo_native && perl ../solenv/bin/build.pl
 rcode=$?
 
