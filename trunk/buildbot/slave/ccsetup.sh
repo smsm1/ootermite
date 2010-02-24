@@ -7,8 +7,8 @@ if [ -n "$ccdatapath" ]; then
 
         if [ ! -d "$ccdatapath/ccache" ];then mkdir -p "$ccdatapath/ccache"; fi
         export CCACHE_DIR=$ccdatapath/ccache
-        ccache -M 4G
-        ccache -F 200000
+        ccache -M 6G
+        ccache -F 300000
         if [ -n "$USE_PCH" ]; then
                  unset USE_PCH
         #        export USE_PCH
