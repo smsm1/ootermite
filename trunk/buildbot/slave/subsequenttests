@@ -7,7 +7,35 @@
 . $envname
 
 if [ -e "`which subsequenttests`" ] ; then
+
+  # for those requiring X
+  if [ -f LinuxX86Env.Set.sh -o -f LinuxX86-64Env.Set.sh -o -f LinuxIntelEnv.Set.sh -o -f SolarisX86Env.Set.sh -o -f SolarisSparcEnv.Set.sh ]
+  then
+      if [ -z $XvfbBinary ]
+      then
+        XvfbBinary=/usr/bin/Xvfb
+      fi
+      $XvfbBinary :2 &
+      export DISPLAY=:2
+      export EXTERNAL_WARNINGS_NOT_ERRORS="TRUE"
+      XStarted=Yes
+  fi
+
+  # for solaris X11 deadlock problem
+  if [ -f SolarisX86Env.Set.sh -o -f SolarisSparcEnv.Set.sh ]
+  then
+      export SAL_NO_XINITTHREADS=TRUE
+  fi
+
+
   subsequenttests
+  rcode=$?
+
+
+  [ "$XStarted" ] && ../../Xvfb_stop.sh
+
+  exit $rcode
+
 else
   echo the command \"subsequenttests\" could not be found in the workspace
   echo skipping
