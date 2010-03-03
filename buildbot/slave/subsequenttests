@@ -1,0 +1,16 @@
+#!/bin/bash -x
+
+# put name of OOo config file created by configure in $envname
+. ../../getOOoEnv
+
+#load environment
+. $envname
+
+if [ -e "`which subsequenttests`" ] ; then
+  subsequenttests
+else
+  echo the command \"subsequenttests\" could not be found in the workspace
+  echo skipping
+  exit 65
+fi
+
