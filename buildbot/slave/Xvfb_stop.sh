@@ -12,7 +12,7 @@ findproc() {
 # kill the named process(es) (borrowed from S15nfs.server)
 killproc() {
    pid=`findproc "$1"`
-   [ "$pid" != "" ] && kill $pid
+   [ "$pid" != "" ] && echo killing $pid && kill $pid
 }
 
 # for Linux style
