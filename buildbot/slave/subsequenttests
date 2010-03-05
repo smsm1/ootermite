@@ -8,6 +8,9 @@
 
 if [ -e "`which subsequenttests`" ] ; then
 
+  # read config
+  . ../../steps.config
+
   # for those requiring X
   if [ -f LinuxX86Env.Set.sh -o -f LinuxX86-64Env.Set.sh -o -f LinuxIntelEnv.Set.sh -o -f SolarisX86Env.Set.sh -o -f SolarisSparcEnv.Set.sh ]
   then
