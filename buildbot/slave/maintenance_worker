@@ -71,6 +71,9 @@ rm -rf script_checkout
 
 echo $warn
 
+which autoconf
+autoconf --version
+
 exit $warn
 
 # other files in cvs but not updated
