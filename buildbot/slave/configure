@@ -3,22 +3,26 @@
 # read config
 . ../../steps.config
 
+CWS=`echo $* | grep '\--branch' | sed -e 's/.*--branch\=//' -e 's/ .*//' | grep -v _`
+
+if [ "$CWS" ] ; then
+  if [ -z $autoconfBinary ]
+  then
+    autoconfBinary=autoconf
+  fi
+
+  $autoconfBinary
+fi
+
 echo $configureswitches
 
-if [ ! -e "configure" ] ; then
-  cd config_office
-  ./configure $configureswitches || exit $?
-  cd ..
-else
-  ./configure $configureswitches || exit $?
-fi
+./configure $configureswitches || exit $?
 
 # put name of OOo config file created by configure in $envname
 . ../../getOOoEnv
 
 echo setting up CWS information
 
-CWS=`echo $* | grep '\--branch' | sed -e 's/.*--branch\=//' -e 's/ .*//' | grep -v _`
 if [ "$CWS" ] ; then
   echo CWS_WORK_STAMP=$CWS >> $envname
   echo CWS_WORK_STAMP_EXT=_$CWS >> $envname

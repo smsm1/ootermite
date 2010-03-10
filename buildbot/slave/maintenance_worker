@@ -13,6 +13,8 @@ cd script_checkout || exit 1
 svn co http://ootermite.googlecode.com/svn/trunk/buildbot/slave || exit 1
 cd $checkout || exit 1
 
+warn=0
+
 for file in cws_fetch svn-clean configure buildprep bootstrap ccsetup.sh compile Xvfb_stop.sh getOOoEnv smoketestoo bundle steps.config.sample subsequenttests
 do
   uifile=\"$file\"
@@ -70,10 +72,6 @@ cd ../.. || exit 1
 rm -rf script_checkout
 
 echo $warn
-
-which autoconf
-autoconf --version
-
 exit $warn
 
 # other files in cvs but not updated
