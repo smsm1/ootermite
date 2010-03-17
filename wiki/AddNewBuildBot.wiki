@@ -28,7 +28,7 @@ exit
   # Build the buildbot [http://buildbot.net/repos/release/docs/buildbot.html#Installing-the-code the buildbot manual]
   # Create the build-slave
 {{{
-buildbot create-slave BASEDIR termite.go-oo.org:9999 SLAVENAME PASSWORD
+buildbot create-slave BASEDIR termite.services.openoffice.org:9999 SLAVENAME PASSWORD
 }}}
   This will create a Build Slave Basedir and the important buildbot.tac file.
   # Grab the scripts from svn directly in to the BASEDIR
@@ -43,4 +43,4 @@ svn checkout http://ootermite.googlecode.com/svn/trunk/buildbot/buildslave/scrip
 {{{
 buildbot start BASEDIR
 }}}
-  # It should show up as online at http://termite.go-oo.org/ and you should be able to manually submit builds to it.
+  # It should show up as online at http://termite.services.openoffice.org/ and you should be able to manually submit builds to it.
