@@ -1,10 +1,14 @@
 #!/usr/bin/bash -x
 echo "Setting solar environment..."
 umask 2
+
+if [ -f ../site_config ]; then . ../site_config ; fi
+
+export OSTYPE
+
 export PATH=$PATH:/so/env/etools
 export VCSID=christianlins
 export ENV_ROOT=/so/env
-export OSTYPE=solaris
 
 SOLARFILE=./solar.env
 PLATFORM=$(basename $(pwd))
@@ -12,37 +16,66 @@ PLATFORM=$(basename $(pwd))
 # define setsolar
 function setsolar
 {
-    perl $ENV_ROOT/etools/setsolar.pl -file $SOLARFILE -shell bash "$@"
-    . $SOLARFILE
+    perl $ENV_ROOT/etools/setsolar.pl -file $SOLARFILE.MWS -shell bash "$@"
+    . $SOLARFILE.MWS
 }
 
 function setcws
 {
-    #perl $ENV_ROOT/etools/setcws.pl /buildbot/solar.env "$@"
-    perl $ENV_ROOT/etools/setcws.pl $SOLARFILE "$@" -- -shell bash
+    perl $ENV_ROOT/etools/setcws.pl $SOLARFILE "$@" -- -shell bash || exit 1
     . $SOLARFILE
 }
 
-# Determine milestone of given CWS
-export SOURCE_ROOT=/cws/so-cwsserv02/$1
+# Determine SOURCE_ROOT of given CWS
+if [ -d /cws/so-cwsserv02/$1 ]
+  then
+    export SOURCE_ROOT=/cws/so-cwsserv02/$1
+fi
+if [ -d /cws/so-cwsserv01/$1 ]
+  then
+    export SOURCE_ROOT=/cws/so-cwsserv01/$1
+fi
 
-# Create output dir and ignore result if existing
-mkdir -p $SOURCE_ROOT/$(basename $SOURCE_ROOT/*)/$PLATFORM
+if [ -z "$SOURCE_ROOT" ]
+then
+  echo could not find CWS SOURCE_ROOT
+  exit 3
+fi
 
-# Check if a pro build is forced
-echo $(pwd) | egrep .pro\$ > /dev/null
+if [ ! -f "`echo $SOURCE_ROOT/*/ooo/solenv/inc/minor.mk`" ]
+then
+  echo could not find minor.mk
+  exit 2
+fi
+
+# Determine MWS of given CWS
+eval `cat $SOURCE_ROOT/*/ooo/solenv/inc/minor.mk | grep SOURCEVERSION`
+
+# determin minor
+eval `cat $SOURCE_ROOT/*/ooo/solenv/inc/minor.mk | grep LAST_MINOR`
+
+eval PLATFORMBASE=`echo $PLATFORM | sed 's/.pro$//'`
+eval PROSWITCH=`echo $PLATFORM | sed "s/^$PLATFORMBASE//" | sed "s/^\./-/"`
+
+# Check if solenv has to be copied
+if [ ! -d $SOURCE_ROOT/$SOURCEVERSION/$PLATFORM ]
+  then
+#    echo -n
+    echo Platform not found, copying from master
+    (
+      setsolar -$SOURCEVERSION -ver $LAST_MINOR $PROSWITCH $PLATFORMBASE || exit 1
+# use "xcws" instead of "cws" until CWS with new "cws" is integrated
+      xcws fetch --platforms $PLATFORM --onlysolver -c $1 $SOURCE_ROOT
+    ) || exit 1
+fi
+
 
 # Set environment to CWS
-if [ $? -eq 0 ]; then
-echo "Product build"
-setcws $1 $2 -pro
-else
-echo "Non-Product build"
-setcws $1 $2
-fi
+echo setcws $1 $2 $PROSWITCH
+setcws $1 $2 $PROSWITCH
 
-if [ "$CWS_WORK_STAMP" = "$1" ]; then
-  exit 0
-else
+if [ "$CWS_WORK_STAMP" != "$1" ]; then
   exit 1
 fi
+
+

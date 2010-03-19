@@ -3,22 +3,26 @@ umask 2
 CWSNAME=$1
 BUILDER=$2
 BUILDNO=$3
+if [ -f ../../site_config ]; then . ../../site_config ; fi
+
 cd ..
 echo "Building..."
 . ./solar.env
 
-# hack ause
-export WITH_LANG="en-US de"
+#gh debug hack
+ls -l $SHARED_SOLARVERSION/$OUTPATH/inc/300minor.mk
 
-cd $SRC_ROOT/instsetoo_native
-$PERL $SOLARENV/bin/build.pl --all -P4 -- -P2
+# hack ause
+# hack GH wieder raus weils sonst in toolkit bricht
+#export WITH_LANG="en-US de"
+
+cd $SOURCE_ROOT_DIR/ooo/instsetoo_native && $PERL $SOLARENV/bin/build.pl --all $custom_buildflags
 RETVAL=$?
 if [ $RETVAL -eq 0 ]; then
   $PERL $SOLARENV/bin/deliver.pl
   RETVAL=$?
   if [ $RETVAL -eq 0 ]; then
-    cd $SRC_ROOT/instset_native
-    $PERL $SOLARENV/bin/build.pl --all -P4 -- -P2
+    cd $SOURCE_ROOT_DIR/sun/instset_native && $PERL $SOLARENV/bin/build.pl --all $custom_buildflag
     RETVAL=$?
     if [ $RETVAL -eq 0 ]; then
       $PERL $SOLARENV/bin/deliver.pl
@@ -34,6 +38,12 @@ if [ $RETVAL -eq 0 ]; then
 else
   STATUS="[FAILED]";
 fi
+
+echo "Little test:"
+cws query owner | tail -1
+echo "Little test:"
+cws query owner
+
 USERNAME=$(cws query owner | tail -1)
 MACHINE=$(uname -a)
 SUBJECT="StarOffice Buildbot: build of $CWSNAME finished with status $STATUS"
@@ -41,7 +51,7 @@ echo "$MACHINE ($BUILDER) has finished build of your CWS $CWSNAME with status $S
 echo "" >> mail.tmp
 echo "Visit http://so-berlin:8080/builders/$BUILDER/builds/$BUILDNO for output logs." >> mail.tmp
 echo "" >> mail.tmp
-echo "If you discover any problems with the Buildbot machines contact Team Tools & RelEng." >> mail.tmp
+echo "If you discover any problems with the Buildbot machines contact Team Tools & RelEng or use this mailalias: buildbot_interest@sun.com" >> mail.tmp
 echo "" >> mail.tmp
 echo "Thank you for using our StarOffice Buildbots :-)" >> mail.tmp
 
@@ -50,5 +60,8 @@ if [ "" != "$USERNAME" ]; then
 else
   echo "cws query for email address failed!"
 fi
+
+#gh debug hack
+ls -l $SHARED_SOLARVERSION/$OUTPATH/inc/300minor.mk
 
 exit $RETVAL
