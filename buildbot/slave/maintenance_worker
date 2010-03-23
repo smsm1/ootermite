@@ -68,7 +68,9 @@ do
 done
 
 #copy new worker. will be renamed by maintenance script
-cp maintenance_worker ../$scripts/maintenance_worker_new
+if [ "`diff maintenance_worker ../$scripts/maintenance_worker`" ]
+  cp maintenance_worker ../$scripts/maintenance_worker_new
+fi
 
 cd ../.. || exit 1
 
