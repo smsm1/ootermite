@@ -8,7 +8,7 @@ tar -cf ~/buildbot_backup_new.tar $files `cat modified_scripts` || exit $?
 if [ -f ~/buildbot_backup_new.tar.md5 ] ; then
   md5sum -c ~/buildbot_backup_new.tar.md5 || exit $?
 else
-  true
+  false
 fi
 
 if [ $? -eq 0 ] ; then
