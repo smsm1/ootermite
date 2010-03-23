@@ -17,16 +17,13 @@ fi
 echo $configureswitches
 
 #this is a hack for cygwin inability to use the normal procedure due to quoting problems
-  grep configureswitches < ../../steps.config |sed 's/[^"]*"//'|sed 's/"$//'|sed 's/.*/.\/configure & || exit \$?/' > configure_line_tmp
+  grep configureswitches < ../../steps.config |tail -n 1|sed 's/[^"]*"//'|sed 's/"$//'|sed 's/.*/.\/configure & || exit \$?/' > configure_line_tmp
   set -x
   source configure_line_tmp
   set +x
 #original which should get restored someday starts here
-  #echo $configureswitches
+  #./configure $configureswitches || exit $?
 #done
-
-#./configure $configureswitches || exit $?
-
 
 # put name of OOo config file created by configure in $envname
 . ../../getOOoEnv
