@@ -14,7 +14,7 @@ cws_fetch.cfg		Config file for cws_fetch
 
 buildprep		Apply patches and copy files into the sourcetree
 			there are 3 directories which are copied into the 
-			sourcetree. The directory build_copy can contain these 
+			sourcetree. The directory "build_copy" can contain these 
 			directories named as follows:
 				Common
 				<Master>_<Minor> (eg: DEV300_m66)
@@ -32,7 +32,15 @@ compile			Actually does the compile
 smoketestoo		Run the smoketest after the build
 
 bundle			Zips up the install set.
-				
+
+subsequenttests		performs lots of tests.
+
+bot_backup              creates the tar file i"buildbot_backup.tar" in the homedirectory that contains
+                        essential files to revive the worker after a crash. It
+                        deliberately does not include scripts from the repository
+                        but adds maintenance and maintenance_worker to automatically
+                        fetch the remaining scripts from svn.
+                        It also includes locally modified scripts.
 
 ---------------
 ==Source bots==
