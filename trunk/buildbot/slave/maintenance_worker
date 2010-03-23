@@ -14,6 +14,8 @@ svn co http://ootermite.googlecode.com/svn/trunk/buildbot/slave || exit 1
 cd $checkout || exit 1
 
 warn=0
+rm $scripts/modified_scripts
+touch $scripts/modified_scripts
 
 for file in cws_fetch svn-clean configure buildprep bootstrap ccsetup.sh compile Xvfb_stop.sh getOOoEnv smoketestoo bundle steps.config.sample subsequenttests
 do
@@ -45,6 +47,7 @@ do
       if [ -z "$ok" ]
       then
         echo warning: could not update file $uifile. Seems to be modified locally
+        echo ../$file >> $scripts/modified_scripts
         if [ "$1" == "debug" ]
         then
           diff -u $file.co ../$scripts/$file
@@ -70,6 +73,10 @@ cp maintenance_worker ../$scripts/maintenance_worker_new
 cd ../.. || exit 1
 
 rm -rf script_checkout
+
+#call backup bundeling now
+#this creates a tar archive in $HOME containing all relevant files
+../bot_backup || warn=$?
 
 echo $warn
 exit $warn

@@ -1,0 +1,16 @@
+#!/bin/bash -x
+
+#eliminate files which don't exist (e.g.:buildbot.sh)
+files=`ls -d ../build_copy/ ../info/ ../buildbot.sh ../buildbot.tac ../steps.config ../cws_fetch.cfg ../maintenance ../maintenance_worker`
+
+tar -cf ~/buildbot_backup_new.tar $files `cat modified_scripts` || exit $?
+
+md5sum -c ~/buildbot_backup_new.tar.md5 || exit $?
+
+if [ $? -eq 0 ] ; then
+    rm ~/buildbot_backup_new.tar
+else
+    md5sum ~/buildbot_backup_new.tar > ~/buildbot_backup_new.tar.md5
+    mv ~/buildbot_backup_new.tar ~/buildbot_backup.tar
+fi
+
