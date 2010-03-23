@@ -17,7 +17,7 @@ warn=0
 rm $scripts/modified_scripts
 touch $scripts/modified_scripts
 
-for file in cws_fetch svn-clean configure buildprep bootstrap ccsetup.sh compile Xvfb_stop.sh getOOoEnv smoketestoo bundle steps.config.sample subsequenttests
+for file in cws_fetch svn-clean configure buildprep bootstrap ccsetup.sh compile Xvfb_stop.sh getOOoEnv smoketestoo bundle steps.config.sample subsequenttests bot_backup
 do
   uifile=\"$file\"
   err=
