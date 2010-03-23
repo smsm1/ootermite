@@ -5,11 +5,11 @@ files=`ls -d ../build_copy/ ../info/ ../buildbot.sh ../buildbot.tac ../steps.con
 
 tar -cf ~/buildbot_backup_new.tar $files `cat modified_scripts` || exit $?
 
-if [ ! -f ~/buildbot_backup_new.tar.md5 ] ; then
-  touch ~/buildbot_backup_new.tar.md5
+if [ -f ~/buildbot_backup_new.tar.md5 ] ; then
+  md5sum -c ~/buildbot_backup_new.tar.md5 || exit $?
+else
+  true
 fi
-
-md5sum -c ~/buildbot_backup_new.tar.md5 || exit $?
 
 if [ $? -eq 0 ] ; then
     rm ~/buildbot_backup_new.tar
