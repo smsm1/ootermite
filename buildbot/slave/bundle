@@ -69,7 +69,7 @@ def main():
                 
     # Debian/GNU Linux x86
     elif os.path.exists("LinuxX86Env.Set.sh"):
-        findcmd = "find . -name \*.deb -print"
+        findcmd = "find . -name \*.rpm -print"
         dircmd  = "cd instsetoo_native/unxlngi6.pro"
         
     # Solaris 10 Intel (unxsoli4.pro)
