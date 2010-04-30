@@ -7,7 +7,7 @@ if [ -f ../site_config ]; then . ../site_config ; fi
 export OSTYPE
 
 export PATH=$PATH:/so/env/etools
-export VCSID=christianlins
+export VCSID=so-ent5
 export ENV_ROOT=/so/env
 
 SOLARFILE=./solar.env
@@ -16,12 +16,14 @@ PLATFORM=$(basename $(pwd))
 # define setsolar
 function setsolar
 {
-    perl $ENV_ROOT/etools/setsolar.pl -file $SOLARFILE.MWS -shell bash "$@"
+    rm $SOLARFILE.MWS || exit 1
+    perl $ENV_ROOT/etools/setsolar.pl -file $SOLARFILE.MWS -shell bash "$@" || exit 1
     . $SOLARFILE.MWS
 }
 
 function setcws
 {
+    rm $SOLARFILE || exit 1
     perl $ENV_ROOT/etools/setcws.pl $SOLARFILE "$@" -- -shell bash || exit 1
     . $SOLARFILE
 }
