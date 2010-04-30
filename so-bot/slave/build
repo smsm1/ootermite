@@ -16,13 +16,21 @@ ls -l $SHARED_SOLARVERSION/$OUTPATH/inc/300minor.mk
 # hack GH wieder raus weils sonst in toolkit bricht
 #export WITH_LANG="en-US de"
 
-cd $SOURCE_ROOT_DIR/ooo/instsetoo_native && $PERL $SOLARENV/bin/build.pl --all $custom_buildflags
+if [ "$SOURCE_ROOT_DIR" ] ; then
+  INSTSETOO=$SOURCE_ROOT_DIR/ooo/instsetoo_native
+  INSTSET=$SOURCE_ROOT_DIR/sun/instset_native
+else
+  INSTSETOO=$SRC_ROOT/instsetoo_native
+  INSTSET=$SRC_ROOT/instset_native
+fi
+
+cd $INSTSETOO && $PERL $SOLARENV/bin/build.pl --all $custom_buildflags
 RETVAL=$?
 if [ $RETVAL -eq 0 ]; then
   $PERL $SOLARENV/bin/deliver.pl
   RETVAL=$?
   if [ $RETVAL -eq 0 ]; then
-    cd $SOURCE_ROOT_DIR/sun/instset_native && $PERL $SOLARENV/bin/build.pl --all $custom_buildflag
+    cd $INSTSET && $PERL $SOLARENV/bin/build.pl --all $custom_buildflags
     RETVAL=$?
     if [ $RETVAL -eq 0 ]; then
       $PERL $SOLARENV/bin/deliver.pl
