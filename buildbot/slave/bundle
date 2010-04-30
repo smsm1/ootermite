@@ -27,7 +27,7 @@ fi
 
 for product in OpenOffice URE ; do
     for lang in $WITH_LANG ; do
-        if [ -d $product/$PKGFORMAT/install/${lang}_download  && -"$product/$PKGFORMAT/install/${lang}_download/*" ]; then
+        if [ -d $product/$PKGFORMAT/install/${lang}_download  -a -"$product/$PKGFORMAT/install/${lang}_download/*" ]; then
              find $product/$PKGFORMAT/install/${lang}_download -type f -print >> ../../$zipname.filelist
         elif [ -d $product/$PKGFORMAT/install/$lang ]; then
             find $product/$PKGFORMAT/install/$lang -type f -print >> ../../$zipname.filelist
@@ -38,8 +38,10 @@ done
 cat ../../$zipname.filelist|zip -0 ../../$zipname -@
 rcode=$?
 
-ls -l ../../$zipname
-md5sum ../../$zipname
+cd ../..
+
+ls -l $zipname
+md5sum $zipname
 
 exit $rcode
 
