@@ -7,6 +7,14 @@ PID=$!
 export DISPLAY=:2
 export EXTERNAL_WARNINGS_NOT_ERRORS="TRUE"
 
+if [ -d $SRC_ROOT/test ]
+then
+    workdir=`pwd`
+    cd $SRC_ROOT/test && $PERL $SOLARENV/bin/build.pl && $PERL $SOLARENV/bin/deliver.pl
+    cd $workdir
+fi
+
+
 cd $SRC_ROOT/smoketestoo_native
 $PERL $SOLARENV/bin/build.pl
 RETVAL=$?
