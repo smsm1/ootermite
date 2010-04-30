@@ -25,6 +25,10 @@ if [ -z $WITH_LANG ]; then
     WITH_LANG=en-US
 fi
 
+if [ $envname == "winenv.set.sh" -a -z "$PKGFORMAT" ]
+    PKGFORMAT=msi
+fi
+
 for product in OpenOffice URE ; do
     for lang in $WITH_LANG ; do
         if [ -d $product/$PKGFORMAT/install/${lang}_download  -a -"$product/$PKGFORMAT/install/${lang}_download/*" ]; then
