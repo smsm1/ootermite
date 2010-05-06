@@ -300,8 +300,6 @@ def main():
             scmname = getCodeControlName (branch)
             if scmname == "HG":
                 isMercurial = True
-                print "HG is currently down"
-                sys.exit(65)
             elif scmname == "SVN":
                 isMercurial = False
                 print "SVN is currently down"
