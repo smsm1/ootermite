@@ -13,6 +13,9 @@ export ENV_ROOT=/so/env
 SOLARFILE=./solar.env
 PLATFORM=$(basename $(pwd))
 
+touch $SOLARFILE
+touch $SOLARFILE.MWS
+
 # define setsolar
 function setsolar
 {
