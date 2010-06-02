@@ -11,7 +11,7 @@ if [ "$CWS" ] ; then
     autoconfBinary=autoconf
   fi
 
-  $autoconfBinary
+  $autoconfBinary || exit 22
 fi
 
 echo $configureswitches
