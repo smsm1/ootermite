@@ -5,7 +5,7 @@ INSTSET=`echo $* | grep '\--install_set' | sed -e 's/.*--install_set\=//' -e 's/
 
 if [ -z "$INSTSET" ]; then
     echo skipping since no upload is required
-#    exit 65
+    exit 65
 fi
 
 # put name of OOo config file created by configure in $envname
