@@ -22,9 +22,9 @@ exit
 
 = Details =
 
-  # Grab a copy of [https://sourceforge.net/project/showfiles.php?group_id=73177 Buildbot 0.7.9]
+  # Grab a copy of [https://sourceforge.net/project/showfiles.php?group_id=73177 Buildbot 0.7.9] or newer
   # Unpack the source
-  # Build the buildbot [http://buildbot.net/repos/release/docs/buildbot.html#Installing-the-code the buildbot manual]
+  # Build the buildbot [http://djmitche.github.com/buildbot/docs/0.7.9/#Installing-the-code the buildbot manual]
   # Create the build-slave
 {{{
 buildbot create-slave BASEDIR termite.services.openoffice.org:9999 SLAVENAME PASSWORD
@@ -41,7 +41,7 @@ svn checkout http://ootermite.googlecode.com/svn/trunk/buildbot/buildslave/scrip
   # Copy the steps.config.sample file to steps.config and customize it.
   # Customize cws_fetch.cfg
   # Create a build_copy dir (used by buildprep) with things you wish to be copied into the source tree after checkout and before configure (such as mozilla sourcetarballs patches)
-  # EMail Gregor Hartmann (Gregor.Hartmann@sun.com> (or mikeleib or shaunmcdonald) the name and password to add your bot to the master
+  # EMail Gregor Hartmann (Gregor.Hartmann@sun.com> (or mikeleib or shaunmcdonald) the botname and password and a screen name to add your bot to the master
   # Start your bot
 {{{
 buildbot start BASEDIR (the dir containing the scripts ...)
