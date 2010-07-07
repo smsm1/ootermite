@@ -5,12 +5,35 @@
 #  set -x
 #fi
 
+#clean up tempdirs by removing all files older than 30 days
+if [ "$USER" ]
+then
+  find /tmp  -user $USER -type f -mtime +30 -exec rm {} \;
+  if [ "$TMP" ]
+  then
+    find "$TMP"  -user $USER -type f -mtime +30 -exec rm {} \;
+  fi
+  if [ "$TEMP" ]
+  then
+    find "$TEMP" -user $USER -type f -mtime +30 -exec rm {} \;
+  fi
+else
+  echo 'warning: $USER not set -> no automatic cleanup of temp directories'
+fi
+
 scripts=../..
 checkout=slave
 
 mkdir script_checkout
 cd script_checkout || exit 1
-svn co http://ootermite.googlecode.com/svn/trunk/buildbot/slave || exit 1
+if svn co http://ootermite.googlecode.com/svn/trunk/buildbot/slave 
+then
+  true
+else
+  echo remove script_checkout and retry \"svn co\"
+  rm -rf ../script_checkout/* || exit 1
+  svn co http://ootermite.googlecode.com/svn/trunk/buildbot/slave || exit 1
+fi
 cd $checkout || exit 1
 
 warn=0
