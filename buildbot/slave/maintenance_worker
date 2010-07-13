@@ -95,6 +95,10 @@ then
   then
     find "$TEMP" -user $USER -type f -mtime +30 -exec rm -f {} \;
   fi
+  if [ "$TMPDIR" ]
+  then
+    find "$TMPDIR"  -user $USER -type f -mtime +30 -exec rm -f {} \;
+  fi
 else
   echo 'warning: $USER not set -> no automatic cleanup of temp directories'
 fi
