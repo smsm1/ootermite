@@ -10,6 +10,7 @@ then
     then
       XvfbBinary=/usr/bin/Xvfb
     fi
+    echo $XvfbBinary :2
     $XvfbBinary :2 &
     export DISPLAY=:2
     export EXTERNAL_WARNINGS_NOT_ERRORS="TRUE"
@@ -30,16 +31,25 @@ fi
 export TMP=/tmp
 
 export TEMP="/tmp"
+workdir=`pwd`
+
+rcode=0
+
 if [ -d test ]
 then
-    workdir=`pwd`
     cd test && perl ../solenv/bin/build.pl && perl ../solenv/bin/deliver.pl
+    rcode=$?
     cd $workdir
 fi
-cd smoketestoo_native && perl ../solenv/bin/build.pl
-rcode=$?
 
-[ "$XStarted" ] && ../../../Xvfb_stop.sh
+if [ $rcode -eq 0 ]
+then
+  cd smoketestoo_native && perl ../solenv/bin/build.pl
+  rcode=$?
+  cd $workdir
+fi
+
+[ "$XStarted" ] && ../../Xvfb_stop.sh
 
 exit $rcode
 
