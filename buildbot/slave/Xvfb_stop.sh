@@ -20,3 +20,15 @@ killproc "Xvfb :2"
 
 # for Solaris style
 killproc "Xsun :2"
+
+
+# read config
+. ../../steps.config
+
+if [ "$XvfbBinary" == "vncserver" ]
+then
+  echo $XvfbBinary -kill :2
+  $XvfbBinary -kill :2
+fi
+
+
