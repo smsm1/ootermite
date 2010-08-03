@@ -1,5 +1,8 @@
 #!/bin/bash -x
 
+# remove flag-file to remove remainders of old office run written in maintenance step
+rm ../kill_office
+
 # read config
 . ../../steps.config
 
