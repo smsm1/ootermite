@@ -83,6 +83,9 @@ cd ../.. || exit 1
 
 rm -rf script_checkout
 
+#touch flag-file that office is not running and remainders can be removed
+touch kill_office
+
 #clean up tempdirs by removing all files older than 30 days
 if [ "$USER" ]
 then
