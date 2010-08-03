@@ -1,7 +1,16 @@
 #!/bin/bash -x
 
 # remove flag-file to remove remainders of old office run written in maintenance step
-rm ../kill_office
+if [ -f ../kill_office ] rm ../kill_office
+if [ -f ../kill_office.log ]
+then
+    echo Office kiling logfile is as follows
+    echo ----------------------------------
+    cat ../kill_office.log
+    echo ----------------------------------
+    rm -f ../kill_office.log
+fi
+
 
 # read config
 . ../../steps.config
