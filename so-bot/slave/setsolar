@@ -32,6 +32,10 @@ function setcws
 }
 
 # Determine SOURCE_ROOT of given CWS
+if [ -d /cws/so-cwsserv03/$1 ]
+  then
+    export SOURCE_ROOT=/cws/so-cwsserv03/$1
+fi
 if [ -d /cws/so-cwsserv02/$1 ]
   then
     export SOURCE_ROOT=/cws/so-cwsserv02/$1
