@@ -47,12 +47,15 @@ workdir=`pwd`
 
 rcode=0
 
-if [ -d test ]
-then
-    cd test && perl ../solenv/bin/build.pl && perl ../solenv/bin/deliver.pl
-    rcode=$?
-    cd $workdir
-fi
+for test_module in test smoketestdoc
+do
+    if [ $rcode -eq 0 -a -d $test_module ]
+    then
+        cd $test_module && perl ../solenv/bin/build.pl && perl ../solenv/bin/deliver.pl
+        rcode=$?
+        cd $workdir
+    fi
+done
 
 if [ $rcode -eq 0 ]
 then
